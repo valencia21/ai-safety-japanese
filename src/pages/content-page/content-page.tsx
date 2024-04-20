@@ -71,20 +71,18 @@ const ContentPage: React.FC = ({}) => {
         {reading.title}
       </h1>
       <div className="max-w-3xl flex flex-row justify-left w-full">
-        <div className="flex flex-col sm:flex-row gap-x-4 mb-12 items-left sm:items-center gap-y-2">
-          <div className="flex flex-row gap-x-4">
-            <div className="text-red-700 text-sm">
-              <p className="">{reading.author}</p>
-            </div>
-            <div className="text-red-700 text-sm">
-              <p className="">想定時間 {reading.time_to_read}</p>
-            </div>
+        <div className="flex flex-row mb-12 items-center gap-y-2">
+          <div className="text-red-700 text-sm w-1/2 mr-4">
+            <p className="">{reading.author}</p>
           </div>
-          <div className="flex flex-row gap-x-4">
+          <div className="text-red-700 text-sm mr-4">
+            <p className="">{reading.time_to_read}</p>
+          </div>
+          <div className="flex flex-row">
             <div className="">
               <LinkToOriginalButton href={reading.link_to_original} />
             </div>
-            <div className="text-gray-900 flex flex-row items-center">
+            <div className="text-gray-900 flex flex-row items-center hidden lg:flex">
               {isEditable ? (
                 <LockKeyOpen size="18px" onClick={handleLockClick} />
               ) : (
