@@ -71,14 +71,14 @@ const ContentPage: React.FC = ({}) => {
         {reading.title}
       </h1>
       <div className="max-w-3xl flex flex-row justify-left w-full">
-        <div className="flex flex-row mb-12 items-center gap-y-2">
-          <div className="text-red-700 text-sm w-1/2 mr-4">
+        <div className="flex flex-row gap-x-4 mb-12 items-left sm:items-center gap-y-2">
+          <div className="text-red-700 text-sm w-1/2 md:w-auto">
             <p className="">{reading.author}</p>
           </div>
-          <div className="text-red-700 text-sm mr-4">
+          <div className="text-red-700 text-sm">
             <p className="">{reading.time_to_read}</p>
           </div>
-          <div className="flex flex-row">
+          <div className="flex flex-row gap-x-4">
             <div className="">
               <LinkToOriginalButton href={reading.link_to_original} />
             </div>
