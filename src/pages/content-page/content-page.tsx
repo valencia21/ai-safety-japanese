@@ -67,7 +67,7 @@ const ContentPage: React.FC = ({}) => {
       </h1>
       <div className="max-w-3xl flex flex-row justify-left w-full">
         <div className="flex flex-col sm:flex-row gap-x-4 mb-12 items-left sm:items-center gap-y-2">
-          <div className="flex flex-row gap-x-2">
+          <div className="flex flex-row gap-x-4">
             <div className="text-red-700 text-sm">
               <p className="">{reading.author}</p>
             </div>
@@ -75,7 +75,7 @@ const ContentPage: React.FC = ({}) => {
               <p className="">想定時間 {reading.time_to_read}</p>
             </div>
           </div>
-          <div className="flex flex-row gap-x-2">
+          <div className="flex flex-row gap-x-4">
             <div className="">
               <LinkToOriginalButton href={reading.link_to_original} />
             </div>
