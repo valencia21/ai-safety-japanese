@@ -41,10 +41,10 @@ export const SessionInformation: React.FC = () => {
   const groupedReadings = groupReadingsBySession(readings);
 
   return (
-    <div className="flex flex-col max-w-6xl mt-12">
+    <div className="flex flex-col max-w-full lg:max-w-6xl mt-6 lg:mt-12">
       {sessions.map((session) => (
-        <div key={session.id} className="flex mb-20">
-          <div className="w-2/5 p-4">
+        <div key={session.id} className="flex flex-col lg:flex-row mb-20">
+          <div className="lg:w-2/5 p-4">
             <div className="flex flex-col gap-y-2">
               <h2 className="font-bold text-gray-500">
                 {session.session_counter_jp}
@@ -53,9 +53,9 @@ export const SessionInformation: React.FC = () => {
               <p className="text-gray-800">{session.description}</p>
             </div>
           </div>
-          <div className="w-px bg-gray-300"></div>
-          <div className="flex flex-col gap-y-2 items-start justify-start w-3/5 pl-10">
-            <div className="text-blue-800">課題図書</div>
+          <div className="lg:w-px bg-gray-300"></div>
+          <div className="flex flex-col gap-y-2 items-start justify-start border-t border-gray-300 lg:border-none mt-6 lg:mt-0 lg:w-3/5 lg:pl-10 p-4">
+            <div className="text-blue-800 mt-6 lg:mt-0">課題図書</div>
             <Accordion type="single" collapsible className="w-full">
               {groupedReadings[session.session_number]?.requiredReadings.map(
                 (reading: ReadingOverview, index: number) => (
