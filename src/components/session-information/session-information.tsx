@@ -60,7 +60,7 @@ export const SessionInformation: React.FC = () => {
               {groupedReadings[session.session_number]?.requiredReadings.map(
                 (reading: ReadingOverview, index: number) => (
                   <AccordionItem key={index} value={`required-${index}`}>
-                    <div className="flex items-center justify-between w-full my-2">
+                    <div className="flex items-center justify-between w-full my-6 lg:my-2">
                       <Link
                         to={`/${reading.content_id}`}
                         className="text-base flex w-4/5 text-left hover:underline"
@@ -85,7 +85,7 @@ export const SessionInformation: React.FC = () => {
               {groupedReadings[session.session_number]?.recommendedReadings.map(
                 (reading: ReadingOverview, index: number) => (
                   <AccordionItem key={index} value={`recommended-${index}`}>
-                    <div className="flex items-center justify-between w-full my-2">
+                    <div className="flex items-center justify-between w-full my-6 lg:my-2">
                       <Link
                         to={`/${reading.content_id}`}
                         className="text-base flex w-4/5 text-left hover:underline"
