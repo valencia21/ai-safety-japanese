@@ -5,6 +5,7 @@ import { TiptapEditor } from "../../components/tiptap-editor/tiptap-editor";
 import { supabase } from "../../supabase-client";
 import { LinkToOriginalButton } from "../../components/button/link-to-original-button";
 import { LockKey, LockKeyOpen } from "@phosphor-icons/react";
+import { Loading } from "@lemonsqueezy/wedges";
 
 interface Reading {
   id: number;
@@ -41,7 +42,11 @@ const ContentPage: React.FC = ({}) => {
   }, [contentId]);
 
   if (!reading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex flex-col items-center justify-center h-screen">
+        <Loading type="line" className="text-wg-red" size="lg" />
+      </div>
+    );
   }
 
   const handleLockClick = () => {

@@ -7,7 +7,7 @@ function App() {
     <>
       <div className="bg-beige mx-auto">
         <Navbar />
-        <div className="flex flex-col mx-10 gap-y-8">
+        <div className="flex flex-col gap-y-8 mx-2 items-center">
           <AppRoutes />
         </div>
       </div>
