@@ -60,19 +60,21 @@ const ContentPage: React.FC = ({}) => {
 
   return (
     <div className="container mx-auto px-4 py-8 flex flex-col items-center">
-      {reading.image && (
-        <img
-          src={reading.image}
-          alt={reading.title}
-          className="max-w-3xl mb-6 rounded-lg max-h-[400px]"
-        />
-      )}
+      <div className="flex flex-col items-center sm:max-w-3xl w-screen">
+        {reading.image && (
+          <img
+            src={reading.image}
+            alt={reading.title}
+            className="mb-6 sm:rounded-lg max-h-[400px]"
+          />
+        )}
+      </div>
       <h1 className="max-w-3xl justify-left text-3xl font-bold mb-2 w-full">
         {reading.title}
       </h1>
       <div className="max-w-3xl flex flex-row justify-left w-full">
-        <div className="flex flex-row gap-x-4 mb-12 items-left sm:items-center gap-y-2">
-          <div className="text-red-700 text-sm w-1/2 md:w-auto">
+        <div className="flex flex-row gap-x-4 mb-12 items-center gap-y-2">
+          <div className="text-red-700 text-sm max-w-1/2 md:w-auto">
             <p className="">{reading.author}</p>
           </div>
           <div className="text-red-700 text-sm">
