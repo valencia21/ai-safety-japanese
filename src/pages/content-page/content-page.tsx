@@ -94,7 +94,7 @@ const ContentPage: React.FC = ({}) => {
           </div>
         </div>
       </div>
-      <div className="max-w-4xl w-full">
+      <div className="flex flex-col items-center w-full">
         <TiptapEditor
           content={reading.content}
           contentId={contentId}

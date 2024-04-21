@@ -27,7 +27,7 @@ export const TiptapEditor: React.FC<TiptapEditorProps> = ({
         editable,
         attributes: {
           class:
-            "prose dark:prose-invert prose-sm sm:prose-sm lg:prose-base xl:prose-lg focus:outline-none",
+            "prose dark:prose-invert prose-sm sm:prose-sm lg:prose-base xl:prose-lg focus:outline-none max-w-4xl",
         },
       }}
       content={content || ""}
