@@ -69,6 +69,13 @@ export const TiptapMenu = () => {
         >
           paragraph
         </button>
+        {/* Footnote button */}
+        <button
+          onClick={() => editor.chain().focus().insertFootnote().run()}
+          className="bg-gray-300 px-2 py-1 rounded text-xs hover:bg-gray-200"
+        >
+          Insert Footnote
+        </button>
         {/* Image button */}
       </div>
     </>
