@@ -18,6 +18,8 @@
     "@radix-ui/react-slot": "^1.0.2",
     "@supabase/supabase-js": "^2.42.5",
     "@tailwindcss/typography": "^0.5.12",
+    "@tiptap-pro/extension-table-of-contents": "^2.9.2",
+    "@tiptap/extension-superscript": "^2.4.0",
     "@tiptap/pm": "^2.3.0",
     "@tiptap/react": "^2.3.0",
     "@tiptap/starter-kit": "^2.3.0",

@@ -5,9 +5,9 @@ import { AppRoutes } from "./routes/routes";
 function App() {
   return (
     <>
-      <div className="bg-beige mx-auto">
+      <div className="bg-beige">
         <Navbar />
-        <div className="flex flex-col gap-y-8 mx-2 items-center">
+        <div className="flex flex-col gap-y-8 items-center">
           <AppRoutes />
         </div>
       </div>

@@ -1,7 +1,9 @@
 // src/components/MenuBar.tsx
 import { useCurrentEditor } from "@tiptap/react";
 
-export const TiptapMenu = () => {
+interface TiptapMenuProps {}
+
+export const TiptapMenu: React.FC<TiptapMenuProps> = ({}) => {
   const { editor } = useCurrentEditor();
 
   if (!editor) {
@@ -69,14 +71,13 @@ export const TiptapMenu = () => {
         >
           paragraph
         </button>
-        {/* Footnote button */}
+        {/* Sidenote button */}
         <button
-          onClick={() => editor.chain().focus().insertFootnote().run()}
+          onClick={() => editor.chain().focus().insertSidenote().run()}
           className="bg-gray-300 px-2 py-1 rounded text-xs hover:bg-gray-200"
         >
-          Insert Footnote
+          Insert Sidenote
         </button>
-        {/* Image button */}
       </div>
     </>
   );

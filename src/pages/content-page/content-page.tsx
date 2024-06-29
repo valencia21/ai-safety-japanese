@@ -1,11 +1,12 @@
 // src/ContentPage.tsx
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { TiptapEditor } from "../../components/tiptap-editor/tiptap-editor";
 import { supabase } from "../../supabase-client";
 import { LinkToOriginalButton } from "../../components/button/link-to-original-button";
 import { LockKey, LockKeyOpen } from "@phosphor-icons/react";
 import { Loading } from "@lemonsqueezy/wedges";
+import { Sidenotes } from "@/components/sidenotes/sidenotes";
 
 interface Reading {
   id: number;
@@ -15,13 +16,39 @@ interface Reading {
   link_to_original: string;
   image: string;
   content: string;
+  sidenotes: any;
 }
 
 const ContentPage: React.FC = ({}) => {
   const [reading, setReading] = useState<Reading | null>(null);
+  const editorRef = useRef<HTMLDivElement | null>(null);
   const [isEditable, setIsEditable] = useState(false);
   const { contentId } = useParams<{ contentId?: string }>();
   const secretKey = import.meta.env.VITE_EDITING_KEY;
+  const [editorTopPosition, setEditorTopPosition] = useState<number | null>(
+    null
+  );
+  console.log("editorTopPosition", editorTopPosition);
+  const [sidenotePositions, setSidenotePositions] = useState<
+    Array<{ id: number; pos: number; yCoordinate: number }>
+  >([]);
+
+  const handleSidenotePositionsChange = (
+    newPositions: Array<{ id: number; pos: number; yCoordinate: number }>
+  ) => {
+    setSidenotePositions(newPositions);
+  };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (editorRef.current) {
+        const rect = editorRef.current.getBoundingClientRect();
+        setEditorTopPosition(rect.top);
+      }
+    }, 1000); // 100ms delay
+
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     const fetchReading = async () => {
@@ -59,7 +86,8 @@ const ContentPage: React.FC = ({}) => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 flex flex-col items-center">
+    <div className="container flex flex-col items-center">
+      {/*
       <div className="flex flex-col items-center sm:max-w-3xl w-screen">
         {reading.image && (
           <img
@@ -69,37 +97,54 @@ const ContentPage: React.FC = ({}) => {
           />
         )}
       </div>
-      <h1 className="max-w-3xl justify-left text-3xl font-bold mb-2 w-full">
-        {reading.title}
-      </h1>
-      <div className="max-w-3xl flex flex-row justify-left w-full">
-        <div className="flex flex-row gap-x-4 mb-12 items-center gap-y-2">
-          <div className="text-red-700 text-sm max-w-1/2 md:w-auto">
-            <p className="">{reading.author}</p>
-          </div>
-          <div className="text-red-700 text-sm">
-            <p className="">{reading.time_to_read}</p>
-          </div>
-          <div className="flex flex-row gap-x-4">
-            <div className="">
-              <LinkToOriginalButton href={reading.link_to_original} />
-            </div>
-            <div className="text-gray-900 flex flex-row items-center hidden lg:flex">
-              {isEditable ? (
-                <LockKeyOpen size="18px" onClick={handleLockClick} />
-              ) : (
-                <LockKey size="18px" onClick={handleLockClick} />
-              )}
+      */}
+      <div className="bg-red-100 w-full py-16 mb-16">
+        <div className="flex flex-col ml-[22%] justify-end">
+          <h1 className="max-w-3xl justify-left text-4xl font-bold mb-2 w-full text-black">
+            {reading.title}
+          </h1>
+          <div className="max-w-3xl flex flex-row justify-left w-full">
+            <div className="flex flex-row gap-x-4 items-center gap-y-2">
+              <div className="text-red-700 text-sm max-w-1/2 md:w-auto">
+                <p className="">{reading.author}</p>
+              </div>
+              <div className="text-red-700 text-sm">
+                <p className="">{reading.time_to_read}</p>
+              </div>
+              <div className="flex flex-row gap-x-4">
+                <div className="">
+                  <LinkToOriginalButton href={reading.link_to_original} />
+                </div>
+                <div className="text-gray-900 flex flex-row items-center hidden lg:flex">
+                  {isEditable ? (
+                    <LockKeyOpen size="18px" onClick={handleLockClick} />
+                  ) : (
+                    <LockKey size="18px" onClick={handleLockClick} />
+                  )}
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <div className="flex flex-col items-center w-full">
-        <TiptapEditor
-          content={reading.content}
-          contentId={contentId}
-          editable={() => isEditable}
-        />
+      <div className="contentcontainer flex flex-row justify-between items-start w-full">
+        <div ref={editorRef} className="w-4/5">
+          <TiptapEditor
+            content={reading.content}
+            contentId={contentId}
+            editable={() => isEditable}
+            onSidenotePositionsChange={handleSidenotePositionsChange}
+          />
+        </div>
+        <div className="ml-6 w-1/5">
+          {sidenotePositions && (
+            <Sidenotes
+              editorTopPosition={editorTopPosition}
+              sidenotes={reading.sidenotes}
+              sidenotePositions={sidenotePositions}
+            />
+          )}
+        </div>
       </div>
     </div>
   );
