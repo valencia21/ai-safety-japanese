@@ -259,7 +259,7 @@ export const TiptapEditor: React.FC<TiptapEditorProps> = ({
   return (
     <>
       <div className="flex flex-row">
-        <div className="flex-col w-1/4 table-of-contents mx-6 sticky top-16 max-h-[50vh] overflow-visible hidden sm:flex">
+        <div className="flex-col w-1/4 table-of-contents pr-4 mx-6 sticky top-16 max-h-[50vh] overflow-visible hidden sm:flex">
           <div className="font-bold pb-2 border-b border-gray-700 rounded-none">
             {title}
           </div>

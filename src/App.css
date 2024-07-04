@@ -65,15 +65,22 @@ body {
 }
 
 .tiptap .details > button {
-  @apply flex items-center justify-center bg-transparent rounded p-0 text-[10px] w-5 h-5 mt-1;
+  @apply flex items-center justify-center bg-transparent rounded p-0 text-[14px] w-5 h-5 mt-1;
 }
 
 .tiptap .details > button::before {
-  content: "\25B6";
+  content: "";
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' fill='%23000000' viewBox='0 0 256 256'%3E%3Cpath d='M184.49,136.49l-80,80a12,12,0,0,1-17-17L159,128,87.51,56.49a12,12,0,1,1,17-17l80,80A12,12,0,0,1,184.49,136.49Z'%3E%3C/path%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+  vertical-align: middle;
 }
 
 .tiptap .details.is-open > button::before {
-  @apply rotate-90;
+  transform: rotate(90deg);
 }
 
 .tiptap .details > div {
