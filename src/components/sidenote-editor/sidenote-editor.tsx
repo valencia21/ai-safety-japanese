@@ -38,7 +38,9 @@ export const SidenoteEditor: React.FC<SidenoteEditorProps> = ({
       // Ensure we're setting the sidenotes state correctly
       const fetchedSidenotes = data.sidenotes || {};
       setSidenotes(fetchedSidenotes);
-      setSidenoteContent(fetchedSidenotes[sidenoteId] || "");
+      if (sidenoteId !== null) {
+        setSidenoteContent(fetchedSidenotes[sidenoteId] || "");
+      }
     } catch (error) {
       console.error("Error fetching sidenote content:", error);
     }
@@ -48,7 +50,7 @@ export const SidenoteEditor: React.FC<SidenoteEditorProps> = ({
     // Update the sidenotes state with the new content
     const updatedSidenotes = {
       ...sidenotes,
-      [sidenoteId]: sidenoteContent,
+      [sidenoteId!]: sidenoteContent,
     };
 
     try {

@@ -57,8 +57,12 @@ export const SessionInformation: React.FC = () => {
           <div className="flex flex-col gap-y-2 items-start justify-start border-t border-gray-300 lg:border-none mt-6 lg:mt-0 lg:w-3/5 lg:pl-10 p-4">
             <div className="text-blue-800 mt-6 lg:mt-0">課題図書</div>
             <Accordion type="single" collapsible className="w-full">
-              {groupedReadings[session.session_number]?.requiredReadings.map(
-                (reading: ReadingOverview, index: number) => (
+              {groupedReadings[session.session_number]?.requiredReadings
+                .sort(
+                  (a: { order?: number }, b: { order?: number }) =>
+                    (a.order || 0) - (b.order || 0)
+                )
+                .map((reading: ReadingOverview, index: number) => (
                   <AccordionItem key={index} value={`required-${index}`}>
                     <div className="flex items-center justify-between w-full my-6 lg:my-2">
                       <Link
@@ -77,13 +81,16 @@ export const SessionInformation: React.FC = () => {
                       <FlashcardButton />
                     </AccordionContent>
                   </AccordionItem>
-                )
-              )}
+                ))}
             </Accordion>
             <div className="mt-6 text-blue-800">補足資料</div>
             <Accordion type="single" collapsible className="w-full">
-              {groupedReadings[session.session_number]?.recommendedReadings.map(
-                (reading: ReadingOverview, index: number) => (
+              {groupedReadings[session.session_number]?.recommendedReadings
+                .sort(
+                  (a: { order?: number }, b: { order?: number }) =>
+                    (a.order || 0) - (b.order || 0)
+                )
+                .map((reading: ReadingOverview, index: number) => (
                   <AccordionItem key={index} value={`recommended-${index}`}>
                     <div className="flex items-center justify-between w-full my-6 lg:my-2">
                       <Link
@@ -102,8 +109,7 @@ export const SessionInformation: React.FC = () => {
                       <FlashcardButton />
                     </AccordionContent>
                   </AccordionItem>
-                )
-              )}
+                ))}
             </Accordion>
           </div>
         </div>

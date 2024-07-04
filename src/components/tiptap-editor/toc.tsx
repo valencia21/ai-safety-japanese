@@ -1,5 +1,6 @@
 import { TextSelection } from "@tiptap/pm/state";
 
+// @ts-ignore
 export const ToCItem = ({ item, onItemClick }) => {
   return (
     <div
@@ -7,6 +8,7 @@ export const ToCItem = ({ item, onItemClick }) => {
         item.isScrolledOver ? "is-scrolled-over" : ""
       }`}
       style={{
+        // @ts-ignore
         "--level": item.level,
       }}
     >
@@ -29,11 +31,13 @@ export const ToCEmptyState = () => {
   );
 };
 
+// @ts-ignore
 export const ToC = ({ items = [], editor }) => {
   if (items.length === 0) {
     return <ToCEmptyState />;
   }
 
+  // @ts-ignore
   const onItemClick = (e, id) => {
     e.preventDefault();
 
@@ -51,8 +55,7 @@ export const ToC = ({ items = [], editor }) => {
       editor.view.focus();
 
       if (history.pushState) {
-        // eslint-disable-line
-        history.pushState(null, null, `#${id}`); // eslint-disable-line
+        history.pushState(null, "", `#${id}`);
       }
 
       window.scrollTo({
@@ -67,8 +70,10 @@ export const ToC = ({ items = [], editor }) => {
       {items.map((item, i) => (
         <ToCItem
           onItemClick={onItemClick}
+          // @ts-ignore
           key={item.id}
           item={item}
+          // @ts-ignore
           index={i + 1}
         />
       ))}

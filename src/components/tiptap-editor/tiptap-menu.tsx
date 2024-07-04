@@ -71,6 +71,91 @@ export const TiptapMenu: React.FC<TiptapMenuProps> = ({}) => {
         >
           paragraph
         </button>
+        {/* Text alignment buttons */}
+        <button
+          onClick={() => editor.chain().focus().setTextAlign("left").run()}
+          className={`${
+            editor.isActive({ textAlign: "left" }) ? "is-active" : ""
+          } bg-gray-300 px-2 py-1 rounded text-xs hover:bg-gray-200`}
+        >
+          left
+        </button>
+        <button
+          onClick={() => editor.chain().focus().setTextAlign("center").run()}
+          className={`${
+            editor.isActive({ textAlign: "center" }) ? "is-active" : ""
+          } bg-gray-300 px-2 py-1 rounded text-xs hover:bg-gray-200`}
+        >
+          center
+        </button>
+        <button
+          onClick={() => editor.chain().focus().setTextAlign("right").run()}
+          className={`${
+            editor.isActive({ textAlign: "right" }) ? "is-active" : ""
+          } bg-gray-300 px-2 py-1 rounded text-xs hover:bg-gray-200`}
+        >
+          right
+        </button>
+        {/* Image button */}
+        <button
+          onClick={() => editor.chain().focus().setImage({ src: "" }).run()}
+          className="bg-gray-300 px-2 py-1 rounded text-xs hover:bg-gray-200"
+        >
+          image
+        </button>
+        {/* Bullet list button */}
+        <button
+          onClick={() => editor.chain().focus().toggleBulletList().run()}
+          className="bg-gray-300 px-2 py-1 rounded text-xs hover:bg-gray-200"
+        >
+          bullet list
+        </button>
+        {/* Ordered list button */}
+        <button
+          onClick={() => editor.chain().focus().toggleOrderedList().run()}
+          className="bg-gray-300 px-2 py-1 rounded text-xs hover:bg-gray-200"
+        >
+          ordered list
+        </button>
+        {/* Link button */}
+        <button
+          onClick={() => {
+            const url = window.prompt("Enter URL:");
+            if (url) {
+              // Check if URL is not null or empty
+              editor
+                .chain()
+                .focus()
+                .extendMarkRange("link")
+                .setLink({ href: url, target: "_blank" })
+                .run();
+            }
+          }}
+          className="bg-gray-300 px-2 py-1 rounded text-xs hover:bg-gray-200"
+        >
+          link
+        </button>
+        {/* Caption button */}
+        <button
+          onClick={() => editor.chain().focus().toggleImageCaption().run()}
+          className="bg-gray-300 px-2 py-1 rounded text-xs hover:bg-gray-200"
+        >
+          caption
+        </button>
+        <button
+          onClick={() => editor.chain().focus().setDetails().run()}
+          disabled={!editor.can().setDetails()}
+          className="bg-gray-300 px-2 py-1 rounded text-xs hover:bg-gray-200"
+        >
+          Set details
+        </button>
+        <button
+          onClick={() => editor.chain().focus().unsetDetails().run()}
+          disabled={!editor.can().unsetDetails()}
+          className="bg-gray-300 px-2 py-1 rounded text-xs hover:bg-gray-200"
+        >
+          Unset details
+        </button>
         {/* Sidenote button */}
         <button
           onClick={() => editor.chain().focus().insertSidenote().run()}

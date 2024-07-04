@@ -5,38 +5,97 @@
 @tailwind components;
 @tailwind utilities;
 
+.tiptap a,
+.tiptap-link {
+  @apply text-red-700 hover:text-red-900 cursor-pointer no-underline hover:border-red-900;
+}
+
 body {
   font-family: "Sentient", sans-serif;
   margin: 100px;
 }
 
+.sidenote {
+  @apply text-sm pr-0.5 text-red-700;
+}
+
 .tiptap h1,
 .tiptap h2,
 .tiptap h3 {
-  @apply text-red-700;
+  @apply text-black;
 }
+
 .table-of-contents {
   @apply flex flex-col text-sm gap-4 overflow-auto no-underline;
 
   > div {
-    @apply rounded transition-all duration-200 ease-in-out;
+    @apply transition-all duration-200 ease-in-out;
     padding-left: calc(0.875rem * (var(--level) - 1));
   }
 
   .empty-state {
-    @apply text-gray-500 select-none;
+    @apply text-red-500 select-none;
   }
 
   .is-active a {
-    @apply text-gray-600;
+    @apply text-red-600;
   }
 
   .is-scrolled-over a {
-    @apply text-gray-500;
+    @apply text-black;
   }
 
   a {
-    @apply text-black flex gap-1
+    @apply text-gray-600 flex gap-1
  no-underline;
   }
+}
+
+/* Placeholder */
+.tiptap .is-empty::before {
+  @apply text-gray-400 content-[attr(data-placeholder)] float-left h-0 pointer-events-none select-none;
+}
+
+.tiptap .details {
+  @apply flex gap-1 my-6 bg-stone-300 text-black rounded p-2 items-start select-none;
+}
+
+.tiptap .details summary {
+  @apply font-bold list-none select-none;
+}
+
+.tiptap .details > button {
+  @apply flex items-center justify-center bg-transparent rounded p-0 text-[10px] w-5 h-5 mt-1;
+}
+
+.tiptap .details > button::before {
+  content: "\25B6";
+}
+
+.tiptap .details.is-open > button::before {
+  @apply rotate-90;
+}
+
+.tiptap .details > div {
+  @apply flex flex-col w-full;
+}
+
+.tiptap .details > div > [data-type="detailsContent"] > :last-child {
+  @apply mb-2;
+}
+
+.tiptap .details .details {
+  @apply my-0;
+}
+
+.tiptap img {
+  @apply rounded;
+}
+
+.tiptap .image-caption {
+  @apply text-2xl text-blue-600;
+}
+
+::selection {
+  @apply bg-red-700 text-white;
 }

@@ -1,17 +1,27 @@
-import React, { useState, useCallback } from "react";
-import { mergeAttributes, Node } from "@tiptap/core";
+import React, { useState } from "react";
+import { mergeAttributes, Node, Extension } from "@tiptap/core";
 import { EditorProvider } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { TiptapMenu } from "./tiptap-menu";
 import { saveContent } from "./tiptap-utils";
-import {
-  getHierarchicalIndexes,
-  TableOfContents,
-} from "@tiptap-pro/extension-table-of-contents";
+import { TableOfContents } from "@tiptap-pro/extension-table-of-contents";
+import FileHandler from "@tiptap-pro/extension-file-handler";
+import Image from "@tiptap/extension-image";
+import ImageResize from "tiptap-extension-resize-image";
+import Link from "@tiptap/extension-link";
+import Placeholder from "@tiptap/extension-placeholder";
+import Details from "@tiptap-pro/extension-details";
+import DetailsContent from "@tiptap-pro/extension-details-content";
+import DetailsSummary from "@tiptap-pro/extension-details-summary";
+import TextAlign from "@tiptap/extension-text-align";
+import TextStyle from "@tiptap/extension-text-style";
+import { Color } from "@tiptap/extension-color";
+
 import { ToC } from "./toc";
 import { SidenoteEditor } from "../sidenote-editor/sidenote-editor";
 
 interface TiptapEditorProps {
+  title: any;
   content: any;
   contentId?: string;
   editable?: () => boolean;
@@ -28,6 +38,9 @@ declare module "@tiptap/core" {
   interface Commands<ReturnType> {
     customNode: {
       insertSidenote: () => ReturnType;
+    };
+    imageCaption: {
+      toggleImageCaption: () => ReturnType;
     };
   }
 }
@@ -113,7 +126,31 @@ const SidenoteNode = Node.create<SidenoteOptions>({
   },
 });
 
+const ImageCaption = Extension.create({
+  name: "imageCaption",
+
+  addCommands() {
+    return {
+      toggleImageCaption:
+        () =>
+        ({ chain }) => {
+          console.log("toggleImageCaption");
+          return chain()
+            .toggleMark("textStyle", { color: "rgb(107 114 128)" })
+            .run();
+        },
+    };
+  },
+
+  addKeyboardShortcuts() {
+    return {
+      "Mod-Alt-c": () => this.editor.commands.toggleImageCaption(),
+    };
+  },
+});
+
 export const TiptapEditor: React.FC<TiptapEditorProps> = ({
+  title,
   content,
   contentId,
   editable = () => false,
@@ -130,20 +167,77 @@ export const TiptapEditor: React.FC<TiptapEditorProps> = ({
   const extensions = [
     StarterKit,
     SidenoteNode,
+    Color,
+    Image,
+    ImageResize,
+    ImageCaption,
+    TextStyle,
+    TextAlign.configure({
+      types: ["heading", "paragraph"],
+    }),
+    Details.configure({
+      persist: true,
+      HTMLAttributes: {
+        class: "details",
+      },
+    }),
+    DetailsSummary,
+    DetailsContent,
+    Placeholder.configure({
+      includeChildren: true,
+      placeholder: ({ node }) => {
+        if (node.type.name === "detailsSummary") {
+          return "Summary";
+        }
+
+        return ""; // Return an empty string instead of null
+      },
+    }),
+    Link.configure({
+      openOnClick: false,
+      autolink: true,
+      HTMLAttributes: {
+        class: "tiptap-link",
+      },
+    }),
     TableOfContents.configure({
-      levels: ["h1", "h2", "h3"],
       onUpdate: (items) => {
+        // @ts-ignore
         setTocItems(items);
+      },
+    }),
+    FileHandler.configure({
+      allowedMimeTypes: ["image/png", "image/jpeg", "image/gif", "image/webp"],
+      onDrop: (currentEditor, files, pos) => {
+        files.forEach((file) => {
+          const fileReader = new FileReader();
+
+          fileReader.readAsDataURL(file);
+          fileReader.onload = () => {
+            currentEditor
+              .chain()
+              .insertContentAt(pos, {
+                type: "image",
+                attrs: {
+                  src: fileReader.result,
+                },
+              })
+              .focus()
+              .run();
+          };
+        });
       },
     }),
   ];
 
+  // @ts-ignore
   const getSidenoteYCoordinatesWithPos = (editor) => {
     const sidenotes: Array<{ id: number; pos: number; yCoordinate: number }> =
       [];
     const { doc } = editor.state;
 
-    doc.descendants((node, pos) => {
+    // @ts-ignore
+    doc.descendants((node, pos: number) => {
       if (node.type.name === "sidenote") {
         const coords = editor.view.coordsAtPos(pos);
         sidenotes.push({
@@ -157,6 +251,7 @@ export const TiptapEditor: React.FC<TiptapEditorProps> = ({
     return sidenotes;
   };
 
+  // @ts-ignore
   const handleInsertSidenote = (editor) => {
     editor.chain().focus().insertSidenote().run();
   };
@@ -164,7 +259,10 @@ export const TiptapEditor: React.FC<TiptapEditorProps> = ({
   return (
     <>
       <div className="flex flex-row">
-        <div className="flex flex-col w-1/4 table-of-contents ml-10">
+        <div className="flex flex-col w-1/4 table-of-contents mx-10 sticky top-16 max-h-[50vh] overflow-visible">
+          <div className="font-bold pb-2 border-b border-gray-700 rounded-none">
+            {title}
+          </div>
           <ToC items={tocItems} editor={editor} />
         </div>
         <div className="flex flex-col w-3/4">
@@ -177,6 +275,7 @@ export const TiptapEditor: React.FC<TiptapEditorProps> = ({
                 class:
                   "prose dark:prose-invert prose-sm sm:prose-sm lg:prose-sm xl:prose-base focus:outline-none max-w-4xl",
               },
+              // @ts-ignore
               handleClickOn: (view, pos, node) => {
                 if (node.type.name === "sidenote") {
                   setCurrentSidenoteId(node.attrs.id);
@@ -188,11 +287,13 @@ export const TiptapEditor: React.FC<TiptapEditorProps> = ({
             slotBefore={
               editable() ? (
                 <TiptapMenu
+                  // @ts-ignore
                   onInsertSidenote={(editor) => handleInsertSidenote(editor)}
                 />
               ) : null
             }
             onCreate={({ editor }) => {
+              // @ts-ignore
               setEditor(editor);
               setTimeout(() => {
                 const newPositions = getSidenoteYCoordinatesWithPos(editor);
@@ -204,7 +305,10 @@ export const TiptapEditor: React.FC<TiptapEditorProps> = ({
                 saveContent(contentId, editor.getJSON());
               }
             }}
-          />
+          >
+            {/* If no children are required, provide an empty fragment */}
+            <></>
+          </EditorProvider>
         </div>
         {isSidenoteEditorOpen && (
           <SidenoteEditor

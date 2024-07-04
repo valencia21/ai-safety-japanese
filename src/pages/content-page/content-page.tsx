@@ -3,7 +3,6 @@ import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { TiptapEditor } from "../../components/tiptap-editor/tiptap-editor";
 import { supabase } from "../../supabase-client";
-import { LinkToOriginalButton } from "../../components/button/link-to-original-button";
 import { LockKey, LockKeyOpen } from "@phosphor-icons/react";
 import { Loading } from "@lemonsqueezy/wedges";
 import { Sidenotes } from "@/components/sidenotes/sidenotes";
@@ -11,12 +10,15 @@ import { Sidenotes } from "@/components/sidenotes/sidenotes";
 interface Reading {
   id: number;
   title: string;
+  original_title: string;
   time_to_read: string;
   author: string;
   link_to_original: string;
   image: string;
   content: string;
   sidenotes: any;
+  translator: string;
+  proofreader: string;
 }
 
 const ContentPage: React.FC = ({}) => {
@@ -45,7 +47,7 @@ const ContentPage: React.FC = ({}) => {
         const rect = editorRef.current.getBoundingClientRect();
         setEditorTopPosition(rect.top);
       }
-    }, 1000); // 100ms delay
+    }, 1000);
 
     return () => clearTimeout(timer);
   }, []);
@@ -98,24 +100,31 @@ const ContentPage: React.FC = ({}) => {
         )}
       </div>
       */}
-      <div className="bg-red-100 w-full py-16 mb-16">
-        <div className="flex flex-col ml-[22%] justify-end">
+      <div className="bg-red-100 w-full pt-12 pb-10 mb-16">
+        <div className="flex flex-col ml-[24%] justify-end">
+          <div className="mb-6">
+            <a
+              href={reading.link_to_original}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-red-700 hover:text-red-500"
+            >
+              {reading.original_title}
+            </a>
+          </div>
           <h1 className="max-w-3xl justify-left text-4xl font-bold mb-2 w-full text-black">
             {reading.title}
           </h1>
           <div className="max-w-3xl flex flex-row justify-left w-full">
-            <div className="flex flex-row gap-x-4 items-center gap-y-2">
-              <div className="text-red-700 text-sm max-w-1/2 md:w-auto">
+            <div className="flex flex-row gap-x-4 items-center gap-y-2 text-gray-700">
+              <div className="text-base max-w-1/2 md:w-auto">
                 <p className="">{reading.author}</p>
               </div>
-              <div className="text-red-700 text-sm">
+              <div className="text-sm">
                 <p className="">{reading.time_to_read}</p>
               </div>
               <div className="flex flex-row gap-x-4">
-                <div className="">
-                  <LinkToOriginalButton href={reading.link_to_original} />
-                </div>
-                <div className="text-gray-900 flex flex-row items-center hidden lg:flex">
+                <div className="flex flex-row items-center hidden">
                   {isEditable ? (
                     <LockKeyOpen size="18px" onClick={handleLockClick} />
                   ) : (
@@ -125,18 +134,27 @@ const ContentPage: React.FC = ({}) => {
               </div>
             </div>
           </div>
+          <div className="mt-4 text-xs">
+            Translated by{" "}
+            <span className="font-bold">{reading.translator}</span>
+          </div>
+          <div className="mt-0.5 mb-2 text-xs">
+            Proofread by{" "}
+            <span className="font-bold">{reading.proofreader}</span>
+          </div>
         </div>
       </div>
-      <div className="contentcontainer flex flex-row justify-between items-start w-full">
+      <div className="contentcontainer flex flex-row justify-between items-start w-full mb-24">
         <div ref={editorRef} className="w-4/5">
           <TiptapEditor
+            title={reading.title}
             content={reading.content}
             contentId={contentId}
             editable={() => isEditable}
             onSidenotePositionsChange={handleSidenotePositionsChange}
           />
         </div>
-        <div className="ml-6 w-1/5">
+        <div className="ml-12 w-1/5">
           {sidenotePositions && (
             <Sidenotes
               editorTopPosition={editorTopPosition}
