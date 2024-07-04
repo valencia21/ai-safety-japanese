@@ -104,11 +104,11 @@ const ContentPage: React.FC = ({}) => {
         <div className="container mx-auto flex-col">
           <div className="flex">
             {/* This div represents the 4/5 of the full width */}
-            <div className="w-4/5 flex">
+            <div className="w-full sm:w-4/5 flex">
               {/* This div represents 1/4 of the 4/5 section (empty space) */}
-              <div className="w-1/4"></div>
+              <div className="hidden sm:flex sm:w-1/4"></div>
               {/* This div contains your content, taking up 3/4 of the 4/5 section */}
-              <div className="w-3/4 ml-16">
+              <div className="w-full sm:w-3/4 ml-10 sm:ml-16">
                 <div className="mb-6">
                   <a
                     href={reading.link_to_original}
@@ -155,7 +155,7 @@ const ContentPage: React.FC = ({}) => {
         </div>
       </div>
       <div className="container flex flex-row justify-between items-start w-full mb-24">
-        <div ref={editorRef} className="w-4/5">
+        <div ref={editorRef} className="w-full mx-8 sm:w-4/5">
           <TiptapEditor
             title={reading.title}
             content={reading.content}
@@ -164,7 +164,7 @@ const ContentPage: React.FC = ({}) => {
             onSidenotePositionsChange={handleSidenotePositionsChange}
           />
         </div>
-        <div className="ml-12 w-1/5">
+        <div className="ml-12 hidden sm:flex sm:w-1/5">
           {sidenotePositions && (
             <Sidenotes
               editorTopPosition={editorTopPosition}

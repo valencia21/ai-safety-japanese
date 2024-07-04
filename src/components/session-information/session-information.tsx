@@ -41,7 +41,7 @@ export const SessionInformation: React.FC = () => {
   const groupedReadings = groupReadingsBySession(readings);
 
   return (
-    <div className="flex flex-col max-w-full lg:max-w-6xl mt-6 lg:mt-12">
+    <div className="flex flex-col max-w-full mx-6 lg:max-w-6xl mt-6 lg:mt-12">
       {sessions.map((session) => (
         <div key={session.id} className="flex flex-col lg:flex-row mb-20">
           <div className="lg:w-2/5 p-4">
