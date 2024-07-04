@@ -88,7 +88,7 @@ const ContentPage: React.FC = ({}) => {
   };
 
   return (
-    <div className="container flex flex-col items-center">
+    <div className="w-full flex flex-col items-center">
       {/*
       <div className="flex flex-col items-center sm:max-w-3xl w-screen">
         {reading.image && (
@@ -101,50 +101,60 @@ const ContentPage: React.FC = ({}) => {
       </div>
       */}
       <div className="bg-red-100 w-full pt-12 pb-10 mb-16">
-        <div className="flex flex-col ml-[24%] justify-end">
-          <div className="mb-6">
-            <a
-              href={reading.link_to_original}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-red-700 hover:text-red-500"
-            >
-              {reading.original_title}
-            </a>
-          </div>
-          <h1 className="max-w-3xl justify-left text-4xl font-bold mb-2 w-full text-black">
-            {reading.title}
-          </h1>
-          <div className="max-w-3xl flex flex-row justify-left w-full">
-            <div className="flex flex-row gap-x-4 items-center gap-y-2 text-gray-700">
-              <div className="text-base max-w-1/2 md:w-auto">
-                <p className="">{reading.author}</p>
-              </div>
-              <div className="text-sm">
-                <p className="">{reading.time_to_read}</p>
-              </div>
-              <div className="flex flex-row gap-x-4">
-                <div className="flex flex-row items-center hidden">
-                  {isEditable ? (
-                    <LockKeyOpen size="18px" onClick={handleLockClick} />
-                  ) : (
-                    <LockKey size="18px" onClick={handleLockClick} />
-                  )}
+        <div className="container mx-auto flex-col">
+          <div className="flex">
+            {/* This div represents the 4/5 of the full width */}
+            <div className="w-4/5 flex">
+              {/* This div represents 1/4 of the 4/5 section (empty space) */}
+              <div className="w-1/4"></div>
+              {/* This div contains your content, taking up 3/4 of the 4/5 section */}
+              <div className="w-3/4 ml-16">
+                <div className="mb-6">
+                  <a
+                    href={reading.link_to_original}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-red-700 hover:text-red-500"
+                  >
+                    {reading.original_title}
+                  </a>
+                </div>
+                <h1 className="max-w-3xl justify-left text-4xl font-bold mb-2 w-full text-black">
+                  {reading.title}
+                </h1>
+                <div className="max-w-3xl flex flex-row justify-left w-full">
+                  <div className="flex flex-row gap-x-4 items-center gap-y-2 text-gray-700">
+                    <div className="text-base max-w-1/2 md:w-auto">
+                      <p className="">{reading.author}</p>
+                    </div>
+                    <div className="text-sm">
+                      <p className="">{reading.time_to_read}</p>
+                    </div>
+                    <div className="flex flex-row gap-x-4">
+                      <div className="flex flex-row items-center hidden">
+                        {isEditable ? (
+                          <LockKeyOpen size="18px" onClick={handleLockClick} />
+                        ) : (
+                          <LockKey size="18px" onClick={handleLockClick} />
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="mt-4 text-xs">
+                  Translated by{" "}
+                  <span className="font-bold">{reading.translator}</span>
+                </div>
+                <div className="mt-0.5 mb-2 text-xs">
+                  Proofread by{" "}
+                  <span className="font-bold">{reading.proofreader}</span>
                 </div>
               </div>
             </div>
           </div>
-          <div className="mt-4 text-xs">
-            Translated by{" "}
-            <span className="font-bold">{reading.translator}</span>
-          </div>
-          <div className="mt-0.5 mb-2 text-xs">
-            Proofread by{" "}
-            <span className="font-bold">{reading.proofreader}</span>
-          </div>
         </div>
       </div>
-      <div className="contentcontainer flex flex-row justify-between items-start w-full mb-24">
+      <div className="container flex flex-row justify-between items-start w-full mb-24">
         <div ref={editorRef} className="w-4/5">
           <TiptapEditor
             title={reading.title}
