@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Simple mark styles without any hover effects */
+.ProseMirror mark {
+  border-radius: 0.25rem;
+  padding: 0.125rem 0.25rem;
+  margin: 0 0.125rem;
+}
+
+/* Default yellow if no color specified */
+.ProseMirror mark:not([style*="background-color"]) {
+  background-color: #fef08a;
+}

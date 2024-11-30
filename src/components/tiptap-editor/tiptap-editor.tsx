@@ -5,7 +5,6 @@ import StarterKit from "@tiptap/starter-kit";
 import { TiptapMenu } from "./tiptap-menu";
 import { saveContent } from "./tiptap-utils";
 import { TableOfContents } from "@tiptap-pro/extension-table-of-contents";
-import FileHandler from "@tiptap-pro/extension-file-handler";
 import Image from "@tiptap/extension-image";
 import ImageResize from "tiptap-extension-resize-image";
 import Link from "@tiptap/extension-link";
@@ -16,6 +15,7 @@ import DetailsSummary from "@tiptap-pro/extension-details-summary";
 import TextAlign from "@tiptap/extension-text-align";
 import TextStyle from "@tiptap/extension-text-style";
 import { Color } from "@tiptap/extension-color";
+import Highlight from '@tiptap/extension-highlight'
 
 import { ToC } from "./toc";
 import { SidenoteEditor } from "../sidenote-editor/sidenote-editor";
@@ -168,7 +168,11 @@ export const TiptapEditor: React.FC<TiptapEditorProps> = ({
     StarterKit,
     SidenoteNode,
     Color,
-    Image,
+    Image.configure({
+      HTMLAttributes: {
+        class: 'max-w-full h-auto',
+      },
+    }),
     ImageResize,
     ImageCaption,
     TextStyle,
@@ -206,26 +210,10 @@ export const TiptapEditor: React.FC<TiptapEditorProps> = ({
         setTocItems(items);
       },
     }),
-    FileHandler.configure({
-      allowedMimeTypes: ["image/png", "image/jpeg", "image/gif", "image/webp"],
-      onDrop: (currentEditor, files, pos) => {
-        files.forEach((file) => {
-          const fileReader = new FileReader();
-
-          fileReader.readAsDataURL(file);
-          fileReader.onload = () => {
-            currentEditor
-              .chain()
-              .insertContentAt(pos, {
-                type: "image",
-                attrs: {
-                  src: fileReader.result,
-                },
-              })
-              .focus()
-              .run();
-          };
-        });
+    Highlight.configure({
+      multicolor: true,
+      HTMLAttributes: {
+        class: 'highlight',
       },
     }),
   ];
@@ -266,49 +254,51 @@ export const TiptapEditor: React.FC<TiptapEditorProps> = ({
           <ToC items={tocItems} editor={editor} />
         </div>
         <div className="flex flex-col w-full sm:w-3/4">
-          <EditorProvider
-            key={key}
-            extensions={extensions}
-            editorProps={{
-              editable,
-              attributes: {
-                class:
-                  "prose dark:prose-invert prose-sm sm:prose-sm lg:prose-sm xl:prose-base focus:outline-none max-w-4xl",
-              },
-              // @ts-ignore
-              handleClickOn: (view, pos, node) => {
-                if (node.type.name === "sidenote") {
-                  setCurrentSidenoteId(node.attrs.id);
-                  setIsSidenoteEditorOpen(true);
-                }
-              },
-            }}
-            content={content || ""}
-            slotBefore={
-              editable() ? (
-                <TiptapMenu
-                  // @ts-ignore
-                  onInsertSidenote={(editor) => handleInsertSidenote(editor)}
-                />
-              ) : null
-            }
-            onCreate={({ editor }) => {
-              // @ts-ignore
-              setEditor(editor);
-              setTimeout(() => {
-                const newPositions = getSidenoteYCoordinatesWithPos(editor);
-                onSidenotePositionsChange(newPositions);
-              }, 1000);
-            }}
-            onUpdate={({ editor }) => {
-              if (contentId) {
-                saveContent(contentId, editor.getJSON());
+          <div className="relative">
+            <EditorProvider
+              key={key}
+              extensions={extensions}
+              editorProps={{
+                editable,
+                attributes: {
+                  class:
+                    "prose dark:prose-invert prose-sm sm:prose-sm lg:prose-sm xl:prose-base focus:outline-none max-w-4xl mt-4",
+                },
+                // @ts-ignore
+                handleClickOn: (view, pos, node) => {
+                  if (node.type.name === "sidenote") {
+                    setCurrentSidenoteId(node.attrs.id);
+                    setIsSidenoteEditorOpen(true);
+                  }
+                },
+              }}
+              content={content || ""}
+              slotBefore={
+                editable() ? (
+                  <TiptapMenu
+                    // @ts-ignore
+                    onInsertSidenote={(editor) => handleInsertSidenote(editor)}
+                  />
+                ) : null
               }
-            }}
-          >
-            {/* If no children are required, provide an empty fragment */}
-            <></>
-          </EditorProvider>
+              onCreate={({ editor }) => {
+                // @ts-ignore
+                setEditor(editor);
+                setTimeout(() => {
+                  const newPositions = getSidenoteYCoordinatesWithPos(editor);
+                  onSidenotePositionsChange(newPositions);
+                }, 1000);
+              }}
+              onUpdate={({ editor }) => {
+                if (contentId) {
+                  saveContent(contentId, editor.getJSON());
+                }
+              }}
+            >
+              {/* If no children are required, provide an empty fragment */}
+              <></>
+            </EditorProvider>
+          </div>
         </div>
         {isSidenoteEditorOpen && (
           <SidenoteEditor

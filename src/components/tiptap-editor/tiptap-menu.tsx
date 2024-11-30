@@ -3,6 +3,15 @@ import { useCurrentEditor } from "@tiptap/react";
 
 interface TiptapMenuProps {}
 
+const HIGHLIGHT_COLORS = [
+  { name: 'yellow', color: '#fef08a' },
+  { name: 'green', color: '#bbf7d0' },
+  { name: 'blue', color: '#bfdbfe' },
+  { name: 'pink', color: '#fbcfe8' },
+  { name: 'purple', color: '#e9d5ff' },
+  { name: 'grey', color: '#e5e7eb' },
+];
+
 export const TiptapMenu: React.FC<TiptapMenuProps> = ({}) => {
   const { editor } = useCurrentEditor();
 
@@ -11,9 +20,8 @@ export const TiptapMenu: React.FC<TiptapMenuProps> = ({}) => {
   }
 
   return (
-    <>
-      <div className="mb-4 flex flex-row gap-x-2">
-        {/* Add your menu buttons here */}
+    <div className="sticky top-0 z-50 bg-white dark:bg-gray-900 py-2 border-b border-gray-200 dark:border-gray-700">
+      <div className="flex flex-wrap gap-2">
         <button
           onClick={() => editor.chain().focus().toggleBold().run()}
           disabled={!editor.can().chain().focus().toggleBold().run()}
@@ -32,7 +40,52 @@ export const TiptapMenu: React.FC<TiptapMenuProps> = ({}) => {
         >
           italic
         </button>
-        {/* Add more buttons as needed */}
+        <div className="relative inline-block">
+          <button
+            onClick={() => editor.chain().focus().toggleHighlight().run()}
+            onMouseEnter={(e) => {
+              const dropdown = e.currentTarget.nextElementSibling;
+              if (dropdown) dropdown.classList.remove('hidden');
+            }}
+            className={`${
+              editor.isActive('highlight') ? "is-active" : ""
+            } bg-gray-300 px-2 py-1 rounded text-xs hover:bg-gray-200 inline-flex items-center`}
+          >
+            highlight
+            <svg className="w-2 h-2 ml-1" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+            </svg>
+          </button>
+          <div 
+            className="hidden absolute z-50 mt-1 bg-white dark:bg-gray-800 rounded shadow-lg p-1"
+            onMouseLeave={(e) => e.currentTarget.classList.add('hidden')}
+          >
+            {HIGHLIGHT_COLORS.map(({ name, color }) => (
+              <button
+                key={name}
+                onClick={() => editor.chain().focus().toggleHighlight({ color }).run()}
+                className={`${
+                  editor.isActive('highlight', { color }) ? "is-active" : ""
+                } block w-full text-left px-2 py-1 text-xs hover:bg-gray-100 dark:hover:bg-gray-700 rounded`}
+              >
+                <div className="flex items-center">
+                  <div 
+                    className="w-4 h-4 mr-2 rounded" 
+                    style={{ backgroundColor: color }}
+                  />
+                  {name}
+                </div>
+              </button>
+            ))}
+            <div className="border-t border-gray-200 dark:border-gray-600 my-1" />
+            <button
+              onClick={() => editor.chain().focus().unsetHighlight().run()}
+              className="block w-full text-left px-2 py-1 text-xs hover:bg-gray-100 dark:hover:bg-gray-700 rounded"
+            >
+              clear highlight
+            </button>
+          </div>
+        </div>
         {/* Heading buttons */}
         {["h1", "h2", "h3"].map((heading) => (
           <button
@@ -98,7 +151,12 @@ export const TiptapMenu: React.FC<TiptapMenuProps> = ({}) => {
         </button>
         {/* Image button */}
         <button
-          onClick={() => editor.chain().focus().setImage({ src: "" }).run()}
+          onClick={() => {
+            const url = window.prompt('Enter image URL:');
+            if (url) {
+              editor.chain().focus().setImage({ src: url }).run();
+            }
+          }}
           className="bg-gray-300 px-2 py-1 rounded text-xs hover:bg-gray-200"
         >
           image
@@ -164,6 +222,6 @@ export const TiptapMenu: React.FC<TiptapMenuProps> = ({}) => {
           Insert Sidenote
         </button>
       </div>
-    </>
+    </div>
   );
 };

@@ -1,14 +1,30 @@
 import { supabase } from "../supabase-client";
 
 export const fetchReadings = async () => {
-  console.log("fetchReadings");
-  const { data, error } = await supabase.from("reading_overview").select("*");
-  if (error) {
-    console.error("Error fetching readings:", error);
-    throw error;
+  console.log("Attempting to fetch readings...");
+  try {
+    const { data, error } = await supabase
+      .from("reading_overview")
+      .select("*")
+      .throwOnError();
+
+    if (error) {
+      console.error("Supabase error:", error);
+      throw error;
+    }
+
+    console.log("Successfully fetched readings:", data);
+    return data;
+  } catch (err: any) {
+    console.error("Detailed error:", {
+      name: err?.name,
+      message: err?.message,
+      details: err?.details,
+      hint: err?.hint,
+      code: err?.code
+    });
+    throw err;
   }
-  console.log("data", data);
-  return data;
 };
 
 export const fetchSessions = async () => {

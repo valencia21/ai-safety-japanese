@@ -131,7 +131,7 @@ const ContentPage: React.FC = ({}) => {
                       <p className="">{reading.time_to_read}</p>
                     </div>
                     <div className="flex flex-row gap-x-4">
-                      <div className="flex flex-row items-center hidden">
+                      <div className="flex flex-row items-center">
                         {isEditable ? (
                           <LockKeyOpen size="18px" onClick={handleLockClick} />
                         ) : (
@@ -155,14 +155,18 @@ const ContentPage: React.FC = ({}) => {
         </div>
       </div>
       <div className="container flex flex-row justify-between items-start w-full mb-24">
-        <div ref={editorRef} className="w-full mx-8 sm:w-4/5">
-          <TiptapEditor
-            title={reading.title}
-            content={reading.content}
-            contentId={contentId}
-            editable={() => isEditable}
-            onSidenotePositionsChange={handleSidenotePositionsChange}
-          />
+        <div className="w-full mx-8 sm:w-4/5">
+          <div className="relative">
+            <div ref={editorRef} className="w-full">
+              <TiptapEditor
+                title={reading.title}
+                content={reading.content}
+                contentId={contentId}
+                editable={() => isEditable}
+                onSidenotePositionsChange={handleSidenotePositionsChange}
+              />
+            </div>
+          </div>
         </div>
         <div className="ml-12 hidden sm:flex sm:w-1/5">
           {sidenotePositions && (
