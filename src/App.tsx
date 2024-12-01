@@ -1,7 +1,6 @@
 import "./App.css";
 import { Navbar } from "@/components/navbar/navbar";
 import { AppRoutes } from "./routes/routes";
-import { SidenoteEditorPage } from "./pages/sidenote-editor-page/sidenote-editor-page";
 
 function App() {
   return (
