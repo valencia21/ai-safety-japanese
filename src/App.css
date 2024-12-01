@@ -5,9 +5,18 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Add this new global style for links */
+a {
+  @apply no-underline;
+}
+
+.prose a {
+  @apply no-underline;
+}
+
 .tiptap a,
 .tiptap-link {
-  @apply text-red-700 hover:text-red-900 cursor-pointer no-underline hover:border-red-900;
+  @apply text-red-700 hover:text-red-500 cursor-pointer no-underline hover:border-red-900;
 }
 
 body {

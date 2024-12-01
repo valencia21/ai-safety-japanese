@@ -1,5 +1,7 @@
 // src/components/MenuBar.tsx
 import { useCurrentEditor } from "@tiptap/react";
+import { Link } from "@phosphor-icons/react"
+import { useCallback, useState } from "react";
 
 interface TiptapMenuProps {}
 
@@ -14,10 +16,27 @@ const HIGHLIGHT_COLORS = [
 
 export const TiptapMenu: React.FC<TiptapMenuProps> = ({}) => {
   const { editor } = useCurrentEditor();
+  const [showHighlightColors, setShowHighlightColors] = useState(false);
 
   if (!editor) {
     return null;
   }
+
+  const setLink = useCallback(() => {
+    const previousUrl = editor.getAttributes('link').href
+    const url = window.prompt('URL', previousUrl)
+
+    if (url === null) {
+      return
+    }
+
+    if (url === '') {
+      editor.chain().focus().extendMarkRange('link').unsetLink().run()
+      return
+    }
+
+    editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run()
+  }, [editor])
 
   return (
     <div className="sticky top-0 z-50 bg-white dark:bg-gray-900 py-2 border-b border-gray-200 dark:border-gray-700">
@@ -42,11 +61,7 @@ export const TiptapMenu: React.FC<TiptapMenuProps> = ({}) => {
         </button>
         <div className="relative inline-block">
           <button
-            onClick={() => editor.chain().focus().toggleHighlight().run()}
-            onMouseEnter={(e) => {
-              const dropdown = e.currentTarget.nextElementSibling;
-              if (dropdown) dropdown.classList.remove('hidden');
-            }}
+            onClick={() => setShowHighlightColors(!showHighlightColors)}
             className={`${
               editor.isActive('highlight') ? "is-active" : ""
             } bg-gray-300 px-2 py-1 rounded text-xs hover:bg-gray-200 inline-flex items-center`}
@@ -57,8 +72,7 @@ export const TiptapMenu: React.FC<TiptapMenuProps> = ({}) => {
             </svg>
           </button>
           <div 
-            className="hidden absolute z-50 mt-1 bg-white dark:bg-gray-800 rounded shadow-lg p-1"
-            onMouseLeave={(e) => e.currentTarget.classList.add('hidden')}
+            className={`${showHighlightColors ? '' : 'hidden'} absolute z-50 mt-1 bg-white dark:bg-gray-800 rounded shadow-lg p-1`}
           >
             {HIGHLIGHT_COLORS.map(({ name, color }) => (
               <button
@@ -177,21 +191,12 @@ export const TiptapMenu: React.FC<TiptapMenuProps> = ({}) => {
         </button>
         {/* Link button */}
         <button
-          onClick={() => {
-            const url = window.prompt("Enter URL:");
-            if (url) {
-              // Check if URL is not null or empty
-              editor
-                .chain()
-                .focus()
-                .extendMarkRange("link")
-                .setLink({ href: url, target: "_blank" })
-                .run();
-            }
-          }}
-          className="bg-gray-300 px-2 py-1 rounded text-xs hover:bg-gray-200"
+          onClick={setLink}
+          className={`bg-gray-300 px-2 py-1 rounded text-xs hover:bg-gray-200 ${
+            editor.isActive('link') ? 'is-active' : ''
+          }`}
         >
-          link
+          <Link size={18} />
         </button>
         {/* Caption button */}
         <button

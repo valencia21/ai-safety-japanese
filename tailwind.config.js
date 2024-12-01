@@ -45,6 +45,18 @@ export default {
       fontFamily: {
         sentient: ["Sentient", "sans-serif"],
       },
+      typography: {
+        DEFAULT: {
+          css: {
+            a: {
+              textDecoration: 'none',
+              '&:hover': {
+                textDecoration: 'none',
+              },
+            },
+          },
+        },
+      },
     },
   },
   plugins: [

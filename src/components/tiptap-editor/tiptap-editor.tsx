@@ -198,22 +198,20 @@ export const TiptapEditor: React.FC<TiptapEditorProps> = ({
       },
     }),
     Link.configure({
-      openOnClick: false,
-      autolink: true,
+      openOnClick: true,
       HTMLAttributes: {
-        class: "tiptap-link",
+        class: 'text-red-700 hover:text-red-500',
+      },
+    }),
+    Highlight.configure({
+      HTMLAttributes: {
+        class: 'bg-yellow-200',
       },
     }),
     TableOfContents.configure({
       onUpdate: (items) => {
         // @ts-ignore
         setTocItems(items);
-      },
-    }),
-    Highlight.configure({
-      multicolor: true,
-      HTMLAttributes: {
-        class: 'highlight',
       },
     }),
   ];

@@ -18,6 +18,8 @@ export const SidenoteEditor: React.FC<SidenoteEditorProps> = ({
 }) => {
   const [sidenotes, setSidenotes] = useState<any>({});
   const [sidenoteContent, setSidenoteContent] = useState("");
+  const [selectionStart, setSelectionStart] = useState(0);
+  const [selectionEnd, setSelectionEnd] = useState(0);
 
   useEffect(() => {
     if (isOpen && contentId && sidenoteId !== null) {
@@ -35,7 +37,6 @@ export const SidenoteEditor: React.FC<SidenoteEditorProps> = ({
 
       if (error) throw error;
 
-      // Ensure we're setting the sidenotes state correctly
       const fetchedSidenotes = data.sidenotes || {};
       setSidenotes(fetchedSidenotes);
       if (sidenoteId !== null) {
@@ -47,7 +48,6 @@ export const SidenoteEditor: React.FC<SidenoteEditorProps> = ({
   };
 
   const handleSaveSidenote = async () => {
-    // Update the sidenotes state with the new content
     const updatedSidenotes = {
       ...sidenotes,
       [sidenoteId!]: sidenoteContent,
@@ -66,8 +66,26 @@ export const SidenoteEditor: React.FC<SidenoteEditorProps> = ({
       onClose();
     } catch (error) {
       console.error("Error saving sidenote:", error);
-      // Handle error (e.g., show an error message to the user)
     }
+  };
+
+  const handleAddLink = () => {
+    const textarea = document.querySelector('textarea') as HTMLTextAreaElement;
+    if (!textarea) return;
+
+    const selectedText = sidenoteContent.substring(textarea.selectionStart, textarea.selectionEnd);
+    
+    const url = window.prompt('Enter URL:');
+    if (!url) return;
+
+    const link = `<a href="${url}" target="_blank" rel="noopener noreferrer" class="text-red-700 hover:text-red-500">${selectedText}</a>`;
+
+    const newContent = 
+      sidenoteContent.substring(0, textarea.selectionStart) +
+      link +
+      sidenoteContent.substring(textarea.selectionEnd);
+
+    setSidenoteContent(newContent);
   };
 
   if (!isOpen) return null;
@@ -84,9 +102,22 @@ export const SidenoteEditor: React.FC<SidenoteEditorProps> = ({
             <X size={24} />
           </button>
         </div>
+        <div className="mb-2">
+          <button
+            onClick={handleAddLink}
+            className="bg-gray-300 px-2 py-1 rounded text-xs hover:bg-gray-200 mr-2"
+          >
+            Add Link
+          </button>
+        </div>
         <textarea
           value={sidenoteContent}
           onChange={(e) => setSidenoteContent(e.target.value)}
+          onSelect={(e) => {
+            const target = e.target as HTMLTextAreaElement;
+            setSelectionStart(target.selectionStart);
+            setSelectionEnd(target.selectionEnd);
+          }}
           className="w-full h-40 p-2 border rounded"
         />
         <div className="mt-4 flex justify-end">
