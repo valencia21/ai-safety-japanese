@@ -18,8 +18,6 @@ export const SidenoteEditor: React.FC<SidenoteEditorProps> = ({
 }) => {
   const [sidenotes, setSidenotes] = useState<any>({});
   const [sidenoteContent, setSidenoteContent] = useState("");
-  const [selectionStart, setSelectionStart] = useState(0);
-  const [selectionEnd, setSelectionEnd] = useState(0);
 
   useEffect(() => {
     if (isOpen && contentId && sidenoteId !== null) {
@@ -113,11 +111,6 @@ export const SidenoteEditor: React.FC<SidenoteEditorProps> = ({
         <textarea
           value={sidenoteContent}
           onChange={(e) => setSidenoteContent(e.target.value)}
-          onSelect={(e) => {
-            const target = e.target as HTMLTextAreaElement;
-            setSelectionStart(target.selectionStart);
-            setSelectionEnd(target.selectionEnd);
-          }}
           className="w-full h-40 p-2 border rounded"
         />
         <div className="mt-4 flex justify-end">
