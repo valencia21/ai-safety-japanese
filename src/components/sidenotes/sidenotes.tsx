@@ -121,7 +121,13 @@ export const Sidenotes: React.FC<SidenotesProps> = ({
 
         const initialTop = Math.max(0, yCoordinate - editorTopPosition);
         const isExpanded = expandedNotes[key];
-        const showMoreButton = (sidenotes[key].length > 100);
+        
+        // Create a temporary div to get actual text length
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = sidenotes[key];
+        const textLength = tempDiv.textContent?.length || 0;
+        
+        const showMoreButton = textLength > 100;
         const displayContent = isExpanded 
           ? sidenotes[key] 
           : truncateHtml(sidenotes[key], 100);
@@ -129,24 +135,24 @@ export const Sidenotes: React.FC<SidenotesProps> = ({
         return (
           <div
             key={key}
-            className="absolute left-0 right-0 flex flex-row gap-x-2 py-4 pr-4 border border-y-red-700 border-x-0"
+            className="absolute left-0 right-0 flex flex-row gap-x-2 py-4 pr-4 border-y border-stone-700 p-4"
             style={{
               top: `${initialTop}px`,
             }}
           >
-            <div className="flex items-top justify-center text-xs text-red-700">
+            <div className="flex items-top justify-center text-xs font-bold text-stone-700">
               {key}.
             </div>
             <div className="flex flex-col gap-y-1">
               <div 
-                className="text-xs text-gray-900 prose prose-sm"
+                className="text-xs text-white prose prose-sm"
                 dangerouslySetInnerHTML={{ 
                   __html: displayContent + (showMoreButton && !isExpanded ? '...' : '')
                 }} 
               />
               {showMoreButton && (
                 <button
-                  className="text-left text-xs text-gray-700 font-bold"
+                  className="text-left text-xs text-stone-700 font-bold"
                   onClick={() => toggleExpand(key)}
                 >
                   {isExpanded ? "閉じる" : "続きを読む"}

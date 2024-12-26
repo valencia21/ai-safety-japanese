@@ -54,6 +54,8 @@ const ContentPage: React.FC = ({}) => {
 
   useEffect(() => {
     const fetchReading = async () => {
+      if (!contentId) return;
+      
       const { data, error } = await supabase
         .from("reading_details")
         .select("*")
@@ -100,7 +102,7 @@ const ContentPage: React.FC = ({}) => {
         )}
       </div>
       */}
-      <div className="bg-red-100 w-full pt-12 pb-10 mb-16">
+      <div className="bg-stone-900 w-full pt-12 pb-8">
         <div className="container mx-auto flex-col">
           <div className="flex">
             {/* This div represents the 4/5 of the full width */}
@@ -114,24 +116,21 @@ const ContentPage: React.FC = ({}) => {
                     href={reading.link_to_original}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-red-700 hover:text-red-500"
+                    className="text-white hover:text-white text-lg"
                   >
                     {reading.original_title}
                   </a>
                 </div>
-                <h1 className="max-w-3xl justify-left text-4xl font-bold mb-2 w-full text-black">
+                <h1 className="max-w-3xl justify-left text-4xl font-bold mb-2 w-full text-white">
                   {reading.title}
                 </h1>
                 <div className="max-w-3xl flex flex-row justify-left w-full">
-                  <div className="flex flex-row gap-x-4 items-center gap-y-2 text-gray-700">
-                    <div className="text-base max-w-1/2 md:w-auto">
-                      <p className="">{reading.author}</p>
-                    </div>
+                  <div className="flex flex-row gap-x-4 items-center gap-y-2 text-white hidden">
                     <div className="text-sm">
                       <p className="">{reading.time_to_read}</p>
                     </div>
                     <div className="flex flex-row gap-x-4">
-                      <div className="flex flex-row items-center">
+                      <div className="flex flex-row items-center text-white">
                         {isEditable ? (
                           <LockKeyOpen size="18px" onClick={handleLockClick} />
                         ) : (
@@ -141,19 +140,37 @@ const ContentPage: React.FC = ({}) => {
                     </div>
                   </div>
                 </div>
-                <div className="mt-4 text-xs">
-                  Translated by{" "}
-                  <span className="font-bold">{reading.translator}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* New section for author, translator, and proofreader */}
+      <div className="w-full bg-stone-500 mb-16 text-white">
+        <div className="container mx-auto flex my-0 py-4">
+          <div className="w-4/5 flex">
+            <div className="hidden sm:flex sm:w-1/4"></div>
+            <div className="w-full sm:w-3/4 ml-10 sm:ml-16">
+              <div className="flex gap-x-8">
+                <div className="w-3/5">
+                  <div className="text-xxs uppercase mb-1">Author</div>
+                  <div className="text-base">{reading.author}</div>
                 </div>
-                <div className="mt-0.5 mb-2 text-xs">
-                  Proofread by{" "}
-                  <span className="font-bold">{reading.proofreader}</span>
+                <div className="w-1/5">
+                  <div className="text-xxs uppercase mb-1">Translator</div>
+                  <div className="text-sm">{reading.translator}</div>
+                </div>
+                <div className="w-1/5">
+                  <div className="text-xxs uppercase mb-1">Proofreader</div>
+                  <div className="text-sm">{reading.proofreader}</div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+
       <div className="container flex flex-row justify-between items-start w-full mb-24">
         <div className="w-full mx-8 sm:w-4/5">
           <div className="relative">

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "../../index.css";
 import { mergeAttributes, Node, Extension } from "@tiptap/core";
 import { EditorProvider } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
@@ -16,9 +17,16 @@ import TextAlign from "@tiptap/extension-text-align";
 import TextStyle from "@tiptap/extension-text-style";
 import { Color } from "@tiptap/extension-color";
 import Highlight from '@tiptap/extension-highlight'
-
+import Youtube from '@tiptap/extension-youtube';
 import { ToC } from "./toc";
 import { SidenoteEditor } from "../sidenote-editor/sidenote-editor";
+import { FloatingLinkMenu } from './floating-link-menu';
+import Mathematics from '@tiptap-pro/extension-mathematics'
+import Code from '@tiptap/extension-code'
+import Table from '@tiptap/extension-table'
+import TableRow from '@tiptap/extension-table-row'
+import TableHeader from '@tiptap/extension-table-header'
+import TableCell from '@tiptap/extension-table-cell'
 
 interface TiptapEditorProps {
   title: any;
@@ -197,15 +205,43 @@ export const TiptapEditor: React.FC<TiptapEditorProps> = ({
         return ""; // Return an empty string instead of null
       },
     }),
+    Youtube.configure({
+      controls: true,
+      nocookie: true,
+    }),
     Link.configure({
       openOnClick: true,
       HTMLAttributes: {
         class: 'text-red-700 hover:text-red-500',
       },
     }),
+    Extension.create({
+      name: 'customKeyboardShortcuts',
+      addKeyboardShortcuts() {
+        return {
+          'Mod-k': () => {
+            const previousUrl = this.editor.getAttributes('link').href;
+            const url = window.prompt('URL', previousUrl);
+
+            if (url === null) {
+              return true;
+            }
+
+            if (url === '') {
+              this.editor.chain().focus().extendMarkRange('link').unsetLink().run();
+              return true;
+            }
+
+            this.editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run();
+            return true;
+          },
+        }
+      },
+    }),
     Highlight.configure({
+      multicolor: true,
       HTMLAttributes: {
-        class: 'bg-yellow-200',
+        class: 'highlight',
       },
     }),
     TableOfContents.configure({
@@ -214,6 +250,26 @@ export const TiptapEditor: React.FC<TiptapEditorProps> = ({
         setTocItems(items);
       },
     }),
+    Mathematics.configure({
+      katexOptions: {
+        throwOnError: false,
+        strict: false
+      }
+    }),
+    Code.configure({
+      HTMLAttributes: {
+        class: 'bg-gray-100 dark:bg-gray-800 rounded px-1 py-0.5 font-mono text-sm inline',
+      },
+    }),
+    Table.configure({
+      resizable: true,
+      HTMLAttributes: {
+        class: 'border-collapse table-auto w-full',
+      },
+    }),
+    TableRow,
+    TableHeader,
+    TableCell,
   ];
 
   // @ts-ignore
@@ -260,7 +316,7 @@ export const TiptapEditor: React.FC<TiptapEditorProps> = ({
                 editable,
                 attributes: {
                   class:
-                    "prose dark:prose-invert prose-sm sm:prose-sm lg:prose-sm xl:prose-base focus:outline-none max-w-4xl mt-4",
+                    "prose dark:prose-invert prose-sm sm:prose-sm lg:prose-sm xl:prose-base focus:outline-none max-w-4xl",
                 },
                 // @ts-ignore
                 handleClickOn: (view, pos, node) => {
@@ -293,8 +349,9 @@ export const TiptapEditor: React.FC<TiptapEditorProps> = ({
                 }
               }}
             >
-              {/* If no children are required, provide an empty fragment */}
-              <></>
+              <>
+                {editor && <FloatingLinkMenu editor={editor} />}
+              </>
             </EditorProvider>
           </div>
         </div>
@@ -303,7 +360,7 @@ export const TiptapEditor: React.FC<TiptapEditorProps> = ({
             isOpen={isSidenoteEditorOpen}
             onClose={() => setIsSidenoteEditorOpen(false)}
             contentId={contentId}
-            sidenoteId={currentSidenoteId}
+            sidenoteId={currentSidenoteId ?? 0}
           />
         )}
       </div>

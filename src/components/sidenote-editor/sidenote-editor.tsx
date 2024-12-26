@@ -1,54 +1,61 @@
 // src/components/SidenoteEditorPopup.tsx
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { X } from "@phosphor-icons/react";
 import { supabase } from "../../supabase-client";
 
 interface SidenoteEditorProps {
-  isOpen: boolean;
+  contentId: string | undefined;
+  sidenoteId: number;
   onClose: () => void;
-  contentId?: string;
-  sidenoteId: number | null;
+  isOpen: boolean;
 }
 
-export const SidenoteEditor: React.FC<SidenoteEditorProps> = ({
-  isOpen,
-  onClose,
-  contentId,
-  sidenoteId,
-}) => {
-  const [sidenotes, setSidenotes] = useState<any>({});
+export const SidenoteEditor = ({ contentId, sidenoteId, onClose, isOpen }: SidenoteEditorProps) => {
+  const [sidenotes, setSidenotes] = useState<Record<number, string>>({});
   const [sidenoteContent, setSidenoteContent] = useState("");
 
   useEffect(() => {
-    if (isOpen && contentId && sidenoteId !== null) {
-      fetchSidenoteContent();
+    if (contentId && sidenoteId !== null) {
+      fetchSidenotes();
     }
-  }, [isOpen, contentId, sidenoteId]);
+  }, [contentId, sidenoteId]);
 
-  const fetchSidenoteContent = async () => {
-    try {
-      const { data, error } = await supabase
-        .from("reading_details")
-        .select("sidenotes")
-        .eq("content_id", contentId)
-        .single();
+  const fetchSidenotes = async () => {
+    if (!contentId) return;
 
-      if (error) throw error;
+    const { data: fetchedSidenotes, error } = await supabase
+      .from('reading_details')
+      .select('content')
+      .eq("content_id", contentId);
 
-      const fetchedSidenotes = data.sidenotes || {};
-      setSidenotes(fetchedSidenotes);
-      if (sidenoteId !== null) {
-        setSidenoteContent(fetchedSidenotes[sidenoteId] || "");
-      }
-    } catch (error) {
-      console.error("Error fetching sidenote content:", error);
+    if (error) {
+      console.error('Error fetching sidenotes:', error);
+      return;
+    }
+
+    if (fetchedSidenotes && fetchedSidenotes[0]?.content) {
+      const content = fetchedSidenotes[0].content as Record<string, string>;
+      setSidenoteContent(content[sidenoteId.toString()] || "");
     }
   };
 
-  const handleSaveSidenote = async () => {
+  const saveSidenote = async () => {
+    if (!contentId) return;
+
+    const { error: fetchError } = await supabase
+      .from('reading_details')
+      .select('content')
+      .eq("content_id", contentId)
+      .single();
+
+    if (fetchError) {
+      console.error("Error fetching existing data:", fetchError);
+      return;
+    }
+
     const updatedSidenotes = {
       ...sidenotes,
-      [sidenoteId!]: sidenoteContent,
+      [sidenoteId.toString()]: sidenoteContent,
     };
 
     try {
@@ -86,7 +93,7 @@ export const SidenoteEditor: React.FC<SidenoteEditorProps> = ({
     setSidenoteContent(newContent);
   };
 
-  if (!isOpen) return null;
+  if (!contentId || !isOpen) return null;
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -115,7 +122,7 @@ export const SidenoteEditor: React.FC<SidenoteEditorProps> = ({
         />
         <div className="mt-4 flex justify-end">
           <button
-            onClick={handleSaveSidenote}
+            onClick={saveSidenote}
             className="bg-red-700 text-white px-4 py-2 rounded hover:bg-red-800"
           >
             Save
@@ -125,3 +132,5 @@ export const SidenoteEditor: React.FC<SidenoteEditorProps> = ({
     </div>
   );
 };
+
+export default SidenoteEditor;

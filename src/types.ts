@@ -9,4 +9,5 @@ export type ReadingOverview = {
   session_number: number;
   order: number;
   format: string;
+  original_title?: string;
 };

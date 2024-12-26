@@ -4,21 +4,132 @@ import {
   groupReadingsBySession,
   fetchSessions,
 } from "@/utils/reading-utils";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import { FlashcardButton } from "../button/flashcard-button";
 import { Link } from "react-router-dom";
 import { ReadingOverview } from "@/types";
+import { Check } from "lucide-react";
+
+// Add new interface for progress tracking
+interface SessionProgress {
+  required: number;
+  recommended: number;
+  totalRequired: number;
+  totalRecommended: number;
+}
+
+// Add this near the top of the file with other interfaces
+interface Reading {
+  content_id: string;
+  title: string;
+  original_title?: string;
+  format?: string;
+  order?: number;
+}
+
+const ReadingItem: React.FC<{
+  reading: ReadingOverview;
+  isCompleted: boolean;
+  onToggleComplete: () => void;
+}> = ({ reading, isCompleted, onToggleComplete }) => {
+  return (
+    <div className="flex items-center gap-4">
+      <Link
+        to={`/${reading.content_id}`}
+        className="block flex-1 group cursor-pointer border-b border-stone-200"
+      >
+        <div className="flex my-1 items-center w-full rounded transition-colors duration-200 ease-in-out group-hover:bg-stone-700 hover:text-white p-2">
+          <div className="flex-1">
+            {reading.original_title && (
+              <span className="text-xs text-stone-500 mb-0.5 block group-hover:text-white">
+                {reading.original_title}
+              </span>
+            )}
+            <span className="text-sm">
+              {reading.title}
+            </span>
+          </div>
+          <span className="text-xs text-stone-500 group-hover:text-white mx-2">
+            {reading.format}
+          </span>
+        </div>
+      </Link>
+      <div
+        onClick={onToggleComplete}
+        className={`h-4 w-4 rounded-sm flex items-center justify-center transition-colors cursor-pointer
+          ${isCompleted ? 'bg-stone-700 border-stone-700' : 'bg-stone-200'}
+          hover:border-stone-400
+        `}
+      >
+        {isCompleted && <Check className="h-3.5 w-3.5 text-white" />}
+      </div>
+    </div>
+  );
+};
+
+const SessionNavItem: React.FC<{
+  session: any;
+  isActive: boolean;
+  progress: SessionProgress;
+  onClick: () => void;
+}> = ({ session, isActive, progress, onClick }) => {
+  return (
+    <button
+      onClick={onClick}
+      className={`flex flex-col gap-y-1 w-full text-left rounded py-2 px-4 hover:bg-stone-100 transition-colors ${
+        isActive ? 'bg-stone-100' : ''
+      }`}
+    >
+      <h3 className="text-sm font-medium text-stone-400">
+        {session.session_counter_jp}
+      </h3>
+      <h2 className="text-base font-medium text-stone-900 mb-2">
+        {session.title}
+      </h2>
+      <div className="w-full text-xs font-light flex flex-col gap-y-1">
+        <div className="flex flex-row items-center justify-between text-stone-500">
+          <span className="">課題図書</span>
+          <span>{progress.required}/{progress.totalRequired}</span>
+        </div>
+        <div className="flex items-center text-stone-500">
+          <span className="flex-1">補足資料</span>
+          <span>{progress.recommended}/{progress.totalRecommended}</span>
+        </div>
+      </div>
+    </button>
+  );
+};
 
 export const SessionInformation: React.FC = () => {
   const [readings, setReadings] = useState<any[]>([]);
   const [sessions, setSessions] = useState<any[]>([]);
   const [, setLoading] = useState<boolean>(true);
   const [, setError] = useState<string | null>(null);
+  const [completedReadings, setCompletedReadings] = useState<Set<string>>(new Set());
+  const [activeSession, setActiveSession] = useState<number | null>(null);
+
+  // Load completed readings from localStorage on component mount
+  useEffect(() => {
+    const saved = localStorage.getItem('completedReadings');
+    if (saved) {
+      setCompletedReadings(new Set(JSON.parse(saved)));
+    }
+  }, []);
+
+  // Save completed readings to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('completedReadings', JSON.stringify([...completedReadings]));
+  }, [completedReadings]);
+
+  const toggleReadingComplete = (readingId: string) => {
+    setCompletedReadings(prev => {
+      const next = new Set(prev);
+      if (next.has(readingId)) {
+        next.delete(readingId);
+      } else {
+        next.add(readingId);
+      }
+      return next;
+    });
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,6 +140,10 @@ export const SessionInformation: React.FC = () => {
         ]);
         setReadings(readingsData);
         setSessions(sessionsData);
+        // Set the first session as active by default
+        if (sessionsData.length > 0) {
+          setActiveSession(sessionsData[0].id);
+        }
         setLoading(false);
       } catch (error) {
         setError("Failed to fetch data. Please try again.");
@@ -40,80 +155,112 @@ export const SessionInformation: React.FC = () => {
 
   const groupedReadings = groupReadingsBySession(readings);
 
+  const getDisplayReadings = (readings: ReadingOverview[]) => {
+    return readings
+      ?.sort((a, b) => (a.order || 0) - (b.order || 0))
+      .slice(0, 4);
+  };
+
+  const calculateProgress = (sessionNumber: number): SessionProgress => {
+    const required = groupedReadings[sessionNumber]?.requiredReadings || [];
+    const recommended = groupedReadings[sessionNumber]?.recommendedReadings || [];
+    
+    return {
+      required: required.filter((r: Reading) => completedReadings.has(r.content_id)).length,
+      recommended: recommended.filter((r: Reading) => completedReadings.has(r.content_id)).length,
+      totalRequired: required.length,
+      totalRecommended: recommended.length,
+    };
+  };
+
+  const activeSessionData = sessions.find(s => s.id === activeSession);
+
   return (
-    <div className="flex flex-col max-w-full mx-6 lg:max-w-6xl mt-6 lg:mt-12">
-      {sessions.map((session) => (
-        <div key={session.id} className="flex flex-col lg:flex-row mb-20">
-          <div className="lg:w-2/5 p-4">
-            <div className="flex flex-col gap-y-2">
-              <h2 className="font-bold text-gray-500">
-                {session.session_counter_jp}
-              </h2>
-              <p className="text-lg text-blue-800">{session.title}</p>
-              <p className="text-gray-800">{session.description}</p>
+    <div className="relative">
+      <div className="max-w-7xl mx-auto flex">
+        {/* Left sidebar - hide on small screens */}
+        <div className="hidden md:block fixed left-0 lg:left-[max(0px,calc(50%-42rem))] top-[108px] h-[calc(100vh-108px)] w-96 border-r border-stone-200 bg-white overflow-y-auto">
+          <div className="px-4 py-6">
+            <div className="divide-y divide-stone-200">
+              {sessions.map((session) => {
+                const progress = calculateProgress(session.session_number);
+                return (
+                  <SessionNavItem
+                    key={session.id}
+                    session={session}
+                    isActive={session.id === activeSession}
+                    progress={progress}
+                    onClick={() => setActiveSession(session.id)}
+                  />
+                );
+              })}
             </div>
           </div>
-          <div className="lg:w-px bg-gray-300"></div>
-          <div className="flex flex-col gap-y-2 items-start justify-start border-t border-gray-300 lg:border-none mt-6 lg:mt-0 lg:w-3/5 lg:pl-10 p-4">
-            <div className="text-blue-800 mt-6 lg:mt-0">課題図書</div>
-            <Accordion type="single" collapsible className="w-full">
-              {groupedReadings[session.session_number]?.requiredReadings
-                .sort(
-                  (a: { order?: number }, b: { order?: number }) =>
-                    (a.order || 0) - (b.order || 0)
-                )
-                .map((reading: ReadingOverview, index: number) => (
-                  <AccordionItem key={index} value={`required-${index}`}>
-                    <div className="flex items-center justify-between w-full my-6 lg:my-2">
-                      <Link
-                        to={`/${reading.content_id}`}
-                        className="text-base flex w-4/5 text-left hover:underline"
-                      >
-                        {reading.title}
-                      </Link>
-                      <div className="flex flex-col items-center mr-2 px-2 py-1 text-red-700 text-xs">
-                        {reading.format}
-                      </div>
-                      <AccordionTrigger></AccordionTrigger>
-                    </div>
-                    <AccordionContent>
-                      <p className="text-gray-600">{reading.description}</p>
-                      <FlashcardButton />
-                    </AccordionContent>
-                  </AccordionItem>
-                ))}
-            </Accordion>
-            <div className="mt-6 text-blue-800">補足資料</div>
-            <Accordion type="single" collapsible className="w-full">
-              {groupedReadings[session.session_number]?.recommendedReadings
-                .sort(
-                  (a: { order?: number }, b: { order?: number }) =>
-                    (a.order || 0) - (b.order || 0)
-                )
-                .map((reading: ReadingOverview, index: number) => (
-                  <AccordionItem key={index} value={`recommended-${index}`}>
-                    <div className="flex items-center justify-between w-full my-6 lg:my-2">
-                      <Link
-                        to={`/${reading.content_id}`}
-                        className="text-base flex w-4/5 text-left hover:underline"
-                      >
-                        {reading.title}
-                      </Link>
-                      <div className="flex flex-col items-center mr-2 px-2 py-1 text-red-700 text-xs">
-                        {reading.format}
-                      </div>
-                      <AccordionTrigger></AccordionTrigger>
-                    </div>
-                    <AccordionContent>
-                      <p className="text-gray-600">{reading.description}</p>
-                      <FlashcardButton />
-                    </AccordionContent>
-                  </AccordionItem>
-                ))}
-            </Accordion>
-          </div>
         </div>
-      ))}
+
+        {/* Main content area - adjust padding for responsive layout */}
+        <div className="mt-2 flex-1 md:pl-96">
+          {activeSessionData && (
+            <div className="px-4 sm:px-6 py-6">
+              <div className="mb-8">
+                <h3 className="text-sm font-medium text-stone-400 mb-4">
+                  {activeSessionData.session_counter_jp}
+                </h3>
+                <h2 className="text-2xl font-semibold text-stone-900 mt-1">
+                  {activeSessionData.title}
+                </h2>
+                <p className="text-stone-500 mt-2 text-lg">
+                  {activeSessionData.description}
+                </p>
+              </div>
+
+              <div className="space-y-8">
+                {/* Required Readings Section */}
+                <div>
+                  <h3 className="text-sm font-medium text-stone-400 mb-4">
+                  課題図書
+                  </h3>
+                  <div className="bg-white overflow-hidden">
+                    <div className="">
+                      {getDisplayReadings(
+                        groupedReadings[activeSessionData.session_number]?.requiredReadings || []
+                      ).map((reading: ReadingOverview, index: number) => (
+                        <ReadingItem 
+                          key={index} 
+                          reading={reading} 
+                          isCompleted={completedReadings.has(reading.content_id)}
+                          onToggleComplete={() => toggleReadingComplete(reading.content_id)}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Recommended Readings Section */}
+                <div>
+                  <h3 className="text-sm font-medium text-stone-400 mb-4">
+                    補足資料
+                  </h3>
+                  <div className="bg-white overflow-hidden">
+                    <div className="">
+                      {getDisplayReadings(
+                        groupedReadings[activeSessionData.session_number]?.recommendedReadings || []
+                      ).map((reading: ReadingOverview, index: number) => (
+                        <ReadingItem 
+                          key={index} 
+                          reading={reading} 
+                          isCompleted={completedReadings.has(reading.content_id)}
+                          onToggleComplete={() => toggleReadingComplete(reading.content_id)}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 };

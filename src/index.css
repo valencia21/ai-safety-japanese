@@ -1,15 +1,323 @@
+@import url("https://api.fontshare.com/v2/css?f[]=synonym@400&f[]=amulya@700&f[]=supreme@400&f[]=recia@500&f[]=gambetta@300,400&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=BIZ+UDMincho&display=swap');
+@import 'katex/dist/katex.min.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Simple mark styles without any hover effects */
-.ProseMirror mark {
-  border-radius: 0.25rem;
-  padding: 0.125rem 0.25rem;
-  margin: 0 0.125rem;
+/* Remove global link styles */
+a {
+  @apply no-underline;
 }
 
-/* Default yellow if no color specified */
-.ProseMirror mark:not([style*="background-color"]) {
-  background-color: #fef08a;
+/* Remove prose link styles since we're focusing on editor */
+.prose a {
+  @apply no-underline;
+}
+
+/* Editor link styles */
+.ProseMirror a {
+  @apply text-blue-500 underline hover:text-blue-700 cursor-pointer;
+}
+
+.tiptap a,
+.tiptap-link {
+  @apply text-blue-500 hover:text-blue-700 underline cursor-pointer;
+}
+
+body {
+  font-family: "Gambetta", "BIZ UDPGothic", serif;
+  @apply mx-0;
+}
+
+.sidenote {
+  @apply text-sm pr-0.5 text-red-700;
+}
+
+/* Table of Contents styles */
+.table-of-contents {
+  @apply w-64 flex-shrink-0 flex flex-col text-sm gap-4 overflow-auto no-underline;
+
+  > div {
+    @apply transition-all duration-200 ease-in-out;
+    padding-left: calc(0.875rem * (var(--level) - 1));
+  }
+
+  .empty-state {
+    @apply text-red-500 select-none;
+  }
+
+  .is-active a {
+    @apply text-blue-600;
+  }
+
+  .is-scrolled-over a {
+    @apply text-black font-bold;
+  }
+
+  a {
+    @apply text-gray-600 no-underline hover:text-gray-900;
+  }
+}
+
+.tiptap .is-empty::before {
+  @apply text-gray-400 content-[attr(data-placeholder)] float-left h-0 pointer-events-none select-none;
+}
+
+.tiptap .details {
+  @apply flex gap-1 my-6 bg-stone-300 text-black rounded p-2 items-start select-none;
+}
+
+.tiptap .details summary {
+  @apply font-bold list-none select-none;
+}
+
+.tiptap .details > button {
+  @apply flex items-center justify-center bg-transparent rounded p-0 text-[14px] w-5 h-5 mt-1;
+}
+
+.tiptap .details > button::before {
+  content: "";
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' fill='%23000000' viewBox='0 0 256 256'%3E%3Cpath d='M184.49,136.49l-80,80a12,12,0,0,1-17-17L159,128,87.51,56.49a12,12,0,1,1,17-17l80,80A12,12,0,0,1,184.49,136.49Z'%3E%3C/path%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+  vertical-align: middle;
+}
+
+.tiptap .details.is-open > button::before {
+  transform: rotate(90deg);
+}
+
+.tiptap .details > div {
+  @apply flex flex-col w-full;
+}
+
+.tiptap .details > div > [data-type="detailsContent"] > :last-child {
+  @apply mb-2;
+}
+
+.tiptap .details .details {
+  @apply my-0;
+}
+
+.tiptap img {
+  @apply rounded;
+}
+
+.tiptap iframe[src*="youtube"] {
+  @apply rounded;
+}
+
+.tiptap .image-caption {
+  @apply text-2xl text-blue-600;
+}
+
+/* Selection styles */
+::selection {
+  @apply bg-red-700 text-white;
+}
+
+/* Text colors */
+.prose p {
+  @apply text-black !important;
+}
+
+.tiptap p {
+  @apply text-black !important;
+}
+
+.prose ul li::marker,
+.tiptap ul li::marker {
+  @apply text-stone-800;
+}
+
+/* ProseMirror styles */
+.ProseMirror table {
+  border-collapse: collapse;
+  margin: 0;
+  overflow: hidden;
+  table-layout: fixed;
+  width: 100%;
+}
+
+.ProseMirror td,
+.ProseMirror th {
+  border: 2px solid #ced4da;
+  box-sizing: border-box;
+  min-width: 1em;
+  padding: 3px 5px;
+  position: relative;
+  vertical-align: top;
+}
+
+.ProseMirror th {
+  background-color: #f8f9fa;
+  font-weight: bold;
+  text-align: left;
+}
+
+.ProseMirror .selectedCell:after {
+  background: rgba(200, 200, 255, 0.4);
+  content: "";
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  pointer-events: none;
+  position: absolute;
+  z-index: 2;
+}
+
+.ProseMirror .column-resize-handle {
+  background-color: #adf;
+  bottom: -2px;
+  position: absolute;
+  right: -2px;
+  pointer-events: none;
+  top: 0;
+  width: 4px;
+}
+
+.ProseMirror p {
+  margin: 0;
+}
+
+/* Mathematics styles */
+.Tiptap-mathematics-editor {
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+  padding: 2px 4px;
+}
+
+.Tiptap-mathematics-render {
+  display: inline-block;
+  padding: 2px 4px;
+}
+
+/* Code styles */
+.ProseMirror code {
+  background-color: rgb(243 244 246);
+  border-radius: 0.25rem;
+  padding: 0.125rem 0.25rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.875rem;
+}
+
+.dark .ProseMirror code {
+  background-color: rgb(31 41 55);
+}
+
+.ProseMirror code::before,
+.ProseMirror code::after {
+  display: none;
+}
+
+/* Highlight styles */
+.ProseMirror mark.highlight {
+  background: none;
+  display: inline;
+  padding: 0;
+  margin: 0;
+}
+
+.ProseMirror mark.highlight[data-color="#fef08a"] { background-color: #fef08a !important; }
+.ProseMirror mark.highlight[data-color="#bbf7d0"] { background-color: #bbf7d0 !important; }
+.ProseMirror mark.highlight[data-color="#bfdbfe"] { background-color: #bfdbfe !important; }
+.ProseMirror mark.highlight[data-color="#fbcfe8"] { background-color: #fbcfe8 !important; }
+.ProseMirror mark.highlight[data-color="#e9d5ff"] { background-color: #e9d5ff !important; }
+.ProseMirror mark.highlight[data-color="#e5e7eb"] { background-color: #e5e7eb !important; }
+
+/* Content width constraints */
+.prose,
+.tiptap {
+  @apply w-full max-w-3xl mx-auto;
+}
+
+/* Ensure editor has proper width */
+.tiptap-editor {
+  @apply w-full max-w-3xl mx-auto;
+}
+
+/* Typography spacing */
+.tiptap {
+  /* Paragraph spacing */
+  p {
+    @apply mb-4;
+  }
+
+  /* Header spacing and styling */
+  h1 {
+    @apply text-4xl font-bold mb-6 mt-8;
+  }
+
+  h2 {
+    @apply text-3xl font-bold mb-4 mt-6;
+  }
+
+  h3 {
+    @apply text-2xl font-bold mb-3 mt-5;
+  }
+
+  /* List spacing */
+  ul, ol {
+    @apply mb-4 ml-4;
+    
+    li {
+      @apply mb-2;
+    }
+
+    li::marker {
+      @apply text-black;
+    }
+  }
+
+  /* Block spacing */
+  blockquote {
+    @apply pl-4 border-l-4 border-gray-300 my-4 italic;
+  }
+
+  /* Code block spacing */
+  pre {
+    @apply my-4;
+  }
+}
+
+/* Ensure consistent spacing in preview/reading mode */
+.prose {
+  @apply max-w-3xl;
+  
+  /* Match the editor spacing */
+  p {
+    @apply mb-4;
+  }
+
+  h1 {
+    @apply text-4xl font-bold mb-6 mt-8;
+  }
+
+  h2 {
+    @apply text-3xl font-bold mb-4 mt-6;
+  }
+
+  h3 {
+    @apply text-2xl font-bold mb-3 mt-5;
+  }
+}
+
+/* Also ensure ProseMirror specific styling */
+.ProseMirror {
+  ul li::marker,
+  ol li::marker {
+    @apply text-black;
+  }
+}
+
+/* Add a utility class for forcing Japanese font if needed */
+.japanese {
+  font-family: "BIZ UDMincho", serif;
 }
