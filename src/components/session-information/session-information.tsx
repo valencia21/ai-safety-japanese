@@ -179,7 +179,7 @@ export const SessionInformation: React.FC = () => {
     <div className="relative">
       <div className="max-w-7xl mx-auto flex">
         {/* Left sidebar - hide on small screens */}
-        <div className="hidden md:block fixed left-0 lg:left-[max(0px,calc(50%-42rem))] top-[108px] h-[calc(100vh-108px)] w-96 border-r border-stone-200 bg-white overflow-y-auto">
+        <div className="hidden md:block fixed left-0 lg:left-[max(0px,calc(50%-42rem))] top-[108px] h-[calc(100vh-108px)] w-96 border-r border-stone-200 overflow-y-auto">
           <div className="px-4 py-6">
             <div className="divide-y divide-stone-200">
               {sessions.map((session) => {
@@ -220,7 +220,7 @@ export const SessionInformation: React.FC = () => {
                   <h3 className="text-sm font-medium text-stone-400 mb-4">
                   課題図書
                   </h3>
-                  <div className="bg-white overflow-hidden">
+                  <div className="overflow-hidden">
                     <div className="">
                       {getDisplayReadings(
                         groupedReadings[activeSessionData.session_number]?.requiredReadings || []
@@ -241,7 +241,7 @@ export const SessionInformation: React.FC = () => {
                   <h3 className="text-sm font-medium text-stone-400 mb-4">
                     補足資料
                   </h3>
-                  <div className="bg-white overflow-hidden">
+                  <div className="overflow-hidden">
                     <div className="">
                       {getDisplayReadings(
                         groupedReadings[activeSessionData.session_number]?.recommendedReadings || []

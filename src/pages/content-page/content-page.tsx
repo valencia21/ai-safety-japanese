@@ -24,7 +24,7 @@ interface Reading {
 const ContentPage: React.FC = ({}) => {
   const [reading, setReading] = useState<Reading | null>(null);
   const editorRef = useRef<HTMLDivElement | null>(null);
-  const [isEditable, setIsEditable] = useState(true);
+  const [isEditable, setIsEditable] = useState(false);
   const { contentId } = useParams<{ contentId?: string }>();
   const secretKey = import.meta.env.VITE_EDITING_KEY;
   const [editorTopPosition, setEditorTopPosition] = useState<number | null>(
