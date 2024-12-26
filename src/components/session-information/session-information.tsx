@@ -36,18 +36,18 @@ const ReadingItem: React.FC<{
         to={`/${reading.content_id}`}
         className="block flex-1 group cursor-pointer border-b border-stone-200"
       >
-        <div className="flex my-1 items-center w-full rounded transition-colors duration-200 ease-in-out group-hover:bg-stone-700 hover:text-white p-2">
+        <div className="flex my-1 items-center w-full rounded transition-colors duration-200 ease-in-out group-hover:bg-stone-700 p-2">
           <div className="flex-1">
             {reading.original_title && (
-              <span className="text-xs text-stone-500 mb-0.5 block group-hover:text-white">
+              <span className="text-xs text-stone-500 mb-0.5 block transition-colors duration-200 ease-in-out group-hover:text-white">
                 {reading.original_title}
               </span>
             )}
-            <span className="text-sm">
+            <span className="text-sm transition-colors duration-200 ease-in-out group-hover:text-white">
               {reading.title}
             </span>
           </div>
-          <span className="text-xs text-stone-500 group-hover:text-white mx-2">
+          <span className="text-xs text-stone-500 transition-colors duration-200 ease-in-out group-hover:text-white mx-2">
             {reading.format}
           </span>
         </div>

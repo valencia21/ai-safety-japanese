@@ -1,6 +1,7 @@
 import { wedgesTW } from "@lemonsqueezy/wedges";
 import tailwindAnimate from "tailwindcss-animate";
 import tailwindTypography from "@tailwindcss/typography";
+import tailwindScrollbar from 'tailwind-scrollbar';
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -11,6 +12,12 @@ export default {
     "./app/**/*.{ts,tsx}",
     "./src/**/*.{ts,tsx}",
     "node_modules/@lemonsqueezy/wedges/dist/**/*.{js,ts,jsx,tsx}",
+  ],
+  safelist: [
+    'scrollbar-thin',
+    'scrollbar-track-transparent',
+    'scrollbar-thumb-gray-300',
+    'hover:scrollbar-thumb-gray-400'
   ],
   prefix: "",
   theme: {
@@ -215,12 +222,12 @@ export default {
             'ul': {
               'list-style-type': 'disc',
               'li::marker': {
-                color: '#3B82F6 !important', // blue-500
+                color: '#78716C !important',
               },
             },
             'ol': {
               'li::marker': {
-                color: '#3B82F6 !important', // blue-500
+                color: '#78716C !important',
               },
             },
           },
@@ -229,6 +236,7 @@ export default {
     },
   },
   plugins: [
+    tailwindScrollbar({ nocompatible: true }),
     wedgesTW(),
     tailwindAnimate,
     tailwindTypography,

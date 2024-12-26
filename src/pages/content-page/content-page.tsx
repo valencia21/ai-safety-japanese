@@ -24,7 +24,7 @@ interface Reading {
 const ContentPage: React.FC = ({}) => {
   const [reading, setReading] = useState<Reading | null>(null);
   const editorRef = useRef<HTMLDivElement | null>(null);
-  const [isEditable, setIsEditable] = useState(false);
+  const [isEditable, setIsEditable] = useState(true);
   const { contentId } = useParams<{ contentId?: string }>();
   const secretKey = import.meta.env.VITE_EDITING_KEY;
   const [editorTopPosition, setEditorTopPosition] = useState<number | null>(
@@ -112,14 +112,19 @@ const ContentPage: React.FC = ({}) => {
               {/* This div contains your content, taking up 3/4 of the 4/5 section */}
               <div className="w-full sm:w-3/4 ml-10 sm:ml-16">
                 <div className="mb-6">
-                  <a
-                    href={reading.link_to_original}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-white hover:text-white text-lg"
-                  >
+                  <div className="text-white text-lg">
                     {reading.original_title}
-                  </a>
+                  </div>
+                  <div className="flex flex-row items-center gap-x-1 text-xs text-stone-300 inline-flex">
+                    <a
+                      href={reading.link_to_original}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:text-white mt-1"
+                    >
+                      原文を見る
+                    </a>
+                  </div>
                 </div>
                 <h1 className="max-w-3xl justify-left text-4xl font-bold mb-2 w-full text-white">
                   {reading.title}
@@ -157,14 +162,18 @@ const ContentPage: React.FC = ({}) => {
                   <div className="text-xxs uppercase mb-1">Author</div>
                   <div className="text-base">{reading.author}</div>
                 </div>
-                <div className="w-1/5">
-                  <div className="text-xxs uppercase mb-1">Translator</div>
-                  <div className="text-sm">{reading.translator}</div>
-                </div>
-                <div className="w-1/5">
-                  <div className="text-xxs uppercase mb-1">Proofreader</div>
-                  <div className="text-sm">{reading.proofreader}</div>
-                </div>
+                {reading.translator && (
+                  <div className="w-1/5">
+                    <div className="text-xxs uppercase mb-1">Translator</div>
+                    <div className="text-base">{reading.translator}</div>
+                  </div>
+                )}
+                {reading.proofreader && (
+                  <div className="w-1/5">
+                    <div className="text-xxs uppercase mb-1">Proofreader</div>
+                    <div className="text-base">{reading.proofreader}</div>
+                  </div>
+                )}
               </div>
             </div>
           </div>

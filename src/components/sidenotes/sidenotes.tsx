@@ -135,7 +135,7 @@ export const Sidenotes: React.FC<SidenotesProps> = ({
         return (
           <div
             key={key}
-            className="absolute left-0 right-0 flex flex-row gap-x-2 py-4 pr-4 border-y border-stone-700 p-4"
+            className="absolute left-0 right-0 flex flex-row gap-x-2 py-4 px-2 border-y border-stone-700"
             style={{
               top: `${initialTop}px`,
             }}

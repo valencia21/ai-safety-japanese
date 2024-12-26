@@ -301,11 +301,13 @@ export const TiptapEditor: React.FC<TiptapEditorProps> = ({
   return (
     <>
       <div className="flex flex-row">
-        <div className="flex-col w-1/4 table-of-contents pr-4 mx-6 sticky top-16 max-h-[50vh] overflow-visible hidden sm:flex">
-          <div className="font-bold pb-2 border-b border-gray-700 rounded-none">
+        <div className="flex-col w-1/4 table-of-contents-container pr-4 mx-6 hidden sm:flex">
+          <div className="table-of-contents-title">
             {title}
           </div>
-          <ToC items={tocItems} editor={editor} />
+          <div className="table-of-contents">
+            <ToC items={tocItems} editor={editor} />
+          </div>
         </div>
         <div className="flex flex-col w-full sm:w-3/4">
           <div className="relative">

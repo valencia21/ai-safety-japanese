@@ -1,39 +1,27 @@
 import { TextSelection } from "@tiptap/pm/state";
+import type { MouseEvent } from "react";
 
-// First, let's define an interface for the ToC item
-interface ToCItemType {
-  id: string;
-  isActive: boolean;
-  isScrolledOver: boolean;
-  level: number;
-  textContent: string;
-  itemIndex?: number;
-}
-
-// Update the ToCItem component props
 interface ToCItemProps {
-  item: ToCItemType;
-  onItemClick: (e: React.MouseEvent, id: string) => void;
-  index?: number;
+  item: {
+    id: string;
+    level: number;
+    isActive: boolean;
+    isScrolledOver: boolean;
+    itemIndex: number;
+    textContent: string;
+  };
+  onItemClick: (e: MouseEvent, id: string) => void;
 }
 
-// @ts-ignore
 export const ToCItem = ({ item, onItemClick }: ToCItemProps) => {
-  console.log('ToC Item State:', {
-    id: item.id,
-    isActive: item.isActive,
-    isScrolledOver: item.isScrolledOver,
-    level: item.level,
-    textContent: item.textContent
-  });
-
   return (
     <div
       className={`${item.isActive && !item.isScrolledOver ? "is-active" : ""} ${
         item.isScrolledOver ? "is-scrolled-over" : ""
       }`}
       style={{
-        ["--level" as string]: item.level,
+        // @ts-ignore
+        "--level": item.level,
       }}
     >
       <a
@@ -53,14 +41,21 @@ export const ToCItem = ({ item, onItemClick }: ToCItemProps) => {
 export const ToCEmptyState = () => {
   return (
     <div className="empty-state">
-      <p>Start editing your document to see the outline.</p>
+      <p>This text has no table of contents.</p>
     </div>
   );
 };
 
 interface ToCProps {
-  items?: ToCItemType[];
-  editor: any; // You might want to properly type this based on your editor type
+  items: Array<{
+    id: string;
+    level: number;
+    isActive: boolean;
+    isScrolledOver: boolean;
+    itemIndex: number;
+    textContent: string;
+  }>;
+  editor: any; // You might want to replace 'any' with the proper editor type from TipTap
 }
 
 export const ToC = ({ items = [], editor }: ToCProps) => {
@@ -93,12 +88,11 @@ export const ToC = ({ items = [], editor }: ToCProps) => {
 
   return (
     <>
-      {items.map((item, i) => (
+      {items.map((item) => (
         <ToCItem
           onItemClick={onItemClick}
           key={item.id}
           item={item}
-          index={i + 1}
         />
       ))}
     </>
