@@ -53,13 +53,13 @@ export const Navbar: React.FC = () => {
           <div className="border-y border-stone-200">
             <div className="max-w-7xl mx-auto flex px-6">
               <button
-                className="py-2 px-4 text-sm font-medium transition-colors border-b-2 -mb-[2px] border-stone-900 bg-stone-100"
+                className="py-2 px-4 text-sm transition-colors border-b-2 -mb-[2px] border-stone-900 bg-stone-100"
               >
                 AI Safety Fundamentals: Alignment
               </button>
               <button
                 disabled
-                className="py-2 px-4 text-sm font-medium transition-colors text-stone-400 cursor-not-allowed"
+                className="py-2 px-4 text-sm transition-colors text-stone-400 cursor-not-allowed"
               >
                 Coming Soon
               </button>

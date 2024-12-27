@@ -182,25 +182,31 @@ export default {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
       fontFamily: {
-        amulya: ["Amulya", "sans-serif"],
-        synonym: ["Synonym", "sans-serif"],
-        sentient: ["Sentient", "sans-serif"],
-        gambetta: ["Gambetta", "sans-serif"],
-        biz: ["BIZ UDPGothic", "sans-serif"],
-        mincho: ["BIZ UDMincho", "sans-serif"], 
+        inter: ["Inter", "system-ui", "sans-serif"],
+        amulya: ["Amulya", "system-ui", "sans-serif"],
+        synonym: ["Synonym", "system-ui", "sans-serif"],
+        sentient: ["Sentient", "system-ui", "serif"],
+        gambetta: ["Gambetta", "system-ui", "serif"],
+        jp: ["Noto Sans JP", "system-ui", "sans-serif"],
+      },
+      fontWeight: {
+        light: '300',
+        normal: '400',
+        medium: '500',
+        bold: '700',
       },
       typography: {
         DEFAULT: {
           css: {
             color: '#000000 !important',
             'p': {
-              fontFamily: 'gambetta, mincho, sans-serif',
-              fontWeight: '400',
+              fontFamily: 'Inter, Noto Sans JP, system-ui, sans-serif',
+              fontWeight: '300',
               color: '#000000 !important',
               opacity: '1 !important',
             },
             'h1, h2, h3, h4, h5, h6, strong, b': {
-              fontFamily: 'gambetta, mincho, sans-serif',
+              fontFamily: 'Inter, Noto Sans JP, system-ui, sans-serif',
               fontWeight: '700',
               color: '#000000 !important',
             },

@@ -78,7 +78,7 @@ const SessionNavItem: React.FC<{
         isActive ? 'bg-stone-100' : ''
       }`}
     >
-      <h3 className="text-sm font-medium text-stone-400">
+      <h3 className="text-xs text-stone-400">
         {session.session_counter_jp}
       </h3>
       <h2 className="text-base font-medium text-stone-900 mb-2">
@@ -176,10 +176,10 @@ export const SessionInformation: React.FC = () => {
   const activeSessionData = sessions.find(s => s.id === activeSession);
 
   return (
-    <div className="relative">
-      <div className="max-w-7xl mx-auto flex">
-        {/* Left sidebar - hide on small screens */}
-        <div className="hidden md:block fixed left-0 lg:left-[max(0px,calc(50%-42rem))] top-[108px] h-[calc(100vh-108px)] w-96 border-r border-stone-200 overflow-y-auto">
+    <div className="fixed inset-0 pt-[102px]">
+      <div className="h-full flex">
+        {/* Left sidebar - fixed position */}
+        <div className="hidden md:block w-96 border-r border-stone-200">
           <div className="px-4 py-6">
             <div className="divide-y divide-stone-200">
               {sessions.map((session) => {
@@ -198,67 +198,76 @@ export const SessionInformation: React.FC = () => {
           </div>
         </div>
 
-        {/* Main content area - adjust padding for responsive layout */}
-        <div className="mt-2 flex-1 md:pl-96">
-          {activeSessionData && (
-            <div className="px-4 sm:px-6 py-6">
-              <div className="mb-8">
-                <h3 className="text-sm font-medium text-stone-400 mb-4">
-                  {activeSessionData.session_counter_jp}
-                </h3>
-                <h2 className="text-2xl font-semibold text-stone-900 mt-1">
-                  {activeSessionData.title}
-                </h2>
-                <p className="text-stone-500 mt-2 text-lg">
-                  {activeSessionData.description}
-                </p>
-              </div>
-
-              <div className="space-y-8">
-                {/* Required Readings Section */}
-                <div>
-                  <h3 className="text-sm font-medium text-stone-400 mb-4">
-                  課題図書
+        {/* Main content area - scrollable */}
+        <div className="flex-1 overflow-y-auto">
+          <div 
+            className={`w-full ${window.matchMedia('(min-width: 768px)').matches ? 'ml-8' : ''}`}
+            style={{ 
+              maxWidth: window.matchMedia('(min-width: 768px)').matches 
+                ? 'min(calc(72rem - 384px + ((100vw - 72rem) / 2)), calc(100vw - 384px - 64px))'
+                : 'none'
+            }}
+          >
+            {activeSessionData && (
+              <div className="px-4 sm:px-6 py-6">
+                <div className="mb-8">
+                  <h3 className="text-base text-stone-400 mb-4">
+                    {activeSessionData.session_counter_jp}
                   </h3>
-                  <div className="overflow-hidden">
-                    <div className="">
-                      {getDisplayReadings(
-                        groupedReadings[activeSessionData.session_number]?.requiredReadings || []
-                      ).map((reading: ReadingOverview, index: number) => (
-                        <ReadingItem 
-                          key={index} 
-                          reading={reading} 
-                          isCompleted={completedReadings.has(reading.content_id)}
-                          onToggleComplete={() => toggleReadingComplete(reading.content_id)}
-                        />
-                      ))}
+                  <h2 className="text-2xl font-semibold text-stone-900 mt-1">
+                    {activeSessionData.title}
+                  </h2>
+                  <p className="text-stone-500 mt-2 text-lg whitespace-pre-line">
+                    {activeSessionData.description}
+                  </p>
+                </div>
+
+                <div className="space-y-8">
+                  {/* Required Readings Section */}
+                  <div>
+                    <h3 className="text-sm font-medium text-stone-400 mb-4">
+                    課題図書
+                    </h3>
+                    <div className="overflow-hidden">
+                      <div className="">
+                        {getDisplayReadings(
+                          groupedReadings[activeSessionData.session_number]?.requiredReadings || []
+                        ).map((reading: ReadingOverview, index: number) => (
+                          <ReadingItem 
+                            key={index} 
+                            reading={reading} 
+                            isCompleted={completedReadings.has(reading.content_id)}
+                            onToggleComplete={() => toggleReadingComplete(reading.content_id)}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Recommended Readings Section */}
+                  <div>
+                    <h3 className="text-sm font-medium text-stone-400 mb-4">
+                      補足資料
+                    </h3>
+                    <div className="overflow-hidden">
+                      <div className="">
+                        {getDisplayReadings(
+                          groupedReadings[activeSessionData.session_number]?.recommendedReadings || []
+                        ).map((reading: ReadingOverview, index: number) => (
+                          <ReadingItem 
+                            key={index} 
+                            reading={reading} 
+                            isCompleted={completedReadings.has(reading.content_id)}
+                            onToggleComplete={() => toggleReadingComplete(reading.content_id)}
+                          />
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>
-
-                {/* Recommended Readings Section */}
-                <div>
-                  <h3 className="text-sm font-medium text-stone-400 mb-4">
-                    補足資料
-                  </h3>
-                  <div className="overflow-hidden">
-                    <div className="">
-                      {getDisplayReadings(
-                        groupedReadings[activeSessionData.session_number]?.recommendedReadings || []
-                      ).map((reading: ReadingOverview, index: number) => (
-                        <ReadingItem 
-                          key={index} 
-                          reading={reading} 
-                          isCompleted={completedReadings.has(reading.content_id)}
-                          onToggleComplete={() => toggleReadingComplete(reading.content_id)}
-                        />
-                      ))}
-                    </div>
-                  </div>
-                </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
     </div>
