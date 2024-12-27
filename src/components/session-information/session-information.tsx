@@ -86,7 +86,7 @@ const SessionNavItem: React.FC<{
       </h2>
       <div className="w-full text-xs font-light flex flex-col gap-y-1">
         <div className="flex flex-row items-center justify-between text-stone-500">
-          <span className="">課題図書</span>
+          <span className="">メイン資料</span>
           <span>{progress.required}/{progress.totalRequired}</span>
         </div>
         <div className="flex items-center text-stone-500">
@@ -199,7 +199,7 @@ export const SessionInformation: React.FC = () => {
         </div>
 
         {/* Main content area - scrollable */}
-        <div className="flex-1 overflow-y-auto">
+        <div className="flex-1 overflow-y-auto mt-1 mb-8">
           <div 
             className={`w-full ${window.matchMedia('(min-width: 768px)').matches ? 'ml-8' : ''}`}
             style={{ 
@@ -217,7 +217,7 @@ export const SessionInformation: React.FC = () => {
                   <h2 className="text-2xl font-semibold text-stone-900 mt-1">
                     {activeSessionData.title}
                   </h2>
-                  <p className="text-stone-500 mt-2 text-lg whitespace-pre-line">
+                  <p className="text-stone-600 mt-2 text-lg whitespace-pre-line">
                     {activeSessionData.description}
                   </p>
                 </div>
@@ -225,8 +225,8 @@ export const SessionInformation: React.FC = () => {
                 <div className="space-y-8">
                   {/* Required Readings Section */}
                   <div>
-                    <h3 className="text-sm font-medium text-stone-400 mb-4">
-                    課題図書
+                    <h3 className="text-sm font-medium text-stone-600 mb-4">
+                    メイン資料
                     </h3>
                     <div className="overflow-hidden">
                       <div className="">
@@ -246,7 +246,7 @@ export const SessionInformation: React.FC = () => {
 
                   {/* Recommended Readings Section */}
                   <div>
-                    <h3 className="text-sm font-medium text-stone-400 mb-4">
+                    <h3 className="text-sm font-medium text-stone-600 mb-4">
                       補足資料
                     </h3>
                     <div className="overflow-hidden">
