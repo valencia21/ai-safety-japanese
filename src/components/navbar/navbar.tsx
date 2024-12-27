@@ -6,6 +6,7 @@ import logoImage from "../../assets/logo_transparent.png";
 
 export const Navbar: React.FC = () => {
   const [isAuthOpen, setIsAuthOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user, signOut } = useAuth();
   const location = useLocation();
   const isHomePage = location.pathname === "/";
@@ -36,7 +37,7 @@ export const Navbar: React.FC = () => {
           
           <div className="flex items-center gap-4">
             {user && (
-              <span className="text-sm text-stone-700">
+              <span className="hidden sm:inline text-sm text-stone-700">
                 {user.email}
               </span>
             )}
@@ -52,17 +53,54 @@ export const Navbar: React.FC = () => {
         {isHomePage && (
           <div className="border-y border-stone-200">
             <div className="container mx-auto px-6">
-              <button
-                className="py-2 px-4 text-sm transition-colors border-b-2 -mb-[2px] border-stone-900 bg-stone-100"
-              >
-                AI Safety Fundamentals: Alignment
-              </button>
-              <button
-                disabled
-                className="py-2 px-4 text-sm transition-colors text-stone-400 cursor-not-allowed"
-              >
-                Coming Soon
-              </button>
+              <div className="hidden sm:block">
+                <button
+                  className="py-2 px-4 text-sm transition-colors border-b-2 -mb-[2px] border-stone-900 bg-stone-100"
+                >
+                  AI Safety Fundamentals: Alignment
+                </button>
+                <button
+                  disabled
+                  className="py-2 px-4 text-sm transition-colors text-stone-400 cursor-not-allowed"
+                >
+                  Coming Soon
+                </button>
+              </div>
+
+              <div className="sm:hidden relative">
+                <button
+                  onClick={() => setIsMenuOpen(!isMenuOpen)}
+                  className="w-full py-2 flex items-center justify-center border-b-2 -mb-[2px] border-stone-900 bg-stone-100"
+                >
+                  <span className="text-sm mr-2">AI Safety Fundamentals: Alignment</span>
+                  <svg 
+                    className={`w-4 h-4 transition-transform ${isMenuOpen ? 'rotate-180' : ''}`}
+                    fill="none" 
+                    stroke="currentColor" 
+                    viewBox="0 0 24 24"
+                  >
+                    <path 
+                      strokeLinecap="round" 
+                      strokeLinejoin="round" 
+                      strokeWidth={2} 
+                      d="M19 9l-7 7-7-7" 
+                    />
+                  </svg>
+                </button>
+
+                {isMenuOpen && (
+                  <div className="absolute z-50 w-full left-0 top-full bg-white border-b border-stone-200 shadow-lg">
+                    <div className="container mx-auto px-6">
+                      <button
+                        disabled
+                        className="w-full text-center py-2 px-4 text-sm transition-colors text-stone-400 cursor-not-allowed"
+                      >
+                        Coming Soon
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         )}
