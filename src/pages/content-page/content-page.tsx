@@ -125,16 +125,16 @@ const ContentPage: React.FC = ({}) => {
             )}
           </div>
           */}
-          <div className="bg-stone-900 w-full pt-12 pb-8">
+          <div className="bg-stone-200 w-full pt-12 pb-8">
             <div className="container mx-auto px-6">
               <div className="flex">
                 <div className="w-full flex">
                   <div className="w-full">
                     <div className="mb-6">
-                      <div className="text-white text-lg">
+                      <div className="text-stone-900 text-lg">
                         {reading.original_title}
                       </div>
-                      <div className="flex flex-row items-center gap-x-1 text-xs text-stone-300 inline-flex">
+                      <div className="flex flex-row items-center gap-x-1 text-xs text-stone-700 inline-flex">
                         <a
                           href={reading.link_to_original}
                           target="_blank"
@@ -145,7 +145,7 @@ const ContentPage: React.FC = ({}) => {
                         </a>
                       </div>
                     </div>
-                    <h1 className="max-w-6xl justify-left text-4xl font-bold mb-2 w-full text-white">
+                    <h1 className="max-w-6xl justify-left text-4xl font-bold mb-2 w-full text-stone-900">
                       {reading.title}
                     </h1>
                     <div className="max-w-3xl flex flex-row justify-left w-full">
@@ -171,7 +171,7 @@ const ContentPage: React.FC = ({}) => {
           </div>
 
           {/* Author section - update the width classes */}
-          <div className="w-full bg-stone-500 mb-16 text-white">
+          <div className="w-full bg-stone-900 mb-16 text-white">
             <div className="container mx-auto flex my-0 py-4">
               <div className="w-full flex">
                 <div className="w-full px-6">

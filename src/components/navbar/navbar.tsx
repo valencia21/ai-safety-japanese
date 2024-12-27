@@ -19,6 +19,11 @@ export const Navbar: React.FC = () => {
     }
   };
 
+  const handleCourseSelect = (course: string) => {
+    // Handle course selection here
+    setIsMenuOpen(false); // Close menu after selection
+  };
+
   return (
     <>
       <nav className="">
@@ -67,10 +72,10 @@ export const Navbar: React.FC = () => {
                 </button>
               </div>
 
-              <div className="sm:hidden relative">
+              <div className="sm:hidden">
                 <button
                   onClick={() => setIsMenuOpen(!isMenuOpen)}
-                  className="w-full py-2 flex items-center justify-center border-b-2 -mb-[2px] border-stone-900 bg-stone-100"
+                  className="py-2 flex items-center"
                 >
                   <span className="text-sm mr-2">AI Safety Fundamentals: Alignment</span>
                   <svg 
@@ -89,11 +94,17 @@ export const Navbar: React.FC = () => {
                 </button>
 
                 {isMenuOpen && (
-                  <div className="absolute z-50 w-full left-0 top-full bg-white border-b border-stone-200 shadow-lg">
+                  <div className="absolute z-50 w-full left-0 bg-white border-b border-stone-200">
                     <div className="container mx-auto px-6">
                       <button
+                        onClick={() => handleCourseSelect('alignment')}
+                        className="w-full text-left py-2 px-4 text-sm transition-colors hover:bg-stone-100"
+                      >
+                        AI Safety Fundamentals: Alignment
+                      </button>
+                      <button
                         disabled
-                        className="w-full text-center py-2 px-4 text-sm transition-colors text-stone-400 cursor-not-allowed"
+                        className="w-full text-left py-2 px-4 text-sm transition-colors text-stone-400 cursor-not-allowed"
                       >
                         Coming Soon
                       </button>
