@@ -15,13 +15,4 @@ export default defineConfig({
     cors: true,
   },
   base: '/',
-  build: {
-    rollupOptions: {
-      input: {
-        main: path.resolve(__dirname, 'index.html'),
-      },
-    },
-    outDir: 'dist',
-    assetsDir: 'assets',
-  },
 });
