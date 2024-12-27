@@ -23,9 +23,12 @@ export default {
   theme: {
     container: {
       center: true,
-      padding: "0rem",
       screens: {
-        "2xl": "1400px",
+        sm: '640px',
+        md: '768px',
+        lg: '1024px',
+        xl: '1280px',
+        '2xl': '1536px',
       },
     },
     extend: {
@@ -204,6 +207,42 @@ export default {
               fontWeight: '300',
               color: '#000000 !important',
               opacity: '1 !important',
+            },
+            'h1': {
+              fontSize: '2.25em', // Default size
+              '@screen lg': {
+                fontSize: '2.5em',
+              },
+              '@screen sm': {
+                fontSize: '2em',
+              },
+            },
+            'h2': {
+              fontSize: '1.75em',
+              '@screen lg': {
+                fontSize: '2em',
+              },
+              '@screen sm': {
+                fontSize: '1.5em',
+              },
+            },
+            'h3': {
+              fontSize: '1.5em',
+              '@screen lg': {
+                fontSize: '1.75em',
+              },
+              '@screen sm': {
+                fontSize: '1.25em',
+              },
+            },
+            'h4': {
+              fontSize: '1.25em',
+              '@screen lg': {
+                fontSize: '1.5em',
+              },
+              '@screen sm': {
+                fontSize: '1.125em',
+              },
             },
             'h1, h2, h3, h4, h5, h6, strong, b': {
               fontFamily: 'Inter, Noto Sans JP, system-ui, sans-serif',

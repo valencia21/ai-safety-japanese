@@ -291,15 +291,18 @@ body {
 
   /* Header spacing and styling */
   h1 {
-    @apply text-4xl font-bold mb-6 mt-8;
+    @apply font-bold mb-6 mt-8;
+    font-size: 2em; /* Base size */
   }
 
   h2 {
-    @apply text-3xl font-bold mb-4 mt-6;
+    @apply font-bold mb-4 mt-6;
+    font-size: 1.75em;
   }
 
   h3 {
-    @apply text-2xl font-bold mb-3 mt-5;
+    @apply font-bold mb-3 mt-5;
+    font-size: 1.5em;
   }
 
   /* List spacing */
@@ -336,15 +339,18 @@ body {
   }
 
   h1 {
-    @apply text-4xl font-bold mb-6 mt-8;
+    @apply font-bold mb-6 mt-8;
+    font-size: 2em;
   }
 
   h2 {
-    @apply text-3xl font-bold mb-4 mt-6;
+    @apply font-bold mb-4 mt-6;
+    font-size: 1.75em;
   }
 
   h3 {
-    @apply text-2xl font-bold mb-3 mt-5;
+    @apply font-bold mb-3 mt-5;
+    font-size: 1.5em;
   }
 }
 
@@ -360,4 +366,21 @@ body {
 .japanese {
   font-family: "Noto Sans JP", system-ui, sans-serif;
   font-weight: 300;
+}
+
+/* Add responsive adjustments */
+@screen sm {
+  .tiptap, .prose {
+    h1 { font-size: 2em; }
+    h2 { font-size: 1.5em; }
+    h3 { font-size: 1.25em; }
+  }
+}
+
+@screen lg {
+  .tiptap, .prose {
+    h1 { font-size: 2.5em; }
+    h2 { font-size: 2em; }
+    h3 { font-size: 1.75em; }
+  }
 }

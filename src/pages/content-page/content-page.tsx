@@ -126,13 +126,10 @@ const ContentPage: React.FC = ({}) => {
           </div>
           */}
           <div className="bg-stone-900 w-full pt-12 pb-8">
-            <div className="container mx-auto flex-col">
+            <div className="container mx-auto px-6">
               <div className="flex">
-                {/* Change to full width container */}
                 <div className="w-full flex">
-                  {/* Left space for TOC */}
-                  {/* Content area */}
-                  <div className="w-full px-6">
+                  <div className="w-full">
                     <div className="mb-6">
                       <div className="text-white text-lg">
                         {reading.original_title}
@@ -148,7 +145,7 @@ const ContentPage: React.FC = ({}) => {
                         </a>
                       </div>
                     </div>
-                    <h1 className="max-w-5xl justify-left text-4xl font-bold mb-2 w-full text-white">
+                    <h1 className="max-w-6xl justify-left text-4xl font-bold mb-2 w-full text-white">
                       {reading.title}
                     </h1>
                     <div className="max-w-3xl flex flex-row justify-left w-full">

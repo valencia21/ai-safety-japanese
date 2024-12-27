@@ -21,7 +21,7 @@ export const Navbar: React.FC = () => {
   return (
     <>
       <nav className="">
-        <div className="max-w-7xl mx-auto px-4 flex justify-between items-center sm:pl-6">
+        <div className="container mx-auto flex justify-between items-center">
           <Link to="/" className="flex flex-row items-center">
             <img 
               src={logoImage} 
@@ -51,7 +51,7 @@ export const Navbar: React.FC = () => {
 
         {isHomePage && (
           <div className="border-y border-stone-200">
-            <div className="max-w-7xl mx-auto flex px-6">
+            <div className="container mx-auto px-6">
               <button
                 className="py-2 px-4 text-sm transition-colors border-b-2 -mb-[2px] border-stone-900 bg-stone-100"
               >
