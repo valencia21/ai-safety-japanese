@@ -36,7 +36,7 @@ const ReadingItem: React.FC<{
         to={`/${reading.content_id}`}
         className="block flex-1 group cursor-pointer border-b border-stone-200"
       >
-        <div className="flex my-1 items-center w-full rounded transition-colors duration-200 ease-in-out group-hover:bg-stone-700 p-2">
+        <div className="flex my-1 items-center w-full rounded transition-colors duration-200 ease-in-out group-hover:bg-stone-900 p-2">
           <div className="flex-1">
             {reading.original_title && (
               <span className="text-xs text-stone-500 mb-0.5 block transition-colors duration-200 ease-in-out group-hover:text-white">
