@@ -202,9 +202,9 @@ export const Sidenotes: React.FC<SidenotesProps> = ({
                   <div 
                     className="text-white [&_a]:text-white [&_a]:font-bold [&_a]:underline [&_a:hover]:text-white" 
                     dangerouslySetInnerHTML={{ 
-                      __html: typeof sidenotes[currentSidenoteId] === 'string'
+                      __html: typeof sidenotes[currentSidenoteId] === 'string' 
                         ? sidenotes[currentSidenoteId]
-                        : sidenotes[currentSidenoteId]?.content || sidenotes[currentSidenoteId]?.toString()
+                        : (sidenotes[currentSidenoteId] as {content?: string})?.content || String(sidenotes[currentSidenoteId])
                     }} 
                   />
                 </div>

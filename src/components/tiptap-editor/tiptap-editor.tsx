@@ -27,6 +27,7 @@ import Table from '@tiptap/extension-table'
 import TableRow from '@tiptap/extension-table-row'
 import TableHeader from '@tiptap/extension-table-header'
 import TableCell from '@tiptap/extension-table-cell'
+import { Editor } from '@tiptap/react'
 
 interface TiptapEditorProps {
   title: any;
@@ -174,7 +175,7 @@ export const TiptapEditor: React.FC<TiptapEditorProps> = ({
   );
   const [isSidenoteEditorOpen, setIsSidenoteEditorOpen] = useState(false);
   const [tocItems, setTocItems] = useState([]);
-  const [editor, setEditor] = useState(null);
+  const [editor, setEditor] = useState<Editor | null>(null);
 
   const extensions = [
     StarterKit,
@@ -301,13 +302,14 @@ export const TiptapEditor: React.FC<TiptapEditorProps> = ({
   const handleInsertSidenote = (editor) => {
     editor.chain().focus().insertSidenote().run();
   };
-
   useEffect(() => {
-    const hasToc = editor?.getHTML().includes('<h1>') || 
-                   editor?.getHTML().includes('<h2>') || 
-                   editor?.getHTML().includes('<h3>');
+    if (!editor) return;
+    const html = editor.getHTML();
+    const hasToc = html.includes('<h1>') || 
+                   html.includes('<h2>') || 
+                   html.includes('<h3>');
     onTocVisibilityChange?.(hasToc);
-  }, [editor?.getHTML()]);
+  }, [editor]);
 
   return (
     <>
