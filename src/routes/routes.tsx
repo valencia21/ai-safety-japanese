@@ -1,6 +1,6 @@
 // src/Routes.tsx
 import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import ContentPage from "../pages/content-page/content-page";
 import { SessionInformation } from "../components/session-information/session-information";
 import { Navbar } from "../components/navbar/navbar";
@@ -13,6 +13,7 @@ export const AppRoutes: React.FC = () => {
         <Routes>
           <Route path="/" element={<SessionInformation />} />
           <Route path="/:contentId" element={<ContentPage />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </div>
     </Router>
