@@ -198,9 +198,9 @@ const ContentPage: React.FC = ({}) => {
       </div>
 
       <div className="container flex flex-row justify-between items-start w-full mb-24">
-        <div className="w-full lg:w-4/5 mx-auto lg:mx-0">
-          <div className="lg:hidden w-full max-w-2xl mx-auto">
-            <div className="relative px-4">
+        <div className="w-full lg:w-4/5 lg:mx-0">
+          <div className="lg:hidden">
+            <div className="px-4 sm:px-6 mx-auto -ml-4" style={{ maxWidth: "65ch" }}>
               <div ref={editorRef} className="w-full">
                 <TiptapEditor
                   title={reading.title}
