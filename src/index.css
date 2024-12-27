@@ -19,12 +19,12 @@ a {
 
 /* Editor link styles */
 .ProseMirror a {
-  @apply text-blue-500 underline hover:text-blue-700 cursor-pointer;
+  @apply font-bold underline cursor-pointer;
 }
 
 .tiptap a,
 .tiptap-link {
-  @apply text-blue-500 hover:text-blue-700 underline cursor-pointer;
+  @apply font-bold underline cursor-pointer;
 }
 
 body {
@@ -94,6 +94,10 @@ body {
     a {
       @apply text-gray-600 font-normal no-underline hover:text-gray-900;
     }
+  }
+
+  .sidenote-content {
+    @apply text-xs max-sm:text-white;
   }
 }
 
@@ -270,12 +274,12 @@ body {
 /* Content width constraints */
 .prose,
 .tiptap {
-  @apply w-full max-w-3xl mx-auto;
+  @apply w-full mx-auto;
 }
 
 /* Ensure editor has proper width */
 .tiptap-editor {
-  @apply w-full max-w-3xl mx-auto;
+  @apply w-full mx-auto;
 }
 
 /* Typography spacing */

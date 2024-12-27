@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../../index.css";
 import { mergeAttributes, Node, Extension } from "@tiptap/core";
 import { EditorProvider } from "@tiptap/react";
@@ -36,6 +36,7 @@ interface TiptapEditorProps {
   onSidenotePositionsChange: (
     positions: Array<{ id: number; pos: number; yCoordinate: number }>
   ) => void;
+  onTocVisibilityChange?: (isVisible: boolean) => void;
 }
 
 export interface SidenoteOptions {
@@ -165,6 +166,7 @@ export const TiptapEditor: React.FC<TiptapEditorProps> = ({
   contentId,
   editable = () => false,
   onSidenotePositionsChange,
+  onTocVisibilityChange,
 }) => {
   const key = editable() ? "editable" : "not-editable";
   const [currentSidenoteId, setCurrentSidenoteId] = useState<number | null>(
@@ -214,7 +216,7 @@ export const TiptapEditor: React.FC<TiptapEditorProps> = ({
     Link.configure({
       openOnClick: true,
       HTMLAttributes: {
-        class: 'text-red-700 hover:text-red-500',
+        class: 'font-bold underline',
       },
     }),
     Extension.create({
@@ -299,6 +301,13 @@ export const TiptapEditor: React.FC<TiptapEditorProps> = ({
   const handleInsertSidenote = (editor) => {
     editor.chain().focus().insertSidenote().run();
   };
+
+  useEffect(() => {
+    const hasToc = editor?.getHTML().includes('<h1>') || 
+                   editor?.getHTML().includes('<h2>') || 
+                   editor?.getHTML().includes('<h3>');
+    onTocVisibilityChange?.(hasToc);
+  }, [editor?.getHTML()]);
 
   return (
     <>

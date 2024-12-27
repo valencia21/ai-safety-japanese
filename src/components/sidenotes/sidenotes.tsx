@@ -4,6 +4,9 @@ interface SidenotesProps {
   sidenotes: Record<string, string>;
   sidenotePositions: Array<{ id: number; pos: number; yCoordinate: number }>;
   editorTopPosition: number | null;
+  showBottomSidenote?: boolean;
+  currentSidenoteId?: number | null;
+  onCloseBottomSidenote?: () => void;
 }
 
 const truncateHtml = (html: string, maxLength: number): string => {
@@ -64,6 +67,9 @@ export const Sidenotes: React.FC<SidenotesProps> = ({
   sidenotes,
   sidenotePositions,
   editorTopPosition,
+  showBottomSidenote = false,
+  currentSidenoteId = null,
+  onCloseBottomSidenote,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [expandedNotes, setExpandedNotes] = useState<Record<string, boolean>>(
@@ -123,54 +129,90 @@ export const Sidenotes: React.FC<SidenotesProps> = ({
   }
 
   return (
-    <div ref={containerRef} className="relative w-full">
-      {sidenotePositions.map(({ id, yCoordinate }) => {
-        const key = id.toString();
-        if (!sidenotes[key]) return null;
+    <>
+      {/* Desktop sidenotes */}
+      <div ref={containerRef} className="relative w-full hidden lg:block">
+        {sidenotePositions.map(({ id, yCoordinate }) => {
+          const key = id.toString();
+          if (!sidenotes[key]) return null;
 
-        const initialTop = Math.max(0, yCoordinate - editorTopPosition);
-        const isExpanded = expandedNotes[key];
-        
-        // Create a temporary div to get actual text length
-        const tempDiv = document.createElement('div');
-        tempDiv.innerHTML = sidenotes[key];
-        const textLength = tempDiv.textContent?.length || 0;
-        
-        const showMoreButton = textLength > 100;
-        const displayContent = isExpanded 
-          ? sidenotes[key] 
-          : truncateHtml(sidenotes[key], 100) + (showMoreButton ? '' : '');
+          const initialTop = Math.max(0, yCoordinate - editorTopPosition);
+          const isExpanded = expandedNotes[key];
+          
+          // Create a temporary div to get actual text length
+          const tempDiv = document.createElement('div');
+          tempDiv.innerHTML = sidenotes[key];
+          const textLength = tempDiv.textContent?.length || 0;
+          
+          const showMoreButton = textLength > 100;
+          const displayContent = isExpanded 
+            ? sidenotes[key] 
+            : truncateHtml(sidenotes[key], 100) + (showMoreButton ? '' : '');
 
-        return (
-          <div
-            key={key}
-            className="absolute left-0 right-0 flex flex-row gap-x-2 py-4 px-2 border-y border-stone-700"
-            style={{
-              top: `${initialTop}px`,
-            }}
-          >
-            <div className="flex items-top justify-center text-xs font-bold text-stone-700">
-              {key}.
-            </div>
-            <div className="flex flex-col gap-y-1">
+          return (
+            <div
+              key={key}
+              className="absolute left-0 right-0 flex flex-row gap-x-2 py-4 px-2 border-y border-stone-700
+                sm:bg-transparent
+                bg-stone-900"
+              style={{
+                top: `${initialTop}px`,
+              }}
+            >
               <div 
-                className="text-xs text-white prose prose-sm"
-                dangerouslySetInnerHTML={{ 
-                  __html: displayContent
-                }} 
-              />
-              {showMoreButton && (
-                <button
-                  className="text-left text-xs text-stone-700 font-bold"
-                  onClick={() => toggleExpand(key)}
-                >
-                  {isExpanded ? "閉じる" : "続きを読む"}
-                </button>
-              )}
+                className="flex items-top justify-center text-xs font-bold text-stone-700"
+              >
+                {key}.
+              </div>
+              <div className="flex flex-col gap-y-1">
+                <div 
+                  className="sidenote-content [&_a]:text-stone-900 [&_a]:font-bold [&_a]:underline [&_a:hover]:text-stone-600" 
+                  dangerouslySetInnerHTML={{ 
+                    __html: displayContent
+                  }} 
+                />
+                {showMoreButton && (
+                  <button
+                    className="text-left text-xs font-bold text-stone-700 max-sm:text-white"
+                    onClick={() => toggleExpand(key)}
+                  >
+                    {isExpanded ? "閉じる" : "続きを読む"}
+                  </button>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Mobile bottom sidenote */}
+      {showBottomSidenote && currentSidenoteId && sidenotes && (
+        <>
+          <div 
+            className="fixed inset-0 z-40 bg-transparent lg:hidden"
+            onClick={onCloseBottomSidenote}
+          />
+          <div 
+            className="fixed bottom-0 left-0 right-0 bg-stone-900 border-t border-stone-500 text-white p-6 z-50 lg:hidden"
+          >
+            <div className="container mx-auto max-w-4xl">
+              <div className="max-w-none text-white">
+                <div className="flex items-baseline gap-2">
+                  <span className="text-white">{currentSidenoteId}.</span>
+                  <div 
+                    className="text-white [&_a]:text-white [&_a]:font-bold [&_a]:underline [&_a:hover]:text-white" 
+                    dangerouslySetInnerHTML={{ 
+                      __html: typeof sidenotes[currentSidenoteId] === 'string'
+                        ? sidenotes[currentSidenoteId]
+                        : sidenotes[currentSidenoteId]?.content || sidenotes[currentSidenoteId]?.toString()
+                    }} 
+                  />
+                </div>
+              </div>
             </div>
           </div>
-        );
-      })}
-    </div>
+        </>
+      )}
+    </>
   );
 };
