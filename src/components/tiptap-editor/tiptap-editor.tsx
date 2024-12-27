@@ -69,7 +69,9 @@ const SidenoteNode = Node.create<SidenoteOptions>({
 
   addOptions() {
     return {
-      HTMLAttributes: {},
+      HTMLAttributes: {
+        class: 'sidenote select-none',
+      },
     };
   },
 
@@ -80,7 +82,7 @@ const SidenoteNode = Node.create<SidenoteOptions>({
   renderHTML({ node }) {
     return [
       "sup",
-      mergeAttributes(this.options.HTMLAttributes, { class: "sidenote" }),
+      mergeAttributes(this.options.HTMLAttributes, { class: "sidenote select-none" }),
       `${node.attrs.id}`,
     ];
   },

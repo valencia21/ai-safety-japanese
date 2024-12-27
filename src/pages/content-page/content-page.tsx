@@ -244,14 +244,14 @@ const ContentPage: React.FC = ({}) => {
             onClick={() => setShowBottomSidenote(false)}
           />
           <div 
-            className="fixed bottom-0 left-0 right-0 bg-stone-900 text-white p-6 z-50"
+            className="fixed bottom-0 left-0 right-0 bg-white border-t border-stone-500 text-stone-900 p-6 z-50"
           >
             <div className="container mx-auto max-w-4xl">
-              <div className="prose prose-invert prose-sm max-w-none text-white">
+              <div className="prose max-w-none text-stone-900">
                 <div className="flex items-baseline gap-2">
-                  <span className="text-stone-400">{currentSidenoteId}.</span>
+                  <span className="text-stone-500">{currentSidenoteId}.</span>
                   <div 
-                    className="text-white" 
+                    className="text-stone-900" 
                     dangerouslySetInnerHTML={{ 
                       __html: typeof reading.sidenotes[currentSidenoteId] === 'string'
                         ? reading.sidenotes[currentSidenoteId]
