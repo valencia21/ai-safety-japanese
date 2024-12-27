@@ -314,7 +314,7 @@ export const TiptapEditor: React.FC<TiptapEditorProps> = ({
   return (
     <>
       <div className="flex flex-row">
-        <div className="flex-col w-1/4 table-of-contents-container pr-4 mx-6 hidden lg:flex">
+        <div className="hidden xl:flex xl:flex-col xl:w-1/4 table-of-contents-container pr-4 mx-6">
           <div className="table-of-contents-title">
             {title}
           </div>
@@ -322,7 +322,7 @@ export const TiptapEditor: React.FC<TiptapEditorProps> = ({
             <ToC items={tocItems} editor={editor} />
           </div>
         </div>
-        <div className="flex flex-col w-full lg:w-3/4 lg:pl-0 pl-6">
+        <div className="flex flex-col w-full xl:w-3/4 xl:pl-0 pl-6">
           <div className="relative">
             <EditorProvider
               key={key}
