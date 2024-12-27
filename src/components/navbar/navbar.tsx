@@ -19,11 +19,6 @@ export const Navbar: React.FC = () => {
     }
   };
 
-  const handleCourseSelect = (course: string) => {
-    // Handle course selection here
-    setIsMenuOpen(false); // Close menu after selection
-  };
-
   return (
     <>
       <nav className="">
@@ -97,7 +92,6 @@ export const Navbar: React.FC = () => {
                   <div className="absolute z-50 w-full left-0 bg-white border-b border-stone-200">
                     <div className="container mx-auto px-6">
                       <button
-                        onClick={() => handleCourseSelect('alignment')}
                         className="w-full text-left py-2 px-4 text-sm transition-colors hover:bg-stone-100"
                       >
                         AI Safety Fundamentals: Alignment
