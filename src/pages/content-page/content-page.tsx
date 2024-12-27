@@ -128,12 +128,11 @@ const ContentPage: React.FC = ({}) => {
           <div className="bg-stone-900 w-full pt-12 pb-8">
             <div className="container mx-auto flex-col">
               <div className="flex">
-                {/* This div represents the 4/5 of the full width */}
-                <div className="w-full sm:w-4/5 flex">
-                  {/* Change sm to lg for the empty space */}
-                  <div className="hidden lg:flex lg:w-1/4"></div>
-                  {/* Update padding classes */}
-                  <div className="w-full lg:w-3/4 pl-6 lg:pl-16">
+                {/* Change to full width container */}
+                <div className="w-full flex">
+                  {/* Left space for TOC */}
+                  {/* Content area */}
+                  <div className="w-full px-6">
                     <div className="mb-6">
                       <div className="text-white text-lg">
                         {reading.original_title}
@@ -149,7 +148,7 @@ const ContentPage: React.FC = ({}) => {
                         </a>
                       </div>
                     </div>
-                    <h1 className="max-w-3xl justify-left text-4xl font-bold mb-2 w-full text-white">
+                    <h1 className="max-w-5xl justify-left text-4xl font-bold mb-2 w-full text-white">
                       {reading.title}
                     </h1>
                     <div className="max-w-3xl flex flex-row justify-left w-full">
@@ -174,25 +173,24 @@ const ContentPage: React.FC = ({}) => {
             </div>
           </div>
 
-          {/* New section for author, translator, and proofreader */}
+          {/* Author section - update the width classes */}
           <div className="w-full bg-stone-500 mb-16 text-white">
             <div className="container mx-auto flex my-0 py-4">
-              <div className="w-4/5 flex">
-                <div className="hidden lg:flex lg:w-1/4"></div>
-                <div className="w-full lg:w-3/4 pl-6 lg:pl-16">
+              <div className="w-full flex">
+                <div className="w-full px-6">
                   <div className="flex gap-x-8">
-                    <div className="w-3/5">
+                    <div className="mr-12">
                       <div className="text-xxs uppercase mb-1">Author</div>
                       <div className="text-base">{reading.author}</div>
                     </div>
                     {reading.translator && (
-                      <div className="w-1/5">
+                      <div className="">
                         <div className="text-xxs uppercase mb-1">Translator</div>
                         <div className="text-base">{reading.translator}</div>
                       </div>
                     )}
                     {reading.proofreader && (
-                      <div className="w-1/5">
+                      <div className="">
                         <div className="text-xxs uppercase mb-1">Proofreader</div>
                         <div className="text-base">{reading.proofreader}</div>
                       </div>
