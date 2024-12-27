@@ -217,7 +217,7 @@ export const SessionInformation: React.FC = () => {
                   <h2 className="text-2xl font-semibold text-stone-900 mt-1">
                     {activeSessionData.title}
                   </h2>
-                  <p className="text-stone-600 mt-2 text-lg whitespace-pre-line">
+                  <p className="text-stone-600 mt-2 text-base whitespace-pre-line">
                     {activeSessionData.description}
                   </p>
                 </div>

@@ -301,7 +301,7 @@ export const TiptapEditor: React.FC<TiptapEditorProps> = ({
   return (
     <>
       <div className="flex flex-row">
-        <div className="flex-col w-1/4 table-of-contents-container pr-4 mx-6 hidden sm:flex">
+        <div className="flex-col w-1/4 table-of-contents-container pr-4 mx-6 hidden lg:flex">
           <div className="table-of-contents-title">
             {title}
           </div>
@@ -309,7 +309,7 @@ export const TiptapEditor: React.FC<TiptapEditorProps> = ({
             <ToC items={tocItems} editor={editor} />
           </div>
         </div>
-        <div className="flex flex-col w-full sm:w-3/4">
+        <div className="flex flex-col w-full lg:w-3/4 lg:pl-0 pl-6">
           <div className="relative">
             <EditorProvider
               key={key}
@@ -317,14 +317,27 @@ export const TiptapEditor: React.FC<TiptapEditorProps> = ({
               editorProps={{
                 editable,
                 attributes: {
-                  class:
-                    "prose dark:prose-invert prose-sm sm:prose-sm lg:prose-sm xl:prose-base focus:outline-none max-w-4xl",
+                  class: `prose dark:prose-invert prose-base xl:prose-base focus:outline-none max-w-4xl`,
                 },
                 // @ts-ignore
                 handleClickOn: (view, pos, node) => {
                   if (node.type.name === "sidenote") {
-                    setCurrentSidenoteId(node.attrs.id);
-                    setIsSidenoteEditorOpen(true);
+                    console.log("Sidenote clicked", {
+                      isEditable: editable(),
+                      windowWidth: window.innerWidth,
+                      nodeId: node.attrs.id
+                    });
+                    
+                    if (editable()) {
+                      setCurrentSidenoteId(node.attrs.id);
+                      setIsSidenoteEditorOpen(true);
+                    } else if (window.innerWidth < 1024) { // lg breakpoint is 1024px
+                      console.log("Dispatching sidenote event");
+                      const event = new CustomEvent('showSidenote', {
+                        detail: { id: node.attrs.id }
+                      });
+                      window.dispatchEvent(event);
+                    }
                   }
                 },
               }}
@@ -352,7 +365,7 @@ export const TiptapEditor: React.FC<TiptapEditorProps> = ({
               }}
             >
               <>
-                {editor && <FloatingLinkMenu editor={editor} />}
+                {editor && editable() && <FloatingLinkMenu editor={editor} />}
               </>
             </EditorProvider>
           </div>

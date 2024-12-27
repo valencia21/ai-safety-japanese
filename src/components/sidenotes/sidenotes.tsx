@@ -18,12 +18,25 @@ const truncateHtml = (html: string, maxLength: number): string => {
   let truncated = '';
   let currentLength = 0;
   let inTag = false;
+  let openTags: string[] = [];
   
   for (let i = 0; i < html.length; i++) {
     const char = html[i];
     
     if (char === '<') {
       inTag = true;
+      let tag = '';
+      let j = i + 1;
+      // Collect the tag name
+      while (j < html.length && html[j] !== '>' && html[j] !== ' ') {
+        tag += html[j];
+        j++;
+      }
+      if (tag[0] !== '/') {
+        openTags.unshift(tag); // Add opening tag to the beginning
+      } else {
+        openTags.shift(); // Remove the last opened tag
+      }
     }
     
     truncated += char;
@@ -31,12 +44,11 @@ const truncateHtml = (html: string, maxLength: number): string => {
     if (!inTag) {
       currentLength++;
       if (currentLength >= maxLength) {
-        // Find the end of the current tag if we're in one
-        while (i < html.length && html[i] !== '>') {
-          i++;
-          truncated += html[i];
-        }
-        break;
+        // Close all open tags in reverse order
+        openTags.forEach(tag => {
+          truncated += `</${tag}>`;
+        });
+        return truncated;
       }
     }
     
@@ -45,10 +57,7 @@ const truncateHtml = (html: string, maxLength: number): string => {
     }
   }
 
-  // Close any open tags
-  const tempDiv = document.createElement('div');
-  tempDiv.innerHTML = truncated;
-  return tempDiv.innerHTML;
+  return truncated;
 };
 
 export const Sidenotes: React.FC<SidenotesProps> = ({
@@ -130,7 +139,7 @@ export const Sidenotes: React.FC<SidenotesProps> = ({
         const showMoreButton = textLength > 100;
         const displayContent = isExpanded 
           ? sidenotes[key] 
-          : truncateHtml(sidenotes[key], 100);
+          : truncateHtml(sidenotes[key], 100) + (showMoreButton ? '' : '');
 
         return (
           <div
@@ -147,7 +156,7 @@ export const Sidenotes: React.FC<SidenotesProps> = ({
               <div 
                 className="text-xs text-white prose prose-sm"
                 dangerouslySetInnerHTML={{ 
-                  __html: displayContent + (showMoreButton && !isExpanded ? '...' : '')
+                  __html: displayContent
                 }} 
               />
               {showMoreButton && (
