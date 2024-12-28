@@ -176,7 +176,7 @@ export const SessionInformation: React.FC = () => {
   const activeSessionData = sessions.find(s => s.id === activeSession);
 
   return (
-    <div className="fixed inset-0 pt-[102px]">
+    <div className="fixed inset-x-0 bottom-0 top-[102px]">
       <div className="h-full flex">
         {/* Left sidebar - fixed position */}
         <div className="hidden md:block w-96 border-r border-stone-200">

@@ -21,7 +21,7 @@ export const Navbar: React.FC = () => {
 
   return (
     <>
-      <nav className="">
+      <nav>
         <div className="container mx-auto flex justify-between items-center">
           <Link to="/" className="flex flex-row items-center">
             <img 
@@ -51,12 +51,10 @@ export const Navbar: React.FC = () => {
         </div>
 
         {isHomePage && (
-          <div className="border-y border-stone-200">
-            <div className="container mx-auto px-6">
-              <div className="hidden sm:block">
-                <button
-                  className="py-2 px-4 text-sm transition-colors border-b-2 -mb-[2px] border-stone-900 bg-stone-100"
-                >
+          <div className="border-y border-stone-200 relative z-50 bg-white">
+            <div className="container mx-auto">
+              <div className="hidden sm:block px-6">
+                <button className="py-2 px-4 text-sm transition-colors border-b-2 -mb-[2px] border-stone-900 bg-stone-100">
                   AI Safety Fundamentals: Alignment
                 </button>
                 <button
@@ -70,9 +68,9 @@ export const Navbar: React.FC = () => {
               <div className="sm:hidden">
                 <button
                   onClick={() => setIsMenuOpen(!isMenuOpen)}
-                  className="py-2 flex items-center"
+                  className="w-full py-2 px-6 flex items-center justify-between bg-white"
                 >
-                  <span className="text-sm mr-2">AI Safety Fundamentals: Alignment</span>
+                  <span className="text-sm">AI Safety Fundamentals: Alignment</span>
                   <svg 
                     className={`w-4 h-4 transition-transform ${isMenuOpen ? 'rotate-180' : ''}`}
                     fill="none" 
@@ -89,19 +87,16 @@ export const Navbar: React.FC = () => {
                 </button>
 
                 {isMenuOpen && (
-                  <div className="absolute z-50 w-full left-0 bg-white border-b border-stone-200">
-                    <div className="container mx-auto px-6">
-                      <button
-                        className="w-full text-left py-2 px-4 text-sm transition-colors hover:bg-stone-100"
-                      >
-                        AI Safety Fundamentals: Alignment
-                      </button>
-                      <button
-                        disabled
-                        className="w-full text-left py-2 px-4 text-sm transition-colors text-stone-400 cursor-not-allowed"
-                      >
-                        Coming Soon
-                      </button>
+                  <div className="border-t border-stone-200 bg-white">
+                    <div className="container mx-auto">
+                      <div className="divide-y divide-stone-200">
+                        <button
+                          disabled
+                          className="w-full text-left py-2 px-6 text-sm transition-colors text-stone-400 cursor-not-allowed bg-white"
+                        >
+                          Coming Soon
+                        </button>
+                      </div>
                     </div>
                   </div>
                 )}
