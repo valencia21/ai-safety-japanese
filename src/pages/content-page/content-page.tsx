@@ -3,7 +3,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { TiptapEditor } from "../../components/tiptap-editor/tiptap-editor";
 import { supabase } from "../../supabase-client";
-import { LockKey, LockKeyOpen } from "@phosphor-icons/react";
+import { LockKey, LockKeyOpen, Link } from "@phosphor-icons/react";
 import { Loading } from "@lemonsqueezy/wedges";
 import { Sidenotes } from "@/components/sidenotes/sidenotes";
 
@@ -131,8 +131,16 @@ const ContentPage: React.FC = ({}) => {
                 <div className="w-full flex">
                   <div className="w-full">
                     <div className="mb-6">
-                      <div className="text-stone-900 text-lg">
-                        {reading.original_title}
+                      <div className="flex flex-row gap-x-2 items-center text-stone-900 text-lg">
+                        <a 
+                          href={reading.link_to_original}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center hover:text-stone-600 transition-colors"
+                        >
+                          {reading.original_title}
+                          <Link size="18px" className="ml-2" />
+                        </a>
                       </div>
                     </div>
                     <h1 className="max-w-6xl justify-left text-4xl font-bold mb-2 w-full text-stone-900">

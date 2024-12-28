@@ -2,7 +2,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import ContentPage from "../pages/content-page/content-page";
-import { SessionInformation } from "../components/session-information/session-information";
+import { HomePage } from "../pages/home/index";
 import { Navbar } from "../components/navbar/navbar";
 
 export const AppRoutes: React.FC = () => {
@@ -11,7 +11,7 @@ export const AppRoutes: React.FC = () => {
       <Navbar />
       <div className="flex flex-col gap-y-8 items-center">
         <Routes>
-          <Route path="/" element={<SessionInformation />} />
+          <Route path="/" element={<HomePage />} />
           <Route path="/:contentId" element={<ContentPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

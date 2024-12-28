@@ -19,6 +19,7 @@ export type Database = {
           image: string | null
           link_to_original: string | null
           original_title: string | null
+          project_id: Database["public"]["Enums"]["project_type"]
           proofreader: Database["public"]["Enums"]["team"] | null
           sidenotes: Json | null
           time_to_read: string | null
@@ -34,6 +35,7 @@ export type Database = {
           image?: string | null
           link_to_original?: string | null
           original_title?: string | null
+          project_id?: Database["public"]["Enums"]["project_type"]
           proofreader?: Database["public"]["Enums"]["team"] | null
           sidenotes?: Json | null
           time_to_read?: string | null
@@ -49,6 +51,7 @@ export type Database = {
           image?: string | null
           link_to_original?: string | null
           original_title?: string | null
+          project_id?: Database["public"]["Enums"]["project_type"]
           proofreader?: Database["public"]["Enums"]["team"] | null
           sidenotes?: Json | null
           time_to_read?: string | null
@@ -66,6 +69,7 @@ export type Database = {
           id: number
           order: number | null
           original_title: string | null
+          project_id: Database["public"]["Enums"]["project_type"]
           required_reading: boolean | null
           revision_url: string | null
           session_number: number | null
@@ -79,6 +83,7 @@ export type Database = {
           id?: number
           order?: number | null
           original_title?: string | null
+          project_id?: Database["public"]["Enums"]["project_type"]
           required_reading?: boolean | null
           revision_url?: string | null
           session_number?: number | null
@@ -92,6 +97,7 @@ export type Database = {
           id?: number
           order?: number | null
           original_title?: string | null
+          project_id?: Database["public"]["Enums"]["project_type"]
           required_reading?: boolean | null
           revision_url?: string | null
           session_number?: number | null
@@ -104,6 +110,7 @@ export type Database = {
           created_at: string
           description: string | null
           id: number
+          project_id: Database["public"]["Enums"]["project_type"]
           session_counter_jp: string | null
           session_number: number | null
           title: string | null
@@ -112,6 +119,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           id?: number
+          project_id?: Database["public"]["Enums"]["project_type"]
           session_counter_jp?: string | null
           session_number?: number | null
           title?: string | null
@@ -120,6 +128,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           id?: number
+          project_id?: Database["public"]["Enums"]["project_type"]
           session_counter_jp?: string | null
           session_number?: number | null
           title?: string | null
@@ -131,10 +140,16 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      set_current_project: {
+        Args: {
+          p_id: string
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       format: "記事" | "ビデオ" | "ブログ" | "レポート" | "研究"
+      project_type: "ai_safety" | "animal_welfare"
       team:
         | "Masayuki Nagai"
         | "bioshok"
