@@ -134,16 +134,6 @@ const ContentPage: React.FC = ({}) => {
                       <div className="text-stone-900 text-lg">
                         {reading.original_title}
                       </div>
-                      <div className="flex flex-row items-center gap-x-1 text-xs text-stone-700 inline-flex">
-                        <a
-                          href={reading.link_to_original}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="hover:text-white mt-1"
-                        >
-                          原文を見る
-                        </a>
-                      </div>
                     </div>
                     <h1 className="max-w-6xl justify-left text-4xl font-bold mb-2 w-full text-stone-900">
                       {reading.title}

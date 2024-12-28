@@ -12,19 +12,14 @@ a {
   @apply no-underline;
 }
 
-/* Remove prose link styles since we're focusing on editor */
-.prose a {
-  @apply no-underline;
-}
-
 /* Editor link styles */
 .ProseMirror a {
-  @apply font-bold underline cursor-pointer;
+  @apply font-bold underline cursor-pointer hover:underline;
 }
 
 .tiptap a,
 .tiptap-link {
-  @apply font-bold underline cursor-pointer;
+  @apply font-bold underline cursor-pointer hover:underline;
 }
 
 body {
