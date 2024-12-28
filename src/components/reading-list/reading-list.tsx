@@ -22,7 +22,9 @@ export const ReadingList: React.FC = () => {
   useEffect(() => {
     const loadReadings = async () => {
       const data = await fetchReadings();
-      setReadings(data.sort((a, b) => (a.order || 0) - (b.order || 0)));
+      // Filter out any readings with null titles before setting state
+      const validReadings = data.filter(reading => reading.title !== null) as ReadingOverview[];
+      setReadings(validReadings);
     };
     loadReadings();
   }, []);
