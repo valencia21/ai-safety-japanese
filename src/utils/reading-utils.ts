@@ -1,14 +1,16 @@
-import { supabase } from "../supabase-client";
+import { supabase, initializeProject } from "../supabase-client";
+import { currentProject } from '../config/project';
 
 export const fetchReadings = async () => {
-  const projectId = import.meta.env.VITE_PROJECT_ID;
-  console.log("Attempting to fetch readings for project:", projectId);
+  console.log("Attempting to fetch readings for project:", currentProject.id);
   
   try {
+    await initializeProject();
+    
     const { data, error } = await supabase
       .from("reading_overview")
       .select("*")
-      .eq('project_id', projectId)
+      .eq('project_id', currentProject.id)
       .order('order', { ascending: true })
       .throwOnError();
 

@@ -28,6 +28,8 @@ import TableRow from '@tiptap/extension-table-row'
 import TableHeader from '@tiptap/extension-table-header'
 import TableCell from '@tiptap/extension-table-cell'
 import { Editor } from '@tiptap/react'
+import { currentProject } from "../../config/project";
+import Superscript from '@tiptap/extension-superscript'
 
 interface TiptapEditorProps {
   title: any;
@@ -275,6 +277,11 @@ export const TiptapEditor: React.FC<TiptapEditorProps> = ({
     TableRow,
     TableHeader,
     TableCell,
+    Superscript.configure({
+      HTMLAttributes: {
+        class: 'align-super text-sm',
+      },
+    }),
   ];
 
   // @ts-ignore
@@ -330,7 +337,9 @@ export const TiptapEditor: React.FC<TiptapEditorProps> = ({
               editorProps={{
                 editable,
                 attributes: {
-                  class: `prose dark:prose-invert prose-base xl:prose-base focus:outline-none max-w-4xl`,
+                  class: `prose dark:prose-invert prose-base xl:prose-base focus:outline-none ${
+                    currentProject.id === 'animal_welfare' ? 'font-gambetta' : 'font-inter'
+                  }`,
                 },
                 // @ts-ignore
                 handleClickOn: (view, pos, node) => {

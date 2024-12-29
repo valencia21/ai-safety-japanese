@@ -1,6 +1,6 @@
 // src/components/MenuBar.tsx
 import { useCurrentEditor } from "@tiptap/react";
-import { Link, YoutubeLogo, Function, Code as CodeIcon, Table, SquaresFour, Rows, Columns, TrashSimple, MinusSquare } from "@phosphor-icons/react"
+import { Link, YoutubeLogo, Function, Code as CodeIcon, Table, SquaresFour, Rows, Columns, TrashSimple, MinusSquare, ArrowUp } from "@phosphor-icons/react"
 import { useCallback, useState } from "react";
 import { LinkMatcherPopup } from './link-matcher-popup';
 import "../../index.css";
@@ -175,7 +175,7 @@ export const TiptapMenu: React.FC<TiptapMenuProps> = ({}) => {
   }
 
   return (
-    <div className="sticky top-0 z-50 bg-white dark:bg-gray-900 py-2 border-b border-gray-200 dark:border-gray-700">
+    <div className="sticky top-0 z-50 dark:bg-gray-900 py-2 border-b border-gray-200 dark:border-gray-700">
       <div className="flex flex-wrap gap-2">
         <button
           onClick={() => editor.chain().focus().toggleBold().run()}
@@ -339,7 +339,7 @@ export const TiptapMenu: React.FC<TiptapMenuProps> = ({}) => {
             </svg>
           </button>
           <div 
-            className={`${showOrderedListOptions ? '' : 'hidden'} absolute z-50 mt-1 bg-white dark:bg-gray-800 rounded shadow-lg p-1`}
+            className={`${showOrderedListOptions ? '' : 'hidden'} absolute z-50 mt-1 dark:bg-gray-800 rounded shadow-lg p-1`}
           >
             <button
               onClick={() => {
@@ -448,7 +448,7 @@ export const TiptapMenu: React.FC<TiptapMenuProps> = ({}) => {
             </svg>
           </button>
           <div 
-            className={`${showTableOptions ? '' : 'hidden'} absolute z-50 mt-1 bg-white dark:bg-gray-800 rounded shadow-lg p-1`}
+            className={`${showTableOptions ? '' : 'hidden'} absolute z-50 mt-1 dark:bg-gray-800 rounded shadow-lg p-1`}
           >
             <button
               onClick={() => {
@@ -532,6 +532,16 @@ export const TiptapMenu: React.FC<TiptapMenuProps> = ({}) => {
             </button>
           </div>
         </div>
+        <button
+          onClick={() => editor.chain().focus().toggleSuperscript().run()}
+          disabled={!editor.can().chain().focus().toggleSuperscript().run()}
+          className={`${
+            editor.isActive('superscript') ? "is-active" : ""
+          } bg-gray-300 px-2 py-1 rounded text-xs hover:bg-gray-200 inline-flex items-center gap-1`}
+        >
+          <ArrowUp size={18} />
+          sup
+        </button>
       </div>
       
       <LinkMatcherPopup

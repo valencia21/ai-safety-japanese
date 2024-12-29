@@ -1,18 +1,15 @@
 import { SessionInformation } from '../../components/session-information/session-information';
 import { ReadingList } from '../../components/reading-list/reading-list';
+import { currentProject } from '../../config/project';
 
 export const HomePage: React.FC = () => {
-  const projectId = import.meta.env.VITE_PROJECT_ID;
-
   const renderContent = () => {
-    if (projectId === 'ai_safety') {
+    if (currentProject.defaultView === 'sessions') {
       return <SessionInformation />;
     }
-
-    if (projectId === 'animal_welfare') {
+    if (currentProject.defaultView === 'readings') {
       return <ReadingList />;
     }
-
     return null;
   };
 

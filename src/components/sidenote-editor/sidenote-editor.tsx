@@ -11,7 +11,6 @@ interface SidenoteEditorProps {
 }
 
 export const SidenoteEditor = ({ contentId, sidenoteId, onClose, isOpen }: SidenoteEditorProps) => {
-  const [sidenotes, setSidenotes] = useState<Record<number, string>>({});
   const [sidenoteContent, setSidenoteContent] = useState("");
 
   useEffect(() => {
@@ -25,7 +24,7 @@ export const SidenoteEditor = ({ contentId, sidenoteId, onClose, isOpen }: Siden
 
     const { data: fetchedSidenotes, error } = await supabase
       .from('reading_details')
-      .select('content')
+      .select('sidenotes')
       .eq("content_id", contentId);
 
     if (error) {
@@ -33,18 +32,18 @@ export const SidenoteEditor = ({ contentId, sidenoteId, onClose, isOpen }: Siden
       return;
     }
 
-    if (fetchedSidenotes && fetchedSidenotes[0]?.content) {
-      const content = fetchedSidenotes[0].content as Record<string, string>;
-      setSidenoteContent(content[sidenoteId.toString()] || "");
+    if (fetchedSidenotes && fetchedSidenotes[0]?.sidenotes) {
+      const sidenotes = fetchedSidenotes[0].sidenotes as Record<string, string>;
+      setSidenoteContent(sidenotes[sidenoteId.toString()] || "");
     }
   };
 
   const saveSidenote = async () => {
     if (!contentId) return;
 
-    const { error: fetchError } = await supabase
+    const { data: existingData, error: fetchError } = await supabase
       .from('reading_details')
-      .select('content')
+      .select('sidenotes')
       .eq("content_id", contentId)
       .single();
 
@@ -53,8 +52,8 @@ export const SidenoteEditor = ({ contentId, sidenoteId, onClose, isOpen }: Siden
       return;
     }
 
-    const updatedSidenotes = {
-      ...sidenotes,
+    const updatedSidenotes: Record<string, string> = {
+      ...((existingData?.sidenotes as Record<string, string>) || {}),
       [sidenoteId.toString()]: sidenoteContent,
     };
 
@@ -66,7 +65,6 @@ export const SidenoteEditor = ({ contentId, sidenoteId, onClose, isOpen }: Siden
 
       if (error) throw error;
 
-      setSidenotes(updatedSidenotes);
       console.log("Sidenote saved successfully");
       onClose();
     } catch (error) {
@@ -83,7 +81,7 @@ export const SidenoteEditor = ({ contentId, sidenoteId, onClose, isOpen }: Siden
     const url = window.prompt('Enter URL:');
     if (!url) return;
 
-    const link = `<a href="${url}" target="_blank" rel="noopener noreferrer" class="text-red-700 hover:text-red-500">${selectedText}</a>`;
+    const link = `<a href="${url}" target="_blank" rel="noopener noreferrer">${selectedText}</a>`;
 
     const newContent = 
       sidenoteContent.substring(0, textarea.selectionStart) +

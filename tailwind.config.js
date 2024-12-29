@@ -203,7 +203,7 @@ export default {
           css: {
             color: '#000000 !important',
             'p': {
-              fontFamily: 'Inter, Noto Sans JP, system-ui, sans-serif',
+              fontFamily: 'inherit',
               fontWeight: '300',
               color: '#000000 !important',
               opacity: '1 !important',
@@ -245,7 +245,7 @@ export default {
               },
             },
             'h1, h2, h3, h4, h5, h6, strong, b': {
-              fontFamily: 'Inter, Noto Sans JP, system-ui, sans-serif',
+              fontFamily: 'inherit',
               fontWeight: '700',
               color: '#000000 !important',
             },

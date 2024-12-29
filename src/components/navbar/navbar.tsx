@@ -3,6 +3,7 @@ import { useLocation, Link } from "react-router-dom";
 import AuthPopup from "../auth";
 import { useAuth } from "../../context/AuthContext";
 import logoImage from "../../assets/logo_transparent.png";
+import { currentProject } from '../../config/project';
 
 export const Navbar: React.FC = () => {
   const [isAuthOpen, setIsAuthOpen] = useState(false);
@@ -19,6 +20,10 @@ export const Navbar: React.FC = () => {
     }
   };
 
+  const getTabBackgroundColor = () => {
+    return currentProject.id === 'animal_welfare' ? 'bg-sage-200' : 'bg-stone-100';
+  };
+
   return (
     <>
       <nav>
@@ -26,11 +31,11 @@ export const Navbar: React.FC = () => {
           <Link to="/" className="flex flex-row items-center">
             <img 
               src={logoImage} 
-              alt="AI Safety Notes Logo" 
+              alt={`${currentProject.title} Logo`}
               className="h-16 w-auto rounded"
             />
             <div className="mt-0.5 text-stone-900 font-supreme leading-tight text-sm -ml-2">
-              <div>AI Safety</div>
+              <div>{currentProject.title.split(' ')[0]} {currentProject.title.split(' ')[1]}</div>
               <div className="-mt-0.5">Notes</div>
             </div>
           </Link>
@@ -51,26 +56,26 @@ export const Navbar: React.FC = () => {
         </div>
 
         {isHomePage && (
-          <div className="border-y border-stone-200 relative z-50 bg-white">
+          <div className={`border-t ${currentProject.id === 'animal_welfare' ? 'border-stone-900' : 'border-stone-200'} relative z-50`}>
             <div className="container mx-auto">
               <div className="hidden sm:block px-6">
-                <button className="py-2 px-4 text-sm transition-colors border-b-2 -mb-[2px] border-stone-900 bg-stone-100">
-                  AI Safety Fundamentals: Alignment
+                <button className={`py-2 px-4 text-sm transition-colors border-b-2 -mb-[2px] border-stone-900 ${getTabBackgroundColor()}`}>
+                  {currentProject.currentTab}
                 </button>
                 <button
                   disabled
                   className="py-2 px-4 text-sm transition-colors text-stone-400 cursor-not-allowed"
                 >
-                  Coming Soon
+                  {currentProject.comingSoon}
                 </button>
               </div>
 
               <div className="sm:hidden">
                 <button
                   onClick={() => setIsMenuOpen(!isMenuOpen)}
-                  className="w-full py-2 px-6 flex items-center justify-between bg-white"
+                  className={`w-full py-2 px-6 flex items-center justify-between ${getTabBackgroundColor()}`}
                 >
-                  <span className="text-sm">AI Safety Fundamentals: Alignment</span>
+                  <span className="text-sm">{currentProject.currentTab}</span>
                   <svg 
                     className={`w-4 h-4 transition-transform ${isMenuOpen ? 'rotate-180' : ''}`}
                     fill="none" 
@@ -87,14 +92,14 @@ export const Navbar: React.FC = () => {
                 </button>
 
                 {isMenuOpen && (
-                  <div className="border-t border-stone-200 bg-white">
+                  <div className="border-t border-stone-200">
                     <div className="container mx-auto">
                       <div className="divide-y divide-stone-200">
                         <button
                           disabled
-                          className="w-full text-left py-2 px-6 text-sm transition-colors text-stone-400 cursor-not-allowed bg-white"
+                          className="w-full text-left py-2 px-6 text-sm transition-colors text-stone-400 cursor-not-allowed"
                         >
-                          Coming Soon
+                          {currentProject.comingSoon}
                         </button>
                       </div>
                     </div>

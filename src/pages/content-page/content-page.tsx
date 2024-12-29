@@ -6,6 +6,7 @@ import { supabase } from "../../supabase-client";
 import { LockKey, LockKeyOpen, Link } from "@phosphor-icons/react";
 import { Loading } from "@lemonsqueezy/wedges";
 import { Sidenotes } from "@/components/sidenotes/sidenotes";
+import { currentProject } from '../../config/project';
 
 interface Reading {
   id: number;
@@ -24,7 +25,7 @@ interface Reading {
 const ContentPage: React.FC = ({}) => {
   const [reading, setReading] = useState<Reading | null>(null);
   const editorRef = useRef<HTMLDivElement | null>(null);
-  const [isEditable, setIsEditable] = useState(false);
+  const [isEditable, setIsEditable] = useState(true);
   const { contentId } = useParams<{ contentId?: string }>();
   const secretKey = import.meta.env.VITE_EDITING_KEY;
   const [editorTopPosition, setEditorTopPosition] = useState<number | null>(
@@ -102,11 +103,15 @@ const ContentPage: React.FC = ({}) => {
     }
   };
 
+  const getBackgroundColor = () => {
+    return currentProject.id === 'animal_welfare' ? 'bg-sage-200' : 'bg-stone-200';
+  };
+
   return (
     <div className="w-full flex flex-col items-center relative">
       {/* Show loading overlay when loading OR reading is null */}
       {(isLoading || !reading) && (
-        <div className="fixed inset-0 bg-white z-50 flex items-center justify-center">
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
           <Loading type="line" className="text-black" size="lg" />
         </div>
       )}
@@ -125,7 +130,7 @@ const ContentPage: React.FC = ({}) => {
             )}
           </div>
           */}
-          <div className="bg-stone-200 w-full pt-12 pb-8">
+          <div className={`${getBackgroundColor()} w-full pt-12 pb-8`}>
             <div className="container mx-auto px-6">
               <div className="flex">
                 <div className="w-full flex">
@@ -168,16 +173,18 @@ const ContentPage: React.FC = ({}) => {
             </div>
           </div>
 
-          {/* Author section - update the width classes */}
+          {/* Author section */}
           <div className="w-full bg-stone-900 mb-16 text-white">
             <div className="container mx-auto flex my-0 py-4">
               <div className="w-full flex">
                 <div className="w-full px-6">
                   <div className="flex gap-x-8">
-                    <div className="mr-12">
-                      <div className="text-xxs uppercase mb-1">Author</div>
-                      <div className="text-base">{reading.author}</div>
-                    </div>
+                    {reading.author && (
+                      <div className="mr-12">
+                        <div className="text-xxs uppercase mb-1">Author</div>
+                        <div className="text-base">{reading.author}</div>
+                      </div>
+                    )}
                     {reading.translator && (
                       <div className="">
                         <div className="text-xxs uppercase mb-1">Translator</div>

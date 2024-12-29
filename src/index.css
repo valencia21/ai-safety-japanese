@@ -7,23 +7,21 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Remove global link styles */
-a {
-  @apply no-underline;
+/* Add this new style block that uses CSS variables */
+:root {
+  --app-font-family: "Inter", "Noto Sans JP", system-ui, sans-serif;
 }
 
-/* Editor link styles */
-.ProseMirror a {
-  @apply font-bold underline cursor-pointer hover:underline;
+[data-project="animal_welfare"] {
+  --app-font-family: "Gambetta", system-ui, serif;
 }
 
-.tiptap a,
-.tiptap-link {
-  @apply font-bold underline cursor-pointer hover:underline;
+[data-project="ai_safety"] {
+  --app-font-family: "Inter", "Noto Sans JP", system-ui, sans-serif;
 }
 
 body {
-  font-family: "Inter", "Noto Sans JP", system-ui, sans-serif;
+  font-family: var(--app-font-family);
   font-weight: 300;
   @apply mx-0;
 }
