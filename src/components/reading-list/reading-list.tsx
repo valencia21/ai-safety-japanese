@@ -22,8 +22,15 @@ export const ReadingList: React.FC = () => {
   useEffect(() => {
     const loadReadings = async () => {
       const data = await fetchReadings();
-      // Filter out any readings with null titles before setting state
-      const validReadings = data.filter(reading => reading.title !== null) as ReadingOverview[];
+      // Filter out any readings with null titles and sort by original_title
+      const validReadings = data
+        .filter(reading => reading.title !== null)
+        .sort((a, b) => {
+          // Handle cases where original_title might be null
+          if (!a.original_title) return 1;
+          if (!b.original_title) return -1;
+          return a.original_title.localeCompare(b.original_title);
+        }) as ReadingOverview[];
       setReadings(validReadings);
     };
     loadReadings();

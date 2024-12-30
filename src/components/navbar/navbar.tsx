@@ -59,7 +59,7 @@ export const Navbar: React.FC = () => {
           <div className={"border-t border-stone-900 relative z-50"}>
             <div className="container mx-auto">
               <div className="hidden sm:block px-6">
-                <button className={`py-2 px-4 text-sm transition-colors -mb-[2px] ${getTabBackgroundColor()}`}>
+                <button className={`py-2 px-4 text-sm transition-colors border-b-2 border-stone-900 -mb-[2px] ${getTabBackgroundColor()}`}>
                   {currentProject.currentTab}
                 </button>
                 <button

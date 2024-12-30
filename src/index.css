@@ -288,6 +288,11 @@ body {
     font-size: 2em; /* Base size */
   }
 
+  /* Add this new selector to remove top margin when h1 is first child */
+  > h1:first-child {
+    @apply mt-0;
+  }
+
   h2 {
     @apply font-bold mb-4 mt-6;
     font-size: 1.75em;
@@ -334,6 +339,11 @@ body {
   h1 {
     @apply font-bold mb-6 mt-8;
     font-size: 2em;
+  }
+
+  /* Add the same selector for prose */
+  > h1:first-child {
+    @apply mt-0;
   }
 
   h2 {
