@@ -56,10 +56,10 @@ export const Navbar: React.FC = () => {
         </div>
 
         {isHomePage && (
-          <div className={`border-t ${currentProject.id === 'animal_welfare' ? 'border-stone-900' : 'border-stone-200'} relative z-50`}>
+          <div className={"border-t border-stone-900 relative z-50"}>
             <div className="container mx-auto">
               <div className="hidden sm:block px-6">
-                <button className={`py-2 px-4 text-sm transition-colors border-b-2 -mb-[2px] border-stone-900 ${getTabBackgroundColor()}`}>
+                <button className={`py-2 px-4 text-sm transition-colors -mb-[2px] ${getTabBackgroundColor()}`}>
                   {currentProject.currentTab}
                 </button>
                 <button

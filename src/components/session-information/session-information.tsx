@@ -74,14 +74,14 @@ const SessionNavItem: React.FC<{
   return (
     <button
       onClick={onClick}
-      className={`flex flex-col gap-y-1 w-full text-left rounded py-2 px-4 hover:bg-stone-100 transition-colors ${
+      className={`w-full text-left p-4 hover:bg-stone-100 transition-colors last:border-b last:border-stone-900 ${
         isActive ? 'bg-stone-100' : ''
       }`}
     >
-      <h3 className="text-xs text-stone-400">
+      <h3 className="text-xs text-stone-400 mb-1">
         {session.session_counter_jp}
       </h3>
-      <h2 className="text-base font-medium text-stone-900 mb-2">
+      <h2 className="text-base font-medium text-stone-900 mb-3">
         {session.title}
       </h2>
       <div className="w-full text-xs font-light flex flex-col gap-y-1">
@@ -176,42 +176,31 @@ export const SessionInformation: React.FC = () => {
   const activeSessionData = sessions.find(s => s.id === activeSession);
 
   return (
-    <div className="fixed inset-x-0 bottom-0 top-[102px]">
-      <div className="h-full flex">
-        {/* Left sidebar - hidden on mobile */}
-        <div className="hidden md:block w-96 border-r border-stone-200">
-          <div className="px-4 py-6">
-            <div className="divide-y divide-stone-200">
-              {sessions.map((session) => {
-                const progress = calculateProgress(session.session_number);
-                return (
+    <div className="w-full">
+      <div className="relative border-t border-stone-900 lg:h-[calc(100vh-102px)] lg:flex lg:flex-col">
+        <div className="grid grid-cols-1 lg:grid-cols-[384px,1fr] lg:divide-x divide-stone-900 lg:h-full">
+          {/* Left sidebar - hidden on small screens */}
+          <div className="relative lg:row-span-full hidden md:block">
+            <div>
+              {sessions.map((session) => (
+                <div key={session.id} className="">
                   <SessionNavItem
-                    key={session.id}
                     session={session}
                     isActive={session.id === activeSession}
-                    progress={progress}
+                    progress={calculateProgress(session.session_number)}
                     onClick={() => setActiveSession(session.id)}
                   />
-                );
-              })}
+                </div>
+              ))}
             </div>
           </div>
-        </div>
 
-        {/* Main content area - scrollable */}
-        <div className="flex-1 overflow-y-auto mt-1 mb-8">
-          <div 
-            className={`w-full ${window.matchMedia('(min-width: 768px)').matches ? 'ml-8' : ''}`}
-            style={{ 
-              maxWidth: window.matchMedia('(min-width: 768px)').matches 
-                ? 'min(calc(72rem - 384px + ((100vw - 72rem) / 2)), calc(100vw - 384px - 64px))'
-                : 'none'
-            }}
-          >
-            {/* On mobile, show all sessions */}
-            <div className="md:hidden">
+          {/* Main content area */}
+          <div className="lg:overflow-y-auto">
+            {/* Mobile view */}
+            <div className="lg:hidden divide-y divide-stone-900">
               {sessions.map((sessionData) => (
-                <div key={sessionData.id} className="px-4 sm:px-6 py-6 border-b border-stone-200">
+                <div key={sessionData.id} className="p-8">
                   <div className="mb-8">
                     <h3 className="text-base text-stone-400 mb-4">
                       {sessionData.session_counter_jp}
@@ -271,10 +260,10 @@ export const SessionInformation: React.FC = () => {
               ))}
             </div>
 
-            {/* On desktop, show active session */}
-            <div className="hidden md:block">
+            {/* Desktop view */}
+            <div className="hidden lg:block">
               {activeSessionData && (
-                <div className="px-4 sm:px-6 py-6">
+                <div className="p-8 max-w-7xl mx-auto">
                   <div className="mb-8">
                     <h3 className="text-base text-stone-400 mb-4">
                       {activeSessionData.session_counter_jp}
