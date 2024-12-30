@@ -179,8 +179,8 @@ export const SessionInformation: React.FC = () => {
     <div className="w-full">
       <div className="relative border-t border-stone-900 lg:h-[calc(100vh-102px)] lg:flex lg:flex-col">
         <div className="grid grid-cols-1 lg:grid-cols-[384px,1fr] lg:divide-x divide-stone-900 lg:h-full">
-          {/* Left sidebar - hidden on small screens */}
-          <div className="relative lg:row-span-full hidden md:block">
+          {/* Left sidebar - only visible on lg and above */}
+          <div className="relative hidden lg:block">
             <div>
               {sessions.map((session) => (
                 <div key={session.id} className="">
@@ -195,63 +195,65 @@ export const SessionInformation: React.FC = () => {
             </div>
           </div>
 
-          {/* Main content area */}
+          {/* Content view - show all sessions on mobile, single session on desktop */}
           <div className="lg:overflow-y-auto">
-            {/* Mobile view */}
-            <div className="lg:hidden divide-y divide-stone-900">
-              {sessions.map((sessionData) => (
-                <div key={sessionData.id} className="p-8">
-                  <div className="mb-8">
-                    <h3 className="text-base text-stone-400 mb-4">
-                      {sessionData.session_counter_jp}
-                    </h3>
-                    <h2 className="text-2xl font-semibold text-stone-900 mt-1">
-                      {sessionData.title}
-                    </h2>
-                    <p className="text-stone-600 mt-2 text-base whitespace-pre-line">
-                      {sessionData.description}
-                    </p>
-                  </div>
-
-                  <div className="space-y-8">
-                    {/* Required Readings Section */}
-                    <div>
-                      <h3 className="text-sm font-medium text-stone-600 mb-4">
-                        メイン資料
+            {/* Mobile view - show all sessions */}
+            <div className="lg:hidden">
+              {sessions.map((session) => (
+                <div key={session.id} className="border-b border-stone-900">
+                  <div className="p-8">
+                    <div className="mb-8">
+                      <h3 className="text-base text-stone-400 mb-4">
+                        {session.session_counter_jp}
                       </h3>
-                      <div className="overflow-hidden">
-                        <div className="">
-                          {getDisplayReadings(
-                            groupedReadings[sessionData.session_number]?.requiredReadings || []
-                          ).map((reading: ReadingOverview, index: number) => (
-                            <ReadingItem 
-                              key={index} 
-                              reading={reading} 
-                              isCompleted={completedReadings.has(reading.content_id)}
-                              onToggleComplete={() => toggleReadingComplete(reading.content_id)}
-                            />
-                          ))}
-                        </div>
-                      </div>
+                      <h2 className="text-2xl font-semibold text-stone-900 mt-1">
+                        {session.title}
+                      </h2>
+                      <p className="text-stone-600 mt-2 text-base whitespace-pre-line">
+                        {session.description}
+                      </p>
                     </div>
 
-                    {/* Recommended Readings Section */}
-                    <div>
-                      <h3 className="text-sm font-medium text-stone-600 mb-4">
-                        補足資料
-                      </h3>
-                      <div className="overflow-hidden">
-                        <div className="">
-                          {getDisplayReadings(
-                            groupedReadings[sessionData.session_number]?.recommendedReadings || []
-                          ).map((reading: ReadingOverview, index: number) => (
-                            <ReadingItem 
-                              key={index} 
-                              reading={reading} 
-                              isCompleted={completedReadings.has(reading.content_id)}
-                              onToggleComplete={() => toggleReadingComplete(reading.content_id)}
-                            />
-                          ))}
+                    <div className="space-y-8">
+                      {/* Required Readings Section */}
+                      <div>
+                        <h3 className="text-sm font-medium text-stone-600 mb-4">
+                          メイン資料
+                        </h3>
+                        <div className="overflow-hidden">
+                          <div>
+                            {getDisplayReadings(
+                              groupedReadings[session.session_number]?.requiredReadings || []
+                            ).map((reading: ReadingOverview, index: number) => (
+                              <ReadingItem 
+                                key={index} 
+                                reading={reading} 
+                                isCompleted={completedReadings.has(reading.content_id)}
+                                onToggleComplete={() => toggleReadingComplete(reading.content_id)}
+                              />
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Recommended Readings Section */}
+                      <div>
+                        <h3 className="text-sm font-medium text-stone-600 mb-4">
+                          補足資料
+                        </h3>
+                        <div className="overflow-hidden">
+                          <div>
+                            {getDisplayReadings(
+                              groupedReadings[session.session_number]?.recommendedReadings || []
+                            ).map((reading: ReadingOverview, index: number) => (
+                              <ReadingItem 
+                                key={index} 
+                                reading={reading} 
+                                isCompleted={completedReadings.has(reading.content_id)}
+                                onToggleComplete={() => toggleReadingComplete(reading.content_id)}
+                              />
+                            ))}
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -260,10 +262,10 @@ export const SessionInformation: React.FC = () => {
               ))}
             </div>
 
-            {/* Desktop view */}
+            {/* Desktop view - show active session only */}
             <div className="hidden lg:block">
               {activeSessionData && (
-                <div className="p-8 max-w-7xl mx-auto">
+                <div className="p-8">
                   <div className="mb-8">
                     <h3 className="text-base text-stone-400 mb-4">
                       {activeSessionData.session_counter_jp}
@@ -280,10 +282,10 @@ export const SessionInformation: React.FC = () => {
                     {/* Required Readings Section */}
                     <div>
                       <h3 className="text-sm font-medium text-stone-600 mb-4">
-                      メイン資料
+                        メイン資料
                       </h3>
                       <div className="overflow-hidden">
-                        <div className="">
+                        <div>
                           {getDisplayReadings(
                             groupedReadings[activeSessionData.session_number]?.requiredReadings || []
                           ).map((reading: ReadingOverview, index: number) => (
@@ -304,7 +306,7 @@ export const SessionInformation: React.FC = () => {
                         補足資料
                       </h3>
                       <div className="overflow-hidden">
-                        <div className="">
+                        <div>
                           {getDisplayReadings(
                             groupedReadings[activeSessionData.session_number]?.recommendedReadings || []
                           ).map((reading: ReadingOverview, index: number) => (

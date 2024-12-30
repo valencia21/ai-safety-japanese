@@ -92,9 +92,9 @@ export const Navbar: React.FC = () => {
                 </button>
 
                 {isMenuOpen && (
-                  <div className="border-t border-stone-200">
+                  <div className="absolute w-full border-y border-stone-900 shadow bg-white left-0 top-full z-50">
                     <div className="container mx-auto">
-                      <div className="divide-y divide-stone-200">
+                      <div className="divide-y divide-stone-900">
                         <button
                           disabled
                           className="w-full text-left py-2 px-6 text-sm transition-colors text-stone-400 cursor-not-allowed"
