@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useLocation, Link } from "react-router-dom";
 import AuthPopup from "../auth";
 import { useAuth } from "../../context/AuthContext";
-import logoImage from "../../assets/logo_transparent.png";
 import { currentProject } from '../../config/project';
 
 export const Navbar: React.FC = () => {
@@ -30,7 +29,7 @@ export const Navbar: React.FC = () => {
         <div className="container mx-auto flex justify-between items-center">
           <Link to="/" className="flex flex-row items-center">
             <img 
-              src={logoImage} 
+              src="/assets/logo_transparent.png" 
               alt={`${currentProject.title} Logo`}
               className="h-16 w-auto rounded"
             />
