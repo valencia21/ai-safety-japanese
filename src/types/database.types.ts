@@ -73,6 +73,7 @@ export type Database = {
           required_reading: boolean | null
           revision_url: string | null
           session_number: number | null
+          status: Database["public"]["Enums"]["status"] | null
           title: string | null
         }
         Insert: {
@@ -87,6 +88,7 @@ export type Database = {
           required_reading?: boolean | null
           revision_url?: string | null
           session_number?: number | null
+          status?: Database["public"]["Enums"]["status"] | null
           title?: string | null
         }
         Update: {
@@ -101,6 +103,7 @@ export type Database = {
           required_reading?: boolean | null
           revision_url?: string | null
           session_number?: number | null
+          status?: Database["public"]["Enums"]["status"] | null
           title?: string | null
         }
         Relationships: []
@@ -140,16 +143,12 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      set_current_project: {
-        Args: {
-          p_id: string
-        }
-        Returns: undefined
-      }
+      [_ in never]: never
     }
     Enums: {
       format: "記事" | "ビデオ" | "ブログ" | "レポート" | "研究"
       project_type: "ai_safety" | "animal_welfare"
+      status: "pending" | "published"
       team:
         | "Masayuki Nagai"
         | "bioshok"
@@ -158,6 +157,10 @@ export type Database = {
         | "Amane Watahiki"
         | "Masaya Sasaki"
         | "Luis Costigan"
+        | "Nanako Murata"
+        | "Kosei Kawahara"
+        | "Masashi Takeshita"
+        | "Taiga Shinozaki"
     }
     CompositeTypes: {
       [_ in never]: never

@@ -5,7 +5,9 @@ import {
   fetchSessions,
 } from "@/utils/reading-utils";
 import { Link } from "react-router-dom";
-import { ReadingOverview } from "@/types";
+import { Database } from "@/types/database.types";
+type ReadingOverview = Database['public']['Tables']['reading_overview']['Row'];
+type SessionOverview = Database['public']['Tables']['session_overview']['Row'];
 import { Check } from "lucide-react";
 
 // Add new interface for progress tracking
@@ -18,11 +20,11 @@ interface SessionProgress {
 
 // Add this near the top of the file with other interfaces
 interface Reading {
-  content_id: string;
-  title: string;
-  original_title?: string;
-  format?: string;
-  order?: number;
+  content_id: string | null;
+  title: string | null;
+  original_title?: string | null;
+  format?: string | null;
+  order?: number | null;
 }
 
 const ReadingItem: React.FC<{
@@ -30,6 +32,8 @@ const ReadingItem: React.FC<{
   isCompleted: boolean;
   onToggleComplete: () => void;
 }> = ({ reading, isCompleted, onToggleComplete }) => {
+  if (!reading.content_id || !reading.title) return null;
+
   if (reading.status === 'pending') {
     return (
       <div className="flex items-center gap-4">
@@ -51,7 +55,7 @@ const ReadingItem: React.FC<{
           </div>
           <div className="absolute inset-0 bg-black/5" />
         </div>
-        <div className="h-4 w-4" /> {/* Spacer to maintain layout */}
+        <div className="h-4 w-4" />
       </div>
     );
   }
@@ -92,7 +96,7 @@ const ReadingItem: React.FC<{
 };
 
 const SessionNavItem: React.FC<{
-  session: any;
+  session: SessionOverview;
   isActive: boolean;
   progress: SessionProgress;
   onClick: () => void;
@@ -125,8 +129,8 @@ const SessionNavItem: React.FC<{
 };
 
 export const SessionInformation: React.FC = () => {
-  const [readings, setReadings] = useState<any[]>([]);
-  const [sessions, setSessions] = useState<any[]>([]);
+  const [readings, setReadings] = useState<ReadingOverview[]>([]);
+  const [sessions, setSessions] = useState<SessionOverview[]>([]);
   const [, setLoading] = useState<boolean>(true);
   const [, setError] = useState<string | null>(null);
   const [completedReadings, setCompletedReadings] = useState<Set<string>>(new Set());
@@ -187,13 +191,22 @@ export const SessionInformation: React.FC = () => {
       .slice(0, 4);
   };
 
-  const calculateProgress = (sessionNumber: number): SessionProgress => {
+  const calculateProgress = (sessionNumber: number | null): SessionProgress => {
+    if (sessionNumber === null) {
+      return {
+        required: 0,
+        recommended: 0,
+        totalRequired: 0,
+        totalRecommended: 0,
+      };
+    }
+    
     const required = groupedReadings[sessionNumber]?.requiredReadings || [];
     const recommended = groupedReadings[sessionNumber]?.recommendedReadings || [];
     
     return {
-      required: required.filter((r: Reading) => completedReadings.has(r.content_id)).length,
-      recommended: recommended.filter((r: Reading) => completedReadings.has(r.content_id)).length,
+      required: required.filter((r: Reading) => r.content_id && completedReadings.has(r.content_id)).length,
+      recommended: recommended.filter((r: Reading) => r.content_id && completedReadings.has(r.content_id)).length,
       totalRequired: required.length,
       totalRecommended: recommended.length,
     };
@@ -249,13 +262,13 @@ export const SessionInformation: React.FC = () => {
                         <div className="overflow-hidden">
                           <div>
                             {getDisplayReadings(
-                              groupedReadings[session.session_number]?.requiredReadings || []
+                              groupedReadings[session.session_number ?? 0]?.requiredReadings || []
                             ).map((reading: ReadingOverview, index: number) => (
                               <ReadingItem 
                                 key={index} 
                                 reading={reading} 
-                                isCompleted={completedReadings.has(reading.content_id)}
-                                onToggleComplete={() => toggleReadingComplete(reading.content_id)}
+                                isCompleted={completedReadings.has(reading.content_id ?? '')}
+                                onToggleComplete={() => reading.content_id && toggleReadingComplete(reading.content_id)}
                               />
                             ))}
                           </div>
@@ -270,13 +283,13 @@ export const SessionInformation: React.FC = () => {
                         <div className="overflow-hidden">
                           <div>
                             {getDisplayReadings(
-                              groupedReadings[session.session_number]?.recommendedReadings || []
+                              groupedReadings[session.session_number ?? 0]?.recommendedReadings || []
                             ).map((reading: ReadingOverview, index: number) => (
                               <ReadingItem 
                                 key={index} 
                                 reading={reading} 
-                                isCompleted={completedReadings.has(reading.content_id)}
-                                onToggleComplete={() => toggleReadingComplete(reading.content_id)}
+                                isCompleted={completedReadings.has(reading.content_id ?? '')}
+                                onToggleComplete={() => reading.content_id && toggleReadingComplete(reading.content_id)}
                               />
                             ))}
                           </div>
@@ -313,13 +326,13 @@ export const SessionInformation: React.FC = () => {
                       <div className="overflow-hidden">
                         <div>
                           {getDisplayReadings(
-                            groupedReadings[activeSessionData.session_number]?.requiredReadings || []
+                            groupedReadings[activeSessionData.session_number ?? 0]?.requiredReadings || []
                           ).map((reading: ReadingOverview, index: number) => (
                             <ReadingItem 
                               key={index} 
                               reading={reading} 
-                              isCompleted={completedReadings.has(reading.content_id)}
-                              onToggleComplete={() => toggleReadingComplete(reading.content_id)}
+                              isCompleted={completedReadings.has(reading.content_id ?? '')}
+                              onToggleComplete={() => reading.content_id && toggleReadingComplete(reading.content_id)}
                             />
                           ))}
                         </div>
@@ -334,13 +347,13 @@ export const SessionInformation: React.FC = () => {
                       <div className="overflow-hidden">
                         <div>
                           {getDisplayReadings(
-                            groupedReadings[activeSessionData.session_number]?.recommendedReadings || []
+                            groupedReadings[activeSessionData.session_number ?? 0]?.recommendedReadings || []
                           ).map((reading: ReadingOverview, index: number) => (
                             <ReadingItem 
                               key={index} 
                               reading={reading} 
-                              isCompleted={completedReadings.has(reading.content_id)}
-                              onToggleComplete={() => toggleReadingComplete(reading.content_id)}
+                              isCompleted={completedReadings.has(reading.content_id ?? '')}
+                              onToggleComplete={() => reading.content_id && toggleReadingComplete(reading.content_id)}
                             />
                           ))}
                         </div>

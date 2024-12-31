@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Check } from "lucide-react";
-import { ReadingOverview } from "@/types";
+
 import { fetchReadings } from "@/utils/reading-utils";
+import { Database } from "@/types/database.types";
+type ReadingOverview = Database['public']['Tables']['reading_overview']['Row'];
 
 export const ReadingList: React.FC = () => {
   const [readings, setReadings] = useState<ReadingOverview[]>([]);
@@ -27,9 +29,9 @@ export const ReadingList: React.FC = () => {
         .filter(reading => reading.title !== null)
         .sort((a, b) => {
           // Handle cases where original_title might be null
-          if (!a.original_title) return 1;
-          if (!b.original_title) return -1;
-          return a.original_title.localeCompare(b.original_title);
+          const titleA = a.original_title || '';
+          const titleB = b.original_title || '';
+          return titleA.localeCompare(titleB);
         }) as ReadingOverview[];
       setReadings(validReadings);
     };
@@ -113,14 +115,14 @@ export const ReadingList: React.FC = () => {
                         <div
                           onClick={(e) => {
                             e.preventDefault();
-                            toggleReadingComplete(reading.content_id);
+                            reading.content_id && toggleReadingComplete(reading.content_id);
                           }}
                           className={`h-4 w-4 rounded-sm flex items-center justify-center transition-colors cursor-pointer ml-4
-                            ${completedReadings.has(reading.content_id) ? 'bg-stone-700 border-stone-700' : 'bg-stone-700'}
+                            ${completedReadings.has(reading.content_id ?? '') ? 'bg-stone-700 border-stone-700' : 'bg-stone-700'}
                             hover:border-stone-400
                           `}
                         >
-                          {completedReadings.has(reading.content_id) && <Check className="h-3.5 w-3.5 text-white" />}
+                          {completedReadings.has(reading.content_id ?? '') && <Check className="h-3.5 w-3.5 text-white" />}
                         </div>
                       </div>
                     </Link>
