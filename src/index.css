@@ -142,7 +142,7 @@ body {
 }
 
 .tiptap iframe[src*="youtube"] {
-  @apply rounded;
+  @apply rounded mb-4 w-full;
 }
 
 .tiptap .image-caption {
