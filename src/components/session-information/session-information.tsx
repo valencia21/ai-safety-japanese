@@ -30,6 +30,32 @@ const ReadingItem: React.FC<{
   isCompleted: boolean;
   onToggleComplete: () => void;
 }> = ({ reading, isCompleted, onToggleComplete }) => {
+  if (reading.status === 'pending') {
+    return (
+      <div className="flex items-center gap-4">
+        <div className="block flex-1 border-b border-stone-200 opacity-50 relative">
+          <div className="flex my-1 items-center w-full rounded p-2">
+            <div className="flex-1">
+              {reading.original_title && (
+                <span className="text-xs text-stone-500 mb-0.5 block">
+                  {reading.original_title}
+                </span>
+              )}
+              <span className="text-sm">
+                {reading.title}
+              </span>
+            </div>
+            <span className="text-xs text-stone-500 mx-2">
+              {reading.format}
+            </span>
+          </div>
+          <div className="absolute inset-0 bg-black/5" />
+        </div>
+        <div className="h-4 w-4" /> {/* Spacer to maintain layout */}
+      </div>
+    );
+  }
+
   return (
     <div className="flex items-center gap-4">
       <Link

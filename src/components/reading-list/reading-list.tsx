@@ -74,36 +74,58 @@ export const ReadingList: React.FC = () => {
           <div className="lg:col-span-2 lg:overflow-y-auto">
             <div className="relative grid grid-cols-1 sm:grid-cols-2">
               {readings.map((reading) => (
-                <Link
+                <div
                   key={reading.content_id}
-                  to={`/${reading.content_id}`}
-                  className="group border-b border-stone-900 last:border-b-0 sm:last:border-b sm:nth-last-2:border-b-0 sm:odd:border-r sm:last:border-r-0"
+                  className="group border-b border-stone-900 last:border-b-0 sm:last:border-b sm:nth-last-2:border-b-0 sm:odd:border-r sm:last:border-r-0 relative"
                 >
-                  <div className="p-4 flex items-start justify-between transition-colors duration-200 ease-in-out group-hover:bg-stone-900">
-                    <div className="flex-1">
-                      {reading.original_title && (
-                        <span className="text-xs text-stone-700 mb-1 block line-clamp-1 transition-colors duration-200 ease-in-out group-hover:text-white">
-                          {reading.original_title}
+                  {reading.status === 'pending' ? (
+                    // Pending item (not clickable)
+                    <div className="p-4 flex items-start justify-between opacity-50">
+                      <div className="flex-1">
+                        {reading.original_title && (
+                          <span className="text-xs text-stone-700 mb-1 block line-clamp-1">
+                            {reading.original_title}
+                          </span>
+                        )}
+                        <span className="text-sm">
+                          {reading.title}
                         </span>
-                      )}
-                      <span className="text-sm transition-colors duration-200 ease-in-out group-hover:text-white">
-                        {reading.title}
-                      </span>
+                      </div>
+                      <div className="absolute inset-0 bg-black/5" />
                     </div>
-                    <div
-                      onClick={(e) => {
-                        e.preventDefault();
-                        toggleReadingComplete(reading.content_id);
-                      }}
-                      className={`h-4 w-4 rounded-sm flex items-center justify-center transition-colors cursor-pointer ml-4
-                        ${completedReadings.has(reading.content_id) ? 'bg-stone-700 border-stone-700' : 'bg-stone-700'}
-                        hover:border-stone-400
-                      `}
+                  ) : (
+                    // Active item (clickable)
+                    <Link
+                      to={`/${reading.content_id}`}
+                      className="block"
                     >
-                      {completedReadings.has(reading.content_id) && <Check className="h-3.5 w-3.5 text-white" />}
-                    </div>
-                  </div>
-                </Link>
+                      <div className="p-4 flex items-start justify-between transition-colors duration-200 ease-in-out group-hover:bg-stone-900">
+                        <div className="flex-1">
+                          {reading.original_title && (
+                            <span className="text-xs text-stone-700 mb-1 block line-clamp-1 transition-colors duration-200 ease-in-out group-hover:text-white">
+                              {reading.original_title}
+                            </span>
+                          )}
+                          <span className="text-sm transition-colors duration-200 ease-in-out group-hover:text-white">
+                            {reading.title}
+                          </span>
+                        </div>
+                        <div
+                          onClick={(e) => {
+                            e.preventDefault();
+                            toggleReadingComplete(reading.content_id);
+                          }}
+                          className={`h-4 w-4 rounded-sm flex items-center justify-center transition-colors cursor-pointer ml-4
+                            ${completedReadings.has(reading.content_id) ? 'bg-stone-700 border-stone-700' : 'bg-stone-700'}
+                            hover:border-stone-400
+                          `}
+                        >
+                          {completedReadings.has(reading.content_id) && <Check className="h-3.5 w-3.5 text-white" />}
+                        </div>
+                      </div>
+                    </Link>
+                  )}
+                </div>
               ))}
             </div>
           </div>
