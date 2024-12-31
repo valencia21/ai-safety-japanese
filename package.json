@@ -11,6 +11,7 @@
     "generate-types": "npx supabase gen types typescript --project-id aikpxdrflgkyjhmyoszp > src/types/database.types.ts"
   },
   "dependencies": {
+    "@fourwaves/tiptap-extension-vimeo": "^1.0.2",
     "@heroicons/react": "^2.1.3",
     "@lemonsqueezy/wedges": "^1.2.2",
     "@phosphor-icons/react": "^2.1.5",

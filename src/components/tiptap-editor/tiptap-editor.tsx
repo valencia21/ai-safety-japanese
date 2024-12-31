@@ -7,7 +7,6 @@ import { TiptapMenu } from "./tiptap-menu";
 import { saveContent } from "./tiptap-utils";
 import { TableOfContents } from "@tiptap-pro/extension-table-of-contents";
 import Image from "@tiptap/extension-image";
-import ImageResize from "tiptap-extension-resize-image";
 import Link from "@tiptap/extension-link";
 import Placeholder from "@tiptap/extension-placeholder";
 import Details from "@tiptap-pro/extension-details";
@@ -30,6 +29,7 @@ import TableCell from '@tiptap/extension-table-cell'
 import { Editor } from '@tiptap/react'
 import { currentProject } from "../../config/project";
 import Superscript from '@tiptap/extension-superscript'
+import { Vimeo } from '@fourwaves/tiptap-extension-vimeo';
 
 interface TiptapEditorProps {
   title: any;
@@ -188,7 +188,6 @@ export const TiptapEditor: React.FC<TiptapEditorProps> = ({
         class: 'max-w-full h-auto',
       },
     }),
-    ImageResize,
     ImageCaption,
     TextStyle,
     TextAlign.configure({
@@ -280,6 +279,14 @@ export const TiptapEditor: React.FC<TiptapEditorProps> = ({
     Superscript.configure({
       HTMLAttributes: {
         class: 'align-super text-sm',
+      },
+    }),
+    Vimeo.configure({
+      controls: true,
+      autoplay: false,
+      loop: false,
+      HTMLAttributes: {
+        class: 'w-full',
       },
     }),
   ];

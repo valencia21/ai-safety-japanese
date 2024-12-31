@@ -138,11 +138,20 @@ body {
 }
 
 .tiptap img {
-  @apply rounded;
+  @apply rounded mx-auto block my-6;
 }
 
-.tiptap iframe[src*="youtube"] {
-  @apply rounded mb-4 w-full;
+/* Vimeo styles */
+.tiptap div[data-vimeo-video] {
+  @apply rounded mb-4 w-full !important;
+  display: block !important;
+}
+
+.tiptap div[data-vimeo-video] iframe {
+  @apply w-full !important;
+  display: block !important;
+  border: none !important;
+  border-radius: 0.375rem !important;
 }
 
 .tiptap .image-caption {
@@ -386,4 +395,9 @@ body {
     h2 { font-size: 2em; }
     h3 { font-size: 1.75em; }
   }
+}
+
+/* Add a style for the image wrapper paragraph */
+.tiptap p:has(img) {
+  @apply text-center p-0 m-0;
 }

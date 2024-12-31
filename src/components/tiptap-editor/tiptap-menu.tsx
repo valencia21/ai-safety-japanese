@@ -1,6 +1,6 @@
 // src/components/MenuBar.tsx
 import { useCurrentEditor } from "@tiptap/react";
-import { Link, YoutubeLogo, Function, Code as CodeIcon, Table, SquaresFour, Rows, Columns, TrashSimple, MinusSquare, ArrowUp } from "@phosphor-icons/react"
+import { Link, YoutubeLogo, Function, Code as CodeIcon, Table, SquaresFour, Rows, Columns, TrashSimple, MinusSquare, ArrowUp, Video } from "@phosphor-icons/react"
 import { useCallback, useState } from "react";
 import { LinkMatcherPopup } from './link-matcher-popup';
 import "../../index.css";
@@ -104,6 +104,18 @@ export const TiptapMenu: React.FC<TiptapMenuProps> = ({}) => {
     
     if (url) {
       editor.commands.setYoutubeVideo({
+        src: url,
+        width: 720,
+        height: 480,
+      })
+    }
+  }
+
+  const addVimeoVideo = () => {
+    const url = window.prompt('Enter Vimeo URL')
+    
+    if (url) {
+      editor.commands.setVimeoVideo({
         src: url,
         width: 720,
         height: 480,
@@ -317,6 +329,13 @@ export const TiptapMenu: React.FC<TiptapMenuProps> = ({}) => {
         >
           <YoutubeLogo size={18} />
           YouTube
+        </button>
+        <button
+          onClick={addVimeoVideo}
+          className="bg-gray-300 px-2 py-1 rounded text-xs hover:bg-gray-200 inline-flex items-center gap-1"
+        >
+          <Video size={18} />
+          Vimeo
         </button>
         {/* Bullet list button */}
         <button
