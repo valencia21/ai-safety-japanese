@@ -141,6 +141,12 @@ body {
   @apply rounded mx-auto block my-6;
 }
 
+/* Video styles */
+.tiptap iframe[src*="youtube"] {
+  @apply rounded mb-4 w-full;
+  aspect-ratio: 16 / 9;
+}
+
 /* Vimeo styles */
 .tiptap div[data-vimeo-video] {
   @apply rounded mb-4 w-full !important;
