@@ -25,13 +25,12 @@ interface Reading {
 const ContentPage: React.FC = ({}) => {
   const [reading, setReading] = useState<Reading | null>(null);
   const editorRef = useRef<HTMLDivElement | null>(null);
-  const [isEditable, setIsEditable] = useState(true);
+  const [isEditable, setIsEditable] = useState(false);
   const { contentId } = useParams<{ contentId?: string }>();
   const secretKey = import.meta.env.VITE_EDITING_KEY;
   const [editorTopPosition, setEditorTopPosition] = useState<number | null>(
     null
   );
-  console.log("editorTopPosition", editorTopPosition);
   const [sidenotePositions, setSidenotePositions] = useState<
     Array<{ id: number; pos: number; yCoordinate: number }>
   >([]);
@@ -69,7 +68,6 @@ const ContentPage: React.FC = ({}) => {
       if (error) {
         console.error("Error fetching reading:", error);
       } else {
-        console.log("Sidenotes data:", data.sidenotes);
         setReading(data as Reading);
         setTimeout(() => {
           setIsLoading(false);
@@ -82,7 +80,6 @@ const ContentPage: React.FC = ({}) => {
 
   useEffect(() => {
     const handleShowSidenote = (event: CustomEvent<{ id: number }>) => {
-      console.log("Received sidenote event", event.detail);
       setCurrentSidenoteId(event.detail.id);
       setShowBottomSidenote(true);
     };

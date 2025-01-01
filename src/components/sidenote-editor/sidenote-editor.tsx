@@ -65,7 +65,6 @@ export const SidenoteEditor = ({ contentId, sidenoteId, onClose, isOpen }: Siden
 
       if (error) throw error;
 
-      console.log("Sidenote saved successfully");
       onClose();
     } catch (error) {
       console.error("Error saving sidenote:", error);

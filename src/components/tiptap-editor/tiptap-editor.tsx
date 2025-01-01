@@ -148,7 +148,6 @@ const ImageCaption = Extension.create({
       toggleImageCaption:
         () =>
         ({ chain }) => {
-          console.log("toggleImageCaption");
           return chain()
             .toggleMark("textStyle", { color: "rgb(107 114 128)" })
             .run();
@@ -351,17 +350,11 @@ export const TiptapEditor: React.FC<TiptapEditorProps> = ({
                 // @ts-ignore
                 handleClickOn: (view, pos, node) => {
                   if (node.type.name === "sidenote") {
-                    console.log("Sidenote clicked", {
-                      isEditable: editable(),
-                      windowWidth: window.innerWidth,
-                      nodeId: node.attrs.id
-                    });
                     
                     if (editable()) {
                       setCurrentSidenoteId(node.attrs.id);
                       setIsSidenoteEditorOpen(true);
                     } else if (window.innerWidth < 1024) { // lg breakpoint is 1024px
-                      console.log("Dispatching sidenote event");
                       const event = new CustomEvent('showSidenote', {
                         detail: { id: node.attrs.id }
                       });
