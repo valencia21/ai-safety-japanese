@@ -410,5 +410,10 @@ body {
 
 /* Add specific styling for paragraphs with sidenotes */
 .tiptap p:has(.sidenote) {
-  @apply text-left;
+  @apply text-left mb-4;
+}
+
+/* Keep the image-only paragraph styling separate */
+.tiptap p:has(> img):not(:has(.sidenote)) {
+  @apply text-center p-0 m-0;
 }
