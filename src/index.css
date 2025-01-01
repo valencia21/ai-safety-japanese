@@ -404,6 +404,11 @@ body {
 }
 
 /* Add a style for the image wrapper paragraph */
-.tiptap p:has(img) {
+.tiptap p:has(> img) {
   @apply text-center p-0 m-0;
+}
+
+/* Add specific styling for paragraphs with sidenotes */
+.tiptap p:has(.sidenote) {
+  @apply text-left;
 }
