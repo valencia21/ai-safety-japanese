@@ -2,7 +2,6 @@ import { supabase, initializeProject } from "../supabase-client";
 import { currentProject } from '../config/project';
 
 export const fetchReadings = async () => {
-  console.log("Attempting to fetch readings for project:", currentProject.id);
   
   try {
     await initializeProject();
@@ -19,7 +18,6 @@ export const fetchReadings = async () => {
       throw error;
     }
 
-    console.log("Successfully fetched readings:", data);
     return data;
   } catch (err: any) {
     console.error("Detailed error:", {
@@ -34,13 +32,11 @@ export const fetchReadings = async () => {
 };
 
 export const fetchSessions = async () => {
-  console.log("fetchSessions");
   const { data, error } = await supabase.from("session_overview").select("*");
   if (error) {
     console.error("Error fetching sessions:", error);
     throw error;
   }
-  console.log("session data", data);
   return data;
 };
 
