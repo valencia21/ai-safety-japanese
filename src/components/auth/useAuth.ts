@@ -36,7 +36,9 @@ export const useAuth = (): UseAuthReturn => {
         options: {
           emailRedirectTo: redirectUrls[currentProject.id],
           data: {
-            project_id: currentProject.id
+            initial_project_id: currentProject.id,  // Record which project they signed up through
+            signup_date: new Date().toISOString(),  // Optionally track signup date
+            last_used_project: currentProject.id    // Track most recently used project
           }
         }
       });
