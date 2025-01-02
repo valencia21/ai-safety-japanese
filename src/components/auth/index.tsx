@@ -1,7 +1,7 @@
-import { supabase } from "../../supabase-client";
+// src/auth/index.tsx
 import { X } from 'lucide-react';
 import { useState, FormEvent } from "react";
-import { AuthError } from '@supabase/supabase-js';
+import { useAuth } from './useAuth';
 
 interface AuthPopupProps {
   isOpen: boolean;
@@ -12,37 +12,21 @@ const AuthPopup = ({ isOpen, onClose }: AuthPopupProps) => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [message, setMessage] = useState('');
+  const { error, message, handleSignUp, handleSignIn } = useAuth();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setError('');
-    setMessage('');
-
+    
     try {
       if (isSignUp) {
-        const { error } = await supabase.auth.signUp({
-          email,
-          password,
-        });
-        
-        if (error) throw error;
-        
-        setMessage('Check your email for the confirmation link!');
+        await handleSignUp(email, password);
       } else {
-        const { error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
-        
-        if (error) throw error;
-        
+        await handleSignIn(email, password);
         onClose();
       }
     } catch (error) {
-      const authError = error as AuthError;
-      setError(authError.message);
+      // Error is already handled in useAuth
+      console.error('Auth error:', error);
     }
   };
 
