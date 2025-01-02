@@ -1,5 +1,4 @@
 // src/auth/index.tsx
-import { X } from 'lucide-react';
 import { useState, FormEvent } from "react";
 import { useAuth } from './useAuth';
 
@@ -30,24 +29,26 @@ const AuthPopup = ({ isOpen, onClose }: AuthPopupProps) => {
     }
   };
 
+  const handleBackdropClick = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg p-6 w-full max-w-md relative">
-        <button
-          onClick={onClose}
-          className="absolute right-4 top-4 text-gray-500 hover:text-gray-700"
-        >
-          <X size={20} />
-        </button>
-        
-        <div className="text-center">
-          <h2 className="text-2xl font-semibold mb-6">
+    <div 
+      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      onClick={handleBackdropClick}
+    >
+      <div className="bg-white border-stone-900 border-l-2 border-t-2 px-6 pb-6 w-full max-w-md relative">
+        <div className="">
+          <h2 className="inline-block -ml-6 px-3 py-2 bg-stone-900 text-white text-sm">
             {isSignUp ? 'Create Account' : 'Sign In'}
           </h2>
           
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4 mt-6">
             <div>
               <input
                 type="email"
@@ -55,7 +56,7 @@ const AuthPopup = ({ isOpen, onClose }: AuthPopupProps) => {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Email"
                 required
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full py-2 border-b border-stone-900 focus:outline-none focus:border-b-2"
               />
             </div>
             
@@ -66,7 +67,7 @@ const AuthPopup = ({ isOpen, onClose }: AuthPopupProps) => {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Password"
                 required
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full py-2 border-b border-stone-900 focus:outline-none focus:border-b-2"
               />
             </div>
 
@@ -80,24 +81,24 @@ const AuthPopup = ({ isOpen, onClose }: AuthPopupProps) => {
 
             <button
               type="submit"
-              className="w-full bg-blue-500 text-white rounded-lg px-4 py-2 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              className="w-full bg-stone-100 px-4 py-2 hover:bg-stone-900 hover:text-white focus:outline-none"
             >
               {isSignUp ? 'Sign Up' : 'Sign In'}
             </button>
           </form>
 
-          <div className="mt-4 text-sm">
+          <div className="mt-4 text-sm text-center">
             {isSignUp ? (
               <button
                 onClick={() => setIsSignUp(false)}
-                className="text-blue-500 hover:text-blue-600"
+                className="text-stone-500 hover:text-stone-900"
               >
                 Already have an account? Sign in
               </button>
             ) : (
               <button
                 onClick={() => setIsSignUp(true)}
-                className="text-blue-500 hover:text-blue-600"
+                className="text-stone-500 hover:text-stone-900"
               >
                 Don't have an account? Sign up
               </button>

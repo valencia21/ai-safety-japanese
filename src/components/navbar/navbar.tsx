@@ -31,7 +31,7 @@ export const Navbar: React.FC = () => {
             <img 
               src="/assets/logo_transparent.png" 
               alt={`${currentProject.title} Logo`}
-              className="h-16 w-auto rounded"
+              className="h-16 w-auto"
             />
             <div className="mt-0.5 text-stone-900 font-supreme leading-tight text-sm -ml-2">
               <div>{currentProject.title.split(' ')[0]} {currentProject.title.split(' ')[1]}</div>
@@ -47,7 +47,7 @@ export const Navbar: React.FC = () => {
             )}
             <button
               onClick={handleAuth}
-              className="px-4 py-2 text-sm font-medium text-stone-900 hover:bg-stone-100 rounded-lg"
+              className="px-4 py-2 text-sm font-medium text-stone-900 hover:bg-stone-900 hover:text-white transition-colors"
             >
               {user ? 'Sign Out' : 'Sign In'}
             </button>
