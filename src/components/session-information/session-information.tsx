@@ -6,9 +6,10 @@ import {
 } from "@/utils/reading-utils";
 import { Link } from "react-router-dom";
 import { Database } from "@/types/database.types";
+import { Check } from "lucide-react";
+import { Link as LinkIcon } from "@phosphor-icons/react";
 type ReadingOverview = Database['public']['Tables']['reading_overview']['Row'];
 type SessionOverview = Database['public']['Tables']['session_overview']['Row'];
-import { Check } from "lucide-react";
 
 // Add new interface for progress tracking
 interface SessionProgress {
@@ -170,10 +171,7 @@ export const SessionInformation: React.FC = () => {
         ]);
         setReadings(readingsData);
         setSessions(sessionsData);
-        // Set the first session as active by default
-        if (sessionsData.length > 0) {
-          setActiveSession(sessionsData[0].id);
-        }
+        // Do not set any session as default; leave activeSession as null
         setLoading(false);
       } catch (error) {
         setError("Failed to fetch data. Please try again.");
@@ -227,7 +225,7 @@ export const SessionInformation: React.FC = () => {
                     session={session}
                     isActive={session.id === activeSession}
                     progress={calculateProgress(session.session_number)}
-                    onClick={() => setActiveSession(session.id)}
+                    onClick={() => setActiveSession(prev => prev === session.id ? null : session.id)}
                   />
                 </div>
               ))}
@@ -237,7 +235,27 @@ export const SessionInformation: React.FC = () => {
           {/* Content view - show all sessions on mobile, single session on desktop */}
           <div className="lg:overflow-y-auto">
             {/* Mobile view - show all sessions */}
-            <div className="lg:hidden">
+            <div className="lg:hidden my-4">
+              {/* Intro Text */}
+              <div className="p-8 border-b border-stone-900">
+                <h3 className="text-xl text-stone-400 mb-1">INTRO</h3>
+                <h2 className="text-3xl font-bold text-stone-900 mb-6">AI Safety Fundamentals: Alignment</h2>
+                <div className="flex items-center gap-4 mt-0.5 p-2 bg-stone-100 rounded mb-6">
+                  <img src="/assets/AISF-Logo.png" alt="AISF Logo" className="w-40 object-contain" />
+                  <div className="flex flex-col w-full">
+                    <p className="text-sm font-bold mb-4">
+                      このカリキュラムは、<a href="https://course.aisafetyfundamentals.com/alignment" target="_blank" rel="noopener noreferrer" className="underline">BlueDot ImpactのAI Safety Fundamentals: Alignment</a>コースのために選定された読み物のサンプルです。
+                    </p>
+                    <p className="text-sm font-bold">
+                      元の記事へのリンクは、元のタイトルの横にある <LinkIcon className="inline-block align-middle text-stone-700 mb-0.5" size={24} /> アイコンから確認できます.
+                    </p>
+                  </div>
+                </div>
+                <p className="text-stone-600 text-xl mt-0.5">
+                  AIには人類社会を抜本的に改善する可能性がありますが、私たちの意図に沿ったAIシステムをどのように構築するかについては、まだ未解決の問題が残されています。 このシリーズは、AI安全性とアライメントの重要な概念を紹介することを目的としており、これらのアイデアについて考え、評価し、議論する機会を提供します。
+                </p>
+              </div>
+
               {sessions.map((session) => (
                 <div key={session.id} className="border-b border-stone-900">
                   <div className="p-8">
@@ -303,7 +321,7 @@ export const SessionInformation: React.FC = () => {
 
             {/* Desktop view - show active session only */}
             <div className="hidden lg:block">
-              {activeSessionData && (
+              {activeSessionData ? (
                 <div className="p-8">
                   <div className="mb-8">
                     <h3 className="text-base text-stone-400 mb-4">
@@ -360,6 +378,25 @@ export const SessionInformation: React.FC = () => {
                       </div>
                     </div>
                   </div>
+                </div>
+              ) : (
+                <div className="p-8">
+                  <h3 className="text-xl text-stone-400 mb-1">INTRO</h3>
+                  <h2 className="text-3xl font-bold text-stone-900 mb-6">AI Safety Fundamentals: Alignment</h2>
+                  <div className="flex items-center gap-4 mt-0.5 p-4 bg-stone-100 rounded mb-6">
+                    <img src="/assets/AISF-Logo.png" alt="AISF Logo" className="w-40 object-contain" />
+                    <div className="flex flex-col w-full">
+                      <p className="text-stone-900 font-bold text-lg">
+                        このカリキュラムは、<a href="https://course.aisafetyfundamentals.com/alignment" target="_blank" rel="noopener noreferrer" className="underline">BlueDot ImpactのAI Safety Fundamentals: Alignment</a>コースのために選定された読み物のサンプルです。
+                      </p>
+                      <p className="text-stone-900 font-bold text-lg">
+                        元の記事へのリンクは、元のタイトルの横にある <LinkIcon className="inline-block align-middle text-stone-700 mb-0.5" size={24} /> アイコンから確認できます.
+                      </p>
+                    </div>
+                  </div>
+                  <p className="text-stone-600 text-xl mt-1">
+                    AIには人類社会を抜本的に改善する可能性がありますが、私たちの意図に沿ったAIシステムをどのように構築するかについては、まだ未解決の問題が残されています。 このシリーズは、AI安全性とアライメントの重要な概念を紹介することを目的としており、これらのアイデアについて考え、評価し、議論する機会を提供します.
+                  </p>
                 </div>
               )}
             </div>
