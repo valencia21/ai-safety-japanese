@@ -204,7 +204,7 @@
    Table of Contents
    ========================== */
 .table-of-contents-container {
-  @apply w-64 flex-shrink-0 sticky top-16 flex flex-col no-underline;
+  @apply hidden xl:flex xl:flex-col w-64 flex-shrink-0 sticky top-16 no-underline;
   height: calc(100vh - 4rem);
 }
 
