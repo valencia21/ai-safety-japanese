@@ -1,0 +1,6 @@
+[test]
+# Preload setup files for tests
+preload = ["./packages/infoseeker/tests/setup.ts"]
+
+[install.scopes]
+"@tiptap-pro" = { url = "https://registry.tiptap.dev/", token = "fMQVgnTtMYHrPDJ4iBMwehLu8yobGWeb8wJWTAk16oj4a2MLTef5O1fvxsO/9CHe" }

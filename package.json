@@ -1,75 +1,35 @@
 {
   "name": "ai-safety-japanese",
+  "version": "1.0.0",
   "private": true,
-  "version": "0.0.0",
   "type": "module",
+  "workspaces": [
+    "apps/*"
+  ],
   "scripts": {
-    "dev": "vite --port 5174",
-    "build": "tsc && vite build",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview",
-    "generate-types": "npx supabase gen types typescript --project-id aikpxdrflgkyjhmyoszp > src/types/database.types.ts"
-  },
-  "dependencies": {
-    "@fourwaves/tiptap-extension-vimeo": "^1.0.2",
-    "@heroicons/react": "^2.1.3",
-    "@lemonsqueezy/wedges": "^1.2.2",
-    "@phosphor-icons/react": "^2.1.5",
-    "@radix-ui/react-accordion": "^1.1.2",
-    "@radix-ui/react-separator": "^1.0.3",
-    "@radix-ui/react-slot": "^1.0.2",
-    "@supabase/supabase-js": "^2.42.5",
-    "@tailwindcss/typography": "^0.5.12",
-    "@tiptap-pro/extension-details": "^2.9.2",
-    "@tiptap-pro/extension-details-content": "^2.9.2",
-    "@tiptap-pro/extension-details-summary": "^2.9.2",
-    "@tiptap-pro/extension-file-handler": "^2.9.2",
-    "@tiptap-pro/extension-mathematics": "^2.16.3",
-    "@tiptap-pro/extension-table-of-contents": "^2.9.2",
-    "@tiptap/extension-code": "^2.10.3",
-    "@tiptap/extension-color": "^2.4.0",
-    "@tiptap/extension-highlight": "^2.10.3",
-    "@tiptap/extension-image": "^2.4.0",
-    "@tiptap/extension-link": "^2.4.0",
-    "@tiptap/extension-placeholder": "^2.4.0",
-    "@tiptap/extension-superscript": "^2.10.4",
-    "@tiptap/extension-table": "^2.10.4",
-    "@tiptap/extension-table-cell": "^2.10.4",
-    "@tiptap/extension-table-header": "^2.10.4",
-    "@tiptap/extension-table-row": "^2.10.4",
-    "@tiptap/extension-text-align": "^2.4.0",
-    "@tiptap/extension-text-style": "^2.4.0",
-    "@tiptap/extension-youtube": "^2.10.3",
-    "@tiptap/pm": "^2.3.0",
-    "@tiptap/react": "^2.3.0",
-    "@tiptap/starter-kit": "^2.3.0",
-    "class-variance-authority": "^0.7.0",
-    "clsx": "^2.1.0",
-    "jotai": "^2.8.0",
-    "katex": "^0.16.11",
-    "lucide-react": "^0.370.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-router-dom": "^6.22.3",
-    "tailwind-merge": "^2.2.2",
-    "tailwindcss-animate": "^1.0.7",
-    "tiptap-extension-resize-image": "^1.1.7"
+    "dev": "bun run --cwd apps/foundation dev",
+    "build": "bun run --filter '*' build",
+    "start": "bun run --cwd apps/foundation start",
+    "test": "bun run --filter '*' test",
+    "format": "eslint --fix . && prettier --write .",
+    "lint": "eslint .",
+    "typecheck": "bun run --filter '*' typecheck"
   },
   "devDependencies": {
-    "@types/node": "^20.12.7",
-    "@types/react": "^18.2.66",
-    "@types/react-dom": "^18.2.22",
-    "@typescript-eslint/eslint-plugin": "^7.2.0",
-    "@typescript-eslint/parser": "^7.2.0",
-    "@vitejs/plugin-react": "^4.2.1",
-    "autoprefixer": "^10.4.19",
-    "eslint": "^8.57.0",
-    "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-react-refresh": "^0.4.6",
-    "postcss": "^8.4.38",
-    "tailwind-scrollbar": "^3.1.0",
-    "tailwindcss": "^3.4.3",
-    "typescript": "^5.2.2",
-    "vite": "^5.2.0"
+    "@tanstack/eslint-config": "^0.3.2",
+    "eslint": "^9.0.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.0.0",
+    "prettier": "^3.6.2",
+    "typescript": "^5.9.2"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,yaml,yml}": [
+      "prettier --write"
+    ]
   }
 }

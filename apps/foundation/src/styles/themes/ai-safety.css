@@ -1,0 +1,148 @@
+/* AI Safety Japanese - Project Color Palettes */
+
+:root {
+  /* Custom standalone colors */
+  --beige: #F9F4EE;
+  --lwgreen: #B0CDB2;
+  --lwgreenlight: #c1e0c1;
+  --lwgreendark: #465246;
+
+  /* Glacier */
+  --glacier-50: #f3fdfd;
+  --glacier-100: #E2FCFC;
+  --glacier-200: #c5f7f7;
+  --glacier-300: #94f1f1;
+  --glacier-400: #4ce6e6;
+  --glacier-500: #25d1d1;
+  --glacier-600: #1ba7a7;
+  --glacier-700: #147d7d;
+  --glacier-800: #0d5454;
+  --glacier-900: #062a2a;
+
+  /* Blush */
+  --blush-50: #fef6f6;
+  --blush-100: #FBECEB;
+  --blush-200: #f5d5d3;
+  --blush-300: #edb3b0;
+  --blush-400: #e18480;
+  --blush-500: #d65d58;
+  --blush-600: #c43f39;
+  --blush-700: #a32f2a;
+  --blush-800: #82201c;
+  --blush-900: #61100d;
+
+  /* Parchment */
+  --parchment-50: #ffffe9;
+  --parchment-100: #FFFFE3;
+  --parchment-200: #ffffb3;
+  --parchment-300: #ffff80;
+  --parchment-400: #ffff4d;
+  --parchment-500: #ffff1a;
+  --parchment-600: #e6e600;
+  --parchment-700: #b3b300;
+  --parchment-800: #808000;
+  --parchment-900: #4d4d00;
+
+  /* Sage */
+  --sage-50: #f4fef5;
+  --sage-100: #E2FDE6;
+  --sage-200: #b8f9c2;
+  --sage-300: #8df49e;
+  --sage-400: #62ef7a;
+  --sage-500: #37ea56;
+  --sage-600: #1bc53a;
+  --sage-700: #15952c;
+  --sage-800: #0f651e;
+  --sage-900: #093510;
+
+  /* Sand */
+  --sand-50: #FDF7F1;
+  --sand-100: #FCF0E4;
+  --sand-200: #F6DFC4;
+  --sand-300: #ECB983;
+  --sand-400: #E5A05F;
+  --sand-500: #DB8544;
+  --sand-600: #C26832;
+  --sand-700: #A0522A;
+  --sand-800: #814225;
+  --sand-900: #663420;
+  --sand-950: #4A2417;
+
+  /* Ocean */
+  --ocean-50: #F2F7FB;
+  --ocean-100: #E4F0F7;
+  --ocean-200: #B9D8EC;
+  --ocean-300: #83B9EC;
+  --ocean-400: #5FA0E5;
+  --ocean-500: #4485DB;
+  --ocean-600: #3268C2;
+  --ocean-700: #2A52A0;
+  --ocean-800: #254281;
+  --ocean-900: #1F3563;
+  --ocean-950: #17254A;
+
+  /* Terra */
+  --terra-50: #FDF5F1;
+  --terra-100: #FCEBE4;
+  --terra-200: #F6CFC4;
+  --terra-300: #EC9B83;
+  --terra-400: #E57F5F;
+  --terra-500: #DB6544;
+  --terra-600: #C24832;
+  --terra-700: #A03A2A;
+  --terra-800: #813025;
+  --terra-900: #662620;
+  --terra-950: #4A1B17;
+
+  /* Filter */
+  --filter-50: #F9F7F6;
+  --filter-100: #F3EFED;
+  --filter-200: #E8E0DB;
+  --filter-300: #D9C8BF;
+  --filter-400: #C4A99A;
+  --filter-500: #AB8776;
+  --filter-600: #8E6959;
+  --filter-700: #725147;
+  --filter-800: #573D36;
+  --filter-900: #3D2B27;
+  --filter-950: #261B18;
+
+  /* Navy */
+  --navy-50: #F4F7F9;
+  --navy-100: #E9EFF4;
+  --navy-200: #D3DFE9;
+  --navy-300: #B7C9D9;
+  --navy-400: #96ACC5;
+  --navy-500: #7790B1;
+  --navy-600: #5D738F;
+  --navy-700: #4B5B72;
+  --navy-800: #394556;
+  --navy-900: #2A323E;
+  --navy-950: #1B2028;
+
+  /* Modern */
+  --modern-50: #F6F7F9;
+  --modern-100: #ECEEF2;
+  --modern-200: #D9DEE5;
+  --modern-300: #C1C8D4;
+  --modern-400: #A3ADBD;
+  --modern-500: #8691A3;
+  --modern-600: #6B7485;
+  --modern-700: #565D6B;
+  --modern-800: #424752;
+  --modern-900: #31343C;
+  --modern-950: #212327;
+}
+
+/* Project-specific font switching */
+:root {
+  --app-font-family: "Inter", "Noto Sans JP", system-ui, sans-serif;
+}
+
+[data-project="animal_welfare"] {
+  --app-font-family: "Gambetta", system-ui, serif;
+}
+
+[data-project="ai_safety"] {
+  --app-font-family: "Inter", "Noto Sans JP", system-ui, sans-serif;
+}

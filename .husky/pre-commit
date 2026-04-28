@@ -1,0 +1,6 @@
+# Run lint-staged for ESLint and Prettier on staged files
+bunx lint-staged
+
+# Run build to ensure the code compiles
+echo "Running build..."
+bun run build
