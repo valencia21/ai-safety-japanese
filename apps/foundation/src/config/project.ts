@@ -7,6 +7,8 @@ export interface Tab {
   label: string;
   view: TabView;
   sessionNumbers?: number[];
+  /** If set, clicking the tab navigates here directly instead of switching `view`. */
+  directLink?: string;
 }
 
 export interface ProjectConfig {
@@ -24,7 +26,7 @@ const projectConfigs: Record<ProjectId, ProjectConfig> = {
     title: 'AI Safety Notes',
     tabs: [
       { id: 'alignment', label: 'AI Safety Fundamentals: Alignment', view: 'sessions', sessionNumbers: [1, 2, 3, 4] },
-      { id: 'ai_2027', label: 'AI 2027年', view: 'sessions', sessionNumbers: [100] },
+      { id: 'ai_2027', label: 'AI 2027年', view: 'sessions', sessionNumbers: [100], directLink: '/ai-2027' },
     ],
     defaultView: 'sessions',
     fontFamily: '"Inter", "Noto Sans JP", system-ui, sans-serif',

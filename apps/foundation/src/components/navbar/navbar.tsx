@@ -36,19 +36,29 @@ export const Navbar: React.FC = () => {
           <div className={"border-t border-b border-stone-900 relative z-50"}>
             <div className="container mx-auto">
               <div className="hidden sm:block px-6">
-                {currentProject.tabs.map((tab) => (
-                  <button
-                    key={tab.id}
-                    onClick={() => setActiveTab(tab.id)}
-                    className={`py-2 px-4 text-sm transition-colors ${
-                      activeTab === tab.id
-                        ? `border-b-2 border-stone-900 -mb-[2px] ${getTabBackgroundColor()}`
-                        : 'text-stone-500 hover:text-stone-900'
-                    }`}
-                  >
-                    {tab.label}
-                  </button>
-                ))}
+                {currentProject.tabs.map((tab) => {
+                  const className = `py-2 px-4 text-sm transition-colors ${
+                    activeTab === tab.id
+                      ? `border-b-2 border-stone-900 -mb-[2px] ${getTabBackgroundColor()}`
+                      : 'text-stone-500 hover:text-stone-900'
+                  }`;
+                  if (tab.directLink) {
+                    return (
+                      <Link key={tab.id} to={tab.directLink} className={className}>
+                        {tab.label}
+                      </Link>
+                    );
+                  }
+                  return (
+                    <button
+                      key={tab.id}
+                      onClick={() => setActiveTab(tab.id)}
+                      className={className}
+                    >
+                      {tab.label}
+                    </button>
+                  );
+                })}
               </div>
 
               <div className="sm:hidden">
@@ -78,15 +88,25 @@ export const Navbar: React.FC = () => {
                       <div className="divide-y divide-stone-900">
                         {currentProject.tabs
                           .filter(tab => tab.id !== activeTab)
-                          .map((tab) => (
-                            <button
-                              key={tab.id}
-                              onClick={() => { setActiveTab(tab.id); setIsMenuOpen(false); }}
-                              className="w-full text-left py-2 px-6 text-sm transition-colors hover:bg-stone-50"
-                            >
-                              {tab.label}
-                            </button>
-                          ))}
+                          .map((tab) => {
+                            const cls = "w-full text-left py-2 px-6 text-sm transition-colors hover:bg-stone-50 block";
+                            if (tab.directLink) {
+                              return (
+                                <Link key={tab.id} to={tab.directLink} className={cls} onClick={() => setIsMenuOpen(false)}>
+                                  {tab.label}
+                                </Link>
+                              );
+                            }
+                            return (
+                              <button
+                                key={tab.id}
+                                onClick={() => { setActiveTab(tab.id); setIsMenuOpen(false); }}
+                                className={cls}
+                              >
+                                {tab.label}
+                              </button>
+                            );
+                          })}
                       </div>
                     </div>
                   </div>

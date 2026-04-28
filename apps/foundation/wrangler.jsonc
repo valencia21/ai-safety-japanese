@@ -1,8 +1,11 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "foundation-site",
+  "name": "ai-safety-japanese",
   "compatibility_date": "2025-01-02",
   "compatibility_flags": ["nodejs_compat"],
-  "main": "@tanstack/react-start/server-entry",
-  "workers_dev": true
+  "main": "src/server.ts",
+  "workers_dev": true,
+  "observability": {
+    "enabled": true
+  }
 }
