@@ -1,0 +1,42 @@
+# Dependencies
+node_modules/
+.pixi/
+
+# Build outputs
+**/build
+**/public
+dist/
+.output/
+
+# Generated files
+routeTree.gen.ts
+*.generated.*
+*.types.ts
+src/types/database.types.ts
+
+# Mastra generated
+.mastra/
+
+# Environment files
+.env
+.env.*
+
+# Cache directories
+.cache/
+.parcel-cache/
+.vite/
+
+# Package lock files (formatting these can cause issues)
+package-lock.json
+yarn.lock
+bun.lock
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Sample data (preserve original formatting)
+sample_data/
