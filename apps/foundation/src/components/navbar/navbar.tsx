@@ -1,17 +1,29 @@
 import { useState } from "react";
-import { useLocation, Link } from "@tanstack/react-router";
+import { useLocation, Link, useNavigate } from "@tanstack/react-router";
 import { useAtom } from 'jotai';
 import { currentProject } from '~/config/project';
 import { activeTabAtom } from '~/state-manager';
+import type { Tab } from '~/config/project';
 
 export const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useAtom(activeTabAtom);
   const location = useLocation();
+  const navigate = useNavigate();
   const isHomePage = location.pathname === "/";
 
   const getTabBackgroundColor = () => {
     return currentProject.id === 'animal_welfare' ? 'bg-sage-200' : 'bg-stone-100';
+  };
+
+  const isTabActive = (tab: Tab) => {
+    if (tab.directLink) return location.pathname.startsWith(tab.directLink);
+    return isHomePage && activeTab === tab.id;
+  };
+
+  const selectTab = (tab: Tab) => {
+    setActiveTab(tab.id);
+    if (!isHomePage) navigate({ to: '/' });
   };
 
   return (
@@ -32,13 +44,13 @@ export const Navbar: React.FC = () => {
 
         </div>
 
-        {isHomePage && (
-          <div className={"border-t border-b border-stone-900 relative z-50"}>
+        <div className={"border-t border-b border-stone-900 relative z-50"}>
             <div className="container mx-auto">
               <div className="hidden sm:block px-6">
                 {currentProject.tabs.map((tab) => {
+                  const active = isTabActive(tab);
                   const className = `py-2 px-4 text-sm transition-colors ${
-                    activeTab === tab.id
+                    active
                       ? `border-b-2 border-stone-900 -mb-[2px] ${getTabBackgroundColor()}`
                       : 'text-stone-500 hover:text-stone-900'
                   }`;
@@ -52,7 +64,7 @@ export const Navbar: React.FC = () => {
                   return (
                     <button
                       key={tab.id}
-                      onClick={() => setActiveTab(tab.id)}
+                      onClick={() => selectTab(tab)}
                       className={className}
                     >
                       {tab.label}
@@ -66,7 +78,7 @@ export const Navbar: React.FC = () => {
                   onClick={() => setIsMenuOpen(!isMenuOpen)}
                   className={`w-full py-2 px-6 flex items-center justify-between ${getTabBackgroundColor()}`}
                 >
-                  <span className="text-sm">{currentProject.tabs.find(t => t.id === activeTab)?.label}</span>
+                  <span className="text-sm">{currentProject.tabs.find(isTabActive)?.label ?? currentProject.tabs[0]?.label}</span>
                   <svg
                     className={`w-4 h-4 transition-transform ${isMenuOpen ? 'rotate-180' : ''}`}
                     fill="none"
@@ -87,7 +99,7 @@ export const Navbar: React.FC = () => {
                     <div className="container mx-auto">
                       <div className="divide-y divide-stone-900">
                         {currentProject.tabs
-                          .filter(tab => tab.id !== activeTab)
+                          .filter(tab => !isTabActive(tab))
                           .map((tab) => {
                             const cls = "w-full text-left py-2 px-6 text-sm transition-colors hover:bg-stone-50 block";
                             if (tab.directLink) {
@@ -100,7 +112,7 @@ export const Navbar: React.FC = () => {
                             return (
                               <button
                                 key={tab.id}
-                                onClick={() => { setActiveTab(tab.id); setIsMenuOpen(false); }}
+                                onClick={() => { selectTab(tab); setIsMenuOpen(false); }}
                                 className={cls}
                               >
                                 {tab.label}
@@ -113,8 +125,7 @@ export const Navbar: React.FC = () => {
                 )}
               </div>
             </div>
-          </div>
-        )}
+        </div>
       </nav>
     </>
   );
